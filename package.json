@@ -1,0 +1,12 @@
+{
+  "name": "solidity-testenv",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "truffle":"latest",
+    "@openzeppelin/contracts":"latest"
+  },
+  "scripts": {
+    "dev": "npx truffle dev"
+  }
+}
