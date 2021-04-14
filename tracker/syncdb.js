@@ -51,21 +51,22 @@ function as_last_monitor_block(info_collection, event, callback) {
   });
 }
 
-function update_last_monitor_block(info_collection, event, lastblock, cb) {
+function update_last_monitor_block(info_collection, event, r, cb) {
   info_collection.updateOne({name:event.name},
-    {$set:{lastblock:lastblock}},
+    {$set:{lastblock:r.blockNumber}},
     {upsert:true},
     (err, result) => {
       if(err) throw err;
+      let v = {};
+      event.inputs.forEach(i => {
+        v[i.name] = r.returnValues[i.name];
+      });
       console.log(result.result);
-      console.log("event " + event.name + " update till block " + lastblock);
-      cb(event);
+      cb(v);
   });
 }
 
-function record_event (db, event, api_file) {
-  let abi_data = FileSys.readFileSync(api_file);
-  let abi_json = JSON.parse(abi_data).abi;
+function record_event (db, event, abi_json, contract_addr, handlers) {
   let contract = new web3.eth.Contract(abi_json, contract_addr, {
     from:Config.monitor_account
   });
@@ -80,11 +81,8 @@ function record_event (db, event, api_file) {
             throw error;
           }
           result.forEach(r => {
-            let v = {};
-            event.inputs.forEach(i => {
-              v[i.name] = r.returnValues[i.name];
-            });
-            update_last_monitor_block(info_collection, event, r.blockNumber, e => {console.log(v);});
+            console.log("event " + event.name + " update till block " + r.blockNumber);
+            update_last_monitor_block(info_collection, event, r, handlers);
           });
         }
       );
@@ -92,27 +90,25 @@ function record_event (db, event, api_file) {
   });
 }
 
-function record_events(db, events) {
+function record_events(db, abi_json, events, contract_addr, handlers) {
   events.forEach(t => {
-      record_event (db.db(), t, api_file);
-      //create_collection(contract_address, t.name);
+      record_event (db.db(), t, abi_json, contract_addr, handlers);
     }
   );
 }
 
-function track_events(address, api_file) {
+function track_events(address, api_file, handlers) {
+  let abi_data = FileSys.readFileSync(api_file);
+  let abi_json = JSON.parse(abi_data).abi;
   let events = get_abi_events(api_file);
   let url = Config.mongodb_url + "/" + address;
   Mongo.MongoClient.connect(url, {useUnifiedTopology: true}, function(err, db) {
     if (err) throw err;
-    record_events(db, events)
+    record_events(db, abi_json, events, address, handlers)
   });
 }
 
-let contract_addr = "0x3E65f4e46d3dE8568B9a18BCe0eDc9Ac87CdC774";
-let api_file = "build/contracts/CHECK.json";
 
-track_events(contract_addr, api_file);
 module.exports = {
-  track_events: record_events
+  track_events: track_events
 }
