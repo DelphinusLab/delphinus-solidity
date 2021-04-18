@@ -3,8 +3,7 @@ contract CHECK{
   event Tester(string message, bool status);
   string public name = "name";
   constructor() {}
-  function test_mint(uint256 tokenId) public returns (uint256) {
-    emit Tester("MINT", true);
+  function test_mint(uint256 tokenId) public pure returns (uint256) {
     return tokenId;
   }
   function change_name(string memory n) public returns (string memory) {
@@ -12,8 +11,7 @@ contract CHECK{
     emit Tester("MINT", true);
     return name;
   }
-  function get_name() public returns (string memory) {
-    emit Tester("MINT", true);
+  function get_name() public view returns (string memory) {
     return name;
   }
 }

@@ -9,6 +9,9 @@ contract Bidding {
   IERC20 private underlying_token;
   IERC721 private underlying_nft;
 
+  event Bid(uint256 tokenId, uint256 price);
+  event Finalize(uint256 tokenId, uint256 price);
+
   struct BiddingInfo {
     address owner;
     address winner;
@@ -32,6 +35,10 @@ contract Bidding {
     _assets[tokenId] = _bid_entry(msg.sender);
   }
 
+  function get_bidding(uint256 tokenId) public view returns (BiddingInfo memory bi) {
+    return _assets[tokenId];
+  }
+
   function bidding(uint256 tokenId, uint256 price) public {
     BiddingInfo memory winner = _assets[tokenId];
     address winner_address = winner.winner;
@@ -39,12 +46,16 @@ contract Bidding {
     require (price > final_price, "Bid at a lower price");
 
     // we first have to make sure the sender has enough token to bid
-    underlying_token.transfer(address(this), price);
+    //underlying_token.transfer(address(this), price);
 
     // return back the final price to the laster bidder *)
-    underlying_token.transfer(winner_address, final_price);
+    if (winner_address != address(0)) {
+      // Not the first bidder, return token back to the last bidder
+      underlying_token.transfer(winner_address, final_price);
+    }
     winner.winner = msg.sender;
     winner.price = price;
+    _assets[tokenId] = winner;
   }
 
 
