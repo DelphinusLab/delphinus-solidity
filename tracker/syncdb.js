@@ -1,9 +1,6 @@
 const Mongo = require('mongodb');
 const Web3 = require("web3")
 const FileSys = require("fs")
-const Config = require("./config.js");
-
-let web3 = new Web3(Config.web3_source);
 
 function get_abi_events(api_file) {
   let abi_data = FileSys.readFileSync(api_file);
@@ -54,7 +51,6 @@ async function update_last_monitor_block(info_collection, event, r) {
   event.inputs.forEach(i => {
     v[i.name] = r.returnValues[i.name];
   });
-  //console.log(result.result);
   return v;
 }
 
@@ -67,17 +63,21 @@ async function foldM (as, init, f) {
 }
 
 class EventTracker {
-  constructor(network_id, abi_file, handlers) {
+  constructor(network_id, abi_file, config, handlers) {
+    this.config = config;
+    let web3 = new Web3(config.web3_source);
     let abi_data = FileSys.readFileSync(abi_file);
     let data_json = JSON.parse(abi_data);
     this.abi_json = data_json.abi;
     this.events = get_abi_events(abi_file);
     this.address = data_json.networks[network_id].address;
     this.contract = new web3.eth.Contract(this.abi_json, this.address, {
-      from:Config.monitor_account
+      from:config.monitor_account
     });
     this.handlers = handlers;
   }
+
+
   async record_event (db, event) {
     let info_collection = await get_info_collection(db);
     let lastblock = await get_last_monitor_block(info_collection, event);
@@ -91,6 +91,7 @@ class EventTracker {
       return (acc);
     });
   }
+
   record_events (db) {
     let es = this.events.map (t => {
         let event_track = this.record_event (db.db(), t);
@@ -98,12 +99,42 @@ class EventTracker {
     });
     return es;
   }
+
+  async subscribe_event (db, event) {
+    let info_collection = await get_info_collection(db);
+    let lastblock = await get_last_monitor_block(info_collection, event);
+    console.log ("monitor %s from %s", event.name, lastblock);
+    let r = await this.contract.events[event.name](
+        {fromBlock:lastblock}
+    );
+    r.on("connected", subscribe_id => {
+      console.log(subscribe_id);
+    })
+    .on('data', async (r) => {
+      console.log("subscribe event: %s", event.name);
+      let e = await update_last_monitor_block(info_collection, event, r);
+      this.handlers(event.name, e);
+    });
+    return true;
+  }
+
   async track_events () {
-    let url = Config.mongodb_url + "/" + this.address;
+    let url = this.config.mongodb_url + "/" + this.address;
     let db = await Mongo.MongoClient.connect(url, {useUnifiedTopology: true});
     let ps = this.record_events(db);
     return Promise.all(ps);
   }
+
+  async subscribe_events () {
+    let url = this.config.mongodb_url + "/" + this.address;
+    let db = await Mongo.MongoClient.connect(url, {useUnifiedTopology: true});
+    let ps = this.events.map (t => {
+        let event_track = this.subscribe_event (db.db(), t);
+        return event_track;
+    });
+    return Promise.all(ps);
+  }
+
   async reset_events_info (db) {
     let info_collection = await get_info_collection(db);
     let p = Promise.resolve(1);
@@ -116,7 +147,7 @@ class EventTracker {
   }
 
   async reset_events () {
-    let url = Config.mongodb_url + "/" + this.address;
+    let url = this.config.mongodb_url + "/" + this.address;
     let db = await Mongo.MongoClient.connect(url, {useUnifiedTopology: true});
     return (await this.reset_events_info(db.db(), this.events));
   }

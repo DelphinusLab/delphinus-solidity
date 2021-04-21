@@ -10,13 +10,11 @@ console.log("check nft address!");
 web3.eth.getCode(nft_address).then(async (x) => {
     let nft_contract = new web3.eth.Contract(nft_abi, nft_address, {from:account});
     console.log("start calling");
-    //let r = await nft_contract.methods.test_mint(0x45).send();
-    let r = await nft_contract.methods.mint(0x46).send();
-    console.log("test mint:" + r);
-    //r = await nft_contract.methods.change_name("testname").send();
-    //console.log("reset name:" + r);
-    //let name = await nft_contract.methods.get_name().call();
-    //console.log("get name:" + nname);
+    try {
+      let r = await nft_contract.methods.mint(0x4c).send();
+    } catch (err) {
+      console.log("%s", err);
+    }
   }
 );
 
