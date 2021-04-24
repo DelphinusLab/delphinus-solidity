@@ -3,8 +3,10 @@ const FileSys = require("fs")
 const SyncDB = require("./tracker/syncdb")
 const Config = require("./config")
 
-let nft_api = "build/contracts/NFT.json";
-let nft_event_tracker = new SyncDB.EventTracker("15", nft_api, Config, (n,v) => {
+let device_id = process.argv[2]
+let api_file = process.argv[3]
+
+let nft_event_tracker = new SyncDB.EventTracker(device_id, api_file, Config, (n,v) => {
     console.log("track event: %s: {}", n, v);
   });
 let promise = nft_event_tracker.reset_events();

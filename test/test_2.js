@@ -17,7 +17,7 @@ contract("Testing NFT Mint", async (accounts) => {
     console.log("account address is:", address);
     let contract_address = bridge.address;
     console.log("address is:", contract_address);
-    await token.mint(0x100);
+    await token.mint("0x6f6eF6Dfe681b6593Ddf27da3BfDe22");
     //await token.transfer(contract_address, 0x20);
     let account_balance = await token.getBalance();
     console.log("account balance:", account_balance);

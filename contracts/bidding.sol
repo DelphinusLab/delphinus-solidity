@@ -31,7 +31,7 @@ contract Bidding {
 
   function auction(uint256 tokenId) public {
     require(_assets[tokenId].owner == address(0), "The bindding already exists");
-    underlying_nft.approve(address(this), tokenId);
+    underlying_nft.transferFrom(msg.sender, address(this), tokenId);
     _assets[tokenId] = _bid_entry(msg.sender);
   }
 
@@ -46,7 +46,7 @@ contract Bidding {
     require (price > final_price, "Bid at a lower price");
 
     // we first have to make sure the sender has enough token to bid
-    //underlying_token.transfer(address(this), price);
+    underlying_token.transferFrom(msg.sender, address(this), price);
 
     // return back the final price to the laster bidder *)
     if (winner_address != address(0)) {

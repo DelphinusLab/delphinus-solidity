@@ -22,18 +22,19 @@ contract("Testing NFT Mint", async (accounts) => {
     await token.mint(0x100);
     let owner = await nft.ownerOf(0x2f);
     console.log(owner);
+
     let b = await token.getBalance();
-    console.log("get balance");
-    console.log(b);
-    let c = await bidding.get_bidding(0x2f);
-    console.log(c);
+    console.log("get balance of owner", b);
+
     await bidding.auction(0x2f);
+    console.log("auction started:");
     let bidinfo = await bidding.get_bidding(0x2f);
-    console.log(bidinfo);
+    console.log("winner is ", bidinfo.winner);
+
+    token.approve(bidding.address, 0x2f);
     let bid = await bidding.bidding(0x2f, 0x10);
-    console.log(bid);
     bidinfo = await bidding.get_bidding(0x2f);
-    console.log(bidinfo);
+    console.log("winner is", bidinfo.winner);
   })
 })
 
