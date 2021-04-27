@@ -1,6 +1,6 @@
 const Bridge = artifacts.require("bridge");
 const TOKEN = artifacts.require("token");
-contract("Testing NFT Mint", async (accounts) => {
+contract("Testing Bridge", async (accounts) => {
   let bidding;
   let nft;
 
@@ -13,21 +13,21 @@ contract("Testing NFT Mint", async (accounts) => {
   console.log("testing ...");
 
   it("Should Register Oracles Successfully", async () => {
+    await token.mint("0x200");
+
     let address = await bridge.getAddress();
+    let l2account = "0x7a50c8fa50a39bd48dfd8053ebff44ba3da45dd8c3e90a5fec9fd73a4595251b";
     console.log("account address is:", address);
+
     let contract_address = bridge.address;
-    console.log("address is:", contract_address);
-    await token.mint("0x6f6eF6Dfe681b6593Ddf27da3BfDe22");
-    //await token.transfer(contract_address, 0x20);
+    console.log("bridge address is:", contract_address);
+
+
     let account_balance = await token.getBalance();
     console.log("account balance:", account_balance);
     await token.approve(contract_address, 0x20);
-    await bridge.deposit(0x20);
-    let b = await token.balanceOf(contract_address);
-    console.log("balance of contract", b);
-    await bridge.withdraw(address, 0x10);
-    b = await token.balanceOf(contract_address);
-    console.log("balance of contract", b);
+    await bridge.deposit(token.address, 0x20, l2account);
+
   })
 })
 
