@@ -25,17 +25,17 @@ contract Bidding {
     underlying_nft = IERC721(nft);
   }
 
-  function _bid_entry(address owner) pure private returns (BiddingInfo memory bi) {
-    return BiddingInfo(owner, address(0), 0);
+  function _bid_entry(address owner, uint256 price) pure private returns (BiddingInfo memory bi) {
+    return BiddingInfo(owner, address(0), price);
   }
 
-  function auction(uint256 tokenId) public {
+  function auction(uint256 tokenId, uint256 start_price) public {
     require(_assets[tokenId].owner == address(0), "The bindding already exists");
     underlying_nft.transferFrom(msg.sender, address(this), tokenId);
-    _assets[tokenId] = _bid_entry(msg.sender);
+    _assets[tokenId] = _bid_entry(msg.sender, start_price);
   }
 
-  function get_bidding(uint256 tokenId) public view returns (BiddingInfo memory bi) {
+  function getAuctionInfo(uint256 tokenId) public view returns (BiddingInfo memory bi) {
     return _assets[tokenId];
   }
 
