@@ -69,11 +69,13 @@ contract Bridge {
 
   }
 
-  function swap(uint256 account, uint256 token0, uint256 token1,
-    uint256 amount0, uint256 amount1, uint256 nonce, uint256 rid) public {
+  function batch(uint256 account, uint256[] memory data, uint256 nonce, uint256 rid) public {
+    uint256 token0 = data[0];
+    uint256 token1 = data[1];
+    uint256 amount0 = data[2];
+    uint256 amount1 = data[3];
 
     require(_nonce[account] == nonce, "Withdraw: Nonce does not match!");
-
     uint256 account_balance = _balances[token0][account];
     require(account_balance >= amount0, "Swap: Insufficient amount to swap");
 
@@ -84,8 +86,6 @@ contract Bridge {
 
     emit SwapAck(account, rid);
   }
-
-  //function batchCall(uint256 account, )
 
   function getAddress() public view returns(address) {
     return msg.sender;
