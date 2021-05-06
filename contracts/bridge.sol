@@ -69,6 +69,12 @@ contract Bridge {
 
   }
 
+  function verify(uint256 account, uint256[] memory data,
+    uint256 nonce, uint256 rid) public {
+    //require(_nonce[account] == nonce, "Withdraw: Nonce does not match!");
+    emit SwapAck(account, rid);
+  }
+
   function batch(uint256 account, uint256[] memory data, uint256 nonce, uint256 rid) public {
     uint256 token0 = data[0];
     uint256 token1 = data[1];
