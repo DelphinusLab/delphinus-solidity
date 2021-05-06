@@ -1,5 +1,5 @@
-const TOKEN = artifacts.require("token");
-const Bridge = artifacts.require("bridge");
+const TOKEN = artifacts.require("Token");
+const Bridge = artifacts.require("Bridge");
 
 module.exports = async function(deployer) {
   await deployer.deploy(TOKEN);

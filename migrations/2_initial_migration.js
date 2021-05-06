@@ -1,8 +1,8 @@
-const BiddingContract = artifacts.require("bidding");
-const NFT = artifacts.require("nft");
-const CHECK = artifacts.require("check");
-const TOKEN = artifacts.require("token");
-const Bridge = artifacts.require("bridge");
+const BiddingContract = artifacts.require("Bidding");
+const NFT = artifacts.require("NFT");
+const CHECK = artifacts.require("CHECK");
+const TOKEN = artifacts.require("Token");
+const Bridge = artifacts.require("Bridge");
 
 module.exports = async function(deployer) {
   await deployer.deploy(TOKEN);
