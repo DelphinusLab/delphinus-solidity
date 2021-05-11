@@ -93,8 +93,8 @@ contract Bridge {
     emit SwapAck(account, rid);
   }
 
-  function getAddress() public view returns(address) {
-    return msg.sender;
+  function chainID() public view returns(uint256) {
+    return _cid;
   }
 
 }

@@ -1,6 +1,13 @@
 const Web3 = require("web3")
 const Client = require("web3subscriber/client")
 
+/*
+async handle_generic_transaction(send_promise, hash_cb, ) {
+  send_promise.send()
+  .on('transactionHash'), function(hash)
+}
+*/
+
 class NftClient {
   constructor(web3, config, tinfo, nftinfo, biddinginfo, account) {
     this.account = account;
