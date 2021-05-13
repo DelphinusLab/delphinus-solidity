@@ -1,5 +1,5 @@
 {
-  "name": "solidity-testenv",
+  "name": "solidity-testnode",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
