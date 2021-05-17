@@ -1,0 +1,30 @@
+=============== May 7, 2021 (CST) ===============
+16:18:42.859319 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+16:18:42.868887 db@open opening
+16:18:42.874053 version@stat F·[] S·0B[] Sc·[]
+16:18:42.876898 db@janitor F·2 G·0
+16:18:42.876948 db@open done T·8.0219ms
+16:18:43.124851 db@close closing
+16:18:43.125611 db@close done T·725.9µs
+=============== May 14, 2021 (CST) ===============
+00:42:43.615500 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+00:42:43.625098 version@stat F·[] S·0B[] Sc·[]
+00:42:43.625185 db@open opening
+00:42:43.625381 journal@recovery F·1
+00:42:43.630388 journal@recovery recovering @1
+00:42:43.679167 memdb@flush created L0@2 N·21265 S·1MiB "\x00\x00\xae..\x82\x88\x11,v9389":"\xff\xfc\x94..\xa5\x05\xa1,v9518"
+00:42:43.684370 version@stat F·[1] S·1MiB[1MiB] Sc·[0.25]
+00:42:43.697313 db@janitor F·3 G·0
+00:42:43.697554 db@open done T·72.3481ms
+=============== May 14, 2021 (CST) ===============
+01:37:04.118535 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+01:37:04.128633 version@stat F·[1] S·1MiB[1MiB] Sc·[0.25]
+01:37:04.128694 db@open opening
+01:37:04.128871 journal@recovery F·1
+01:37:04.133741 journal@recovery recovering @3
+01:37:04.153974 memdb@flush created L0@5 N·8897 S·420KiB "Sna..tor,v30163":"unc..own,v21268"
+01:37:04.158999 version@stat F·[2] S·2MiB[2MiB] Sc·[0.50]
+01:37:04.172174 db@janitor F·4 G·0
+01:37:04.172208 db@open done T·43.4868ms
+01:37:04.239762 db@close closing
+01:37:04.241217 db@close done T·1.4421ms
