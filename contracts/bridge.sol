@@ -130,10 +130,16 @@ contract Bridge {
       Verifier verifier = _get_verifier(op_code);
       uint256[] memory update = verifier.verify(data, cursor);
       _update_state(update);
-      cursor += verifier.nbArgs();
+      cursor += verifier.getVerifierInfo().nbArgs;
     }
     emit SwapAck(account, rid);
   }
+
+  function getVerifierInfo(uint index) public view returns (VerifierInfo memory) {
+    Verifier verifier = verifiers[index];
+    return verifier.getVerifierInfo();
+  }
+
 
   function chainID() public view returns(uint256) {
     return _cid;

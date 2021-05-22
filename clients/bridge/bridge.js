@@ -2,6 +2,7 @@ const Web3 = require("web3")
 const BigNumber = Web3.utils.BN;
 const Client = require("web3subscriber/client")
 const ERC20 = require("../../build/contracts/ERC20.json");
+const VERIFIER = require("../../build/contracts/Verifier.json");
 
 class Bridge {
 
@@ -20,6 +21,21 @@ class Bridge {
     let c = new BigNumber(this.chain_hex_id + "0000000000000000000000000000000000000000",'hex');
     let a = new BigNumber(address.substring(2),16);
     return c.add(a);
+  }
+
+  async check_net_id() {
+    let id = await this.web3.eth.net.getId();
+    if (id != this.chain_hex_id) {
+      throw new Error("Incorrect net id");
+    }
+    return true;
+  }
+
+  async getVerifierInfo (idx) {
+    let vinfo = await this.bridge.methods.getVerifierInfo(idx).call();
+    //let vc = Client.getContractByAddress(this.web3, vaddr, VERIFIER, this.account);
+    //let vinfo = vc.methods.getVerifierInfo(idx).call();
+    return vinfo;
   }
 
   async deposit (token_address, amount, l2account) {
