@@ -28,3 +28,42 @@
 01:37:04.172208 db@open done T·43.4868ms
 01:37:04.239762 db@close closing
 01:37:04.241217 db@close done T·1.4421ms
+=============== May 21, 2021 (CST) ===============
+09:20:25.989598 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+09:20:25.999400 version@stat F·[2] S·2MiB[2MiB] Sc·[0.50]
+09:20:25.999501 db@open opening
+09:20:25.999671 journal@recovery F·1
+09:20:26.004030 journal@recovery recovering @6
+09:20:26.011854 memdb@flush created L0@8 N·2 S·569B "eth..ˏ\xa3,v30165":"unc..own,v30166"
+09:20:26.017276 version@stat F·[3] S·2MiB[2MiB] Sc·[0.75]
+09:20:26.029335 db@janitor F·5 G·0
+09:20:26.029374 db@open done T·29.8572ms
+=============== May 21, 2021 (CST) ===============
+09:21:55.084825 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+09:21:55.093177 version@stat F·[3] S·2MiB[2MiB] Sc·[0.75]
+09:21:55.093238 db@open opening
+09:21:55.093449 journal@recovery F·1
+09:21:55.097745 journal@recovery recovering @9
+09:21:55.106537 memdb@flush created L0@11 N·2 S·574B "eth..ˏ\xa3,v30168":"unc..own,v30169"
+09:21:55.111193 version@stat F·[4] S·2MiB[2MiB] Sc·[1.00]
+09:21:55.122885 db@janitor F·6 G·0
+09:21:55.122919 db@open done T·29.6655ms
+09:21:55.123004 table@compaction L0·4 -> L1·0 S·2MiB Q·30170
+09:21:55.176753 table@build created L1@14 N·27704 S·2MiB "\x00\x00\xae..\x82\x88\x11,v9389":"͆\xfd..\x1b6t,v20351"
+09:21:55.182999 table@build created L1@15 N·2452 S·281KiB "͇W..\xe5\xe3(,v14195":"\xff\xfc\x94..\xa5\x05\xa1,v9518"
+09:21:55.183069 version@stat F·[0 2] S·2MiB[0B 2MiB] Sc·[0.00 0.02]
+09:21:55.185745 table@compaction committed F-2 S+2KiB Ke·0 D·10 T·62.6927ms
+09:21:55.356724 table@remove removed @8
+09:21:55.357062 table@remove removed @5
+09:21:55.357531 table@remove removed @2
+=============== May 21, 2021 (CST) ===============
+09:22:02.176758 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+09:22:02.186019 version@stat F·[0 2] S·2MiB[0B 2MiB] Sc·[0.00 0.02]
+09:22:02.186086 db@open opening
+09:22:02.186250 journal@recovery F·1
+09:22:02.190610 journal@recovery recovering @12
+09:22:02.198932 memdb@flush created L0@16 N·2 S·579B "eth..ˏ\xa3,v30171":"unc..own,v30172"
+09:22:02.204772 version@stat F·[1 2] S·2MiB[579B 2MiB] Sc·[0.25 0.02]
+09:22:02.216652 db@janitor F·6 G·1
+09:22:02.216902 db@janitor removing table-11
+09:22:02.217171 db@open done T·31.0677ms

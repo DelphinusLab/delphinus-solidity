@@ -10,26 +10,22 @@ class NftClient {
   }
   async mint(id) {
     let tx = await this.nft.methods.mint(id).send();
+    return tx;
   }
 
   async auction(id, price) {
     var bidding_address = this.bidding.options.address;
-   
-    // test balance
-    var balance = await Client.getBalance(this.token, this.account);
-    if(balance<price) throw new Error("balance is lower than price!");
-
-    var tx = await this.nft.methods.approve(bidding_address, id);
+    var tx = await this.nft.methods.approve(bidding_address, id).send();
     tx = await this.bidding.methods.auction(id, price).send();
     return tx;
   }
 
   async bid(id, price) {
-    // var bidding_address = this.bidding.options.address;
-    // test balance
-    var balance = await Client.getBalance(this.token, this.account);
-    if(balance<price) throw new Error("transfer amount is greater than balance!");
-
+    var auction_info = await this.bidding.methods.getAuctionInfo(id).call();
+    if(auction_info.price == 0) {
+      throw new Error("bid:Please auction at first!");
+    }
+    var bidding_address = this.bidding.options.address;
     var tx = await Client.approveBalance(this.token, this.bidding, price);
     tx = await this.bidding.methods.bidding(id, price).send();
     return tx;

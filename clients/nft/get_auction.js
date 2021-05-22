@@ -6,12 +6,15 @@ const Client = require("web3subscriber/client");
 const nft = require("./nft");
 
 
-async function test_owner() {
+async function test_auctionInfo(id, price) {
   let web3 = await Client.initWeb3(Config, false);
   let account = Config.monitor_account;
   let nft_client = new nft.NftClient(web3, Config, TokenInfo, NFTInfo, BiddingInfo, account);
   try {
-    let auction_info = await nft_client.getAuctionInfo(0x1);
+    let mint = await nft_client.mint(id);
+    let auction = await nft_client.auction(id, price);
+    // bid
+    let auction_info = await nft_client.getAuctionInfo(id);
     console.log(auction_info);
    } catch (error) {
     let msg = error.message.split(':')
@@ -19,4 +22,4 @@ async function test_owner() {
    }
 }
 
-test_owner().then(v => {console.log("test done!"); process.exit();});
+test_auctionInfo(0x130, 16).then(v => {console.log("test done!"); process.exit();});
