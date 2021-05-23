@@ -82,6 +82,12 @@ contract Bridge {
     return _nonce[l2account];
   }
 
+  function createPool(uint256 token1, uint256 token2) public returns (uint) {
+    PoolInfo memory pool = PoolInfo(token1, 0, token2, 0);
+    _pools.push(pool);
+    return (_pools.length - 1);
+  }
+
   function deposit(address token, uint256 amount, uint256 l2account) public {
     IERC20 underlying_token = IERC20(token);
     uint256 balance = underlying_token.balanceOf(msg.sender);

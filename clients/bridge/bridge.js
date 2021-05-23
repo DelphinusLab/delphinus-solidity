@@ -38,6 +38,13 @@ class Bridge {
     return vinfo;
   }
 
+  async createPool(token1, token2) {
+    let pool_id = await this.bridge.methods.createPool(token1, token2).send();
+    return pool_id;
+  }
+
+
+
   async deposit (token_address, amount, l2account) {
     let token = Client.getContractByAddress(this.web3, token_address, ERC20, this.account);
     var rx = await token.methods.approve(this.bridge.options.address, amount).send();
