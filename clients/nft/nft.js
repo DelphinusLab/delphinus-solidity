@@ -21,10 +21,6 @@ class NftClient {
   }
 
   async bid(id, price) {
-    var auction_info = await this.bidding.methods.getAuctionInfo(id).call();
-    if(auction_info.price == 0) {
-      throw new Error("bid:Please auction at first!");
-    }
     var bidding_address = this.bidding.options.address;
     var tx = await Client.approveBalance(this.token, this.bidding, price);
     tx = await this.bidding.methods.bidding(id, price).send();
@@ -42,7 +38,7 @@ class NftClient {
   }
 
   async finalize(id) {
-    let tx = await this.bidding.methods.finalize(id).call();
+    let tx = await this.bidding.methods.finalize(id).send();
     return tx;
   }
 }

@@ -11,16 +11,13 @@ async function test_owner(id) {
   let account = Config.monitor_account;
   let nft_client = new nft.NftClient(web3, Config, TokenInfo, NFTInfo, BiddingInfo, account);
   try {
+    await nft_client.mint(id);
     let owner = await nft_client.getOwner(id);
     console.log(owner);
     return true;
    } catch (error) {
       let msg = error.message.split(':')
       console.log(msg[msg.length - 1]);
-      if(msg[msg.length-1].indexOf("minted") != -1) {
-        console.log("please mint at first!");
-      }
-      await nft_client.mint(id);
       return false;
    }
 }
@@ -32,25 +29,25 @@ function check_owner(result, indicator) {
   }
 }
 async function test() {
-  await test_owner(0x161).then(v => {check_owner(v, false)});
-  await test_owner(0x161).then(v => {check_owner(v, true)});
-  await test_owner(0x171).then(v => {check_owner(v, false)});
-  await test_owner(0x171).then(v => {check_owner(v, true)});
-  await test_owner(0x181).then(v => {check_owner(v, false)});
-  await test_owner(0x181).then(v => {check_owner(v, true)});
-  await test_owner(0x191).then(v => {check_owner(v, false)});
-  await test_owner(0x191).then(v => {check_owner(v, true)});
-  await test_owner(0x201).then(v => {check_owner(v, false)});
-  await test_owner(0x201).then(v => {check_owner(v, true)});
-  await test_owner(0x221).then(v => {check_owner(v, false)});
-  await test_owner(0x221).then(v => {check_owner(v, true)});
-  await test_owner(0x241).then(v => {check_owner(v, false)});
-  await test_owner(0x241).then(v => {check_owner(v, true)});
-  await test_owner(0x251).then(v => {check_owner(v, false)});
-  await test_owner(0x251).then(v => {check_owner(v, true)});
-  await test_owner(0x261).then(v => {check_owner(v, false)});
-  await test_owner(0x261).then(v => {check_owner(v, true)});
-  await test_owner(0x271).then(v => {check_owner(v, false)});
-  await test_owner(0x271).then(v => {check_owner(v, true)});
+  await test_owner(0x3).then(v => {check_owner(v, true)});
+  await test_owner(0x4).then(v => {check_owner(v, true)});
+  await test_owner(0x5).then(v => {check_owner(v, true)});
+  await test_owner(0x6).then(v => {check_owner(v, true)});
+  await test_owner(0x7).then(v => {check_owner(v, true)});
+  await test_owner(0x8).then(v => {check_owner(v, true)});
+  await test_owner(0x9).then(v => {check_owner(v, true)});
+  await test_owner(0x10).then(v => {check_owner(v, true)});
+  await test_owner(0x11).then(v => {check_owner(v, true)});
+  await test_owner(0x12).then(v => {check_owner(v, true)});
+  await test_owner(0x13).then(v => {check_owner(v, true)});
+  await test_owner(0x14).then(v => {check_owner(v, true)});
+  await test_owner(0x15).then(v => {check_owner(v, true)});
+  await test_owner(0x16).then(v => {check_owner(v, true)});
+  await test_owner(0x17).then(v => {check_owner(v, true)});
+  await test_owner(0x18).then(v => {check_owner(v, true)});
+  await test_owner(0x19).then(v => {check_owner(v, true)});
+  await test_owner(0x20).then(v => {check_owner(v, true)});
+  await test_owner(0x21).then(v => {check_owner(v, true)});
+  await test_owner(0x22).then(v => {check_owner(v, true)});
 }
   test().then(v => {process.exit();});

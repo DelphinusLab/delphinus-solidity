@@ -11,29 +11,29 @@ async function test_bid(id, price) {
   let account = Config.monitor_account;
   let nft_client = new nft.NftClient(web3, Config, TokenInfo, NFTInfo, BiddingInfo, account);
   try { 
-
     await nft_client.mint(id);
-    
     const token = await nft_client.token; 
-    console.log(account)
     const balance_before = await token.methods.balanceOf(account).call();
     console.log("balance_before:", balance_before);
     if(balance_before < price) {
       console.log("balance is not enough!");
       return false;
-    }
-
+    }  
     await nft_client.auction(id, price-1);
-    let auction_info_before = await nft_client.getAuctionInfo(id);
-    console.log("auction_before", auction_info_before) 
-    if(price <= Number(auction_info_before.price)) {
-      console.log("bid:price is lower than original auction price");
+    let bid_info_before = await nft_client.getAuctionInfo(id);
+    console.log("bid_before", bid_info_before) 
+    if(Number(bid_info_before.price) == 0) {
+      console.log("Please auction at first")
+      return false;
+    }
+    if(price <= Number(bid_info_before.price)) {
+      console.log("bid:price is lower");
       return false; 
     }
     let bid_tx = await nft_client.bid(id,price);
-    auction_info_after = await nft_client.getAuctionInfo(id);
-    console.log("auction_after", auction_info_after)
-    if(Number(auction_info_after.price) > Number(auction_info_before.price)) {  
+    bid_info_after = await nft_client.getAuctionInfo(id);
+    console.log("bid_after", bid_info_after)
+    if(Number(bid_info_after.price) > Number(bid_info_before.price)) {  
       const balance_after = await token.methods.balanceOf(account).call();
       console.log("balance_after:", balance_after);
       if(balance_before-balance_after == price) {
@@ -62,26 +62,26 @@ function check_bid(result, indicator) {
 }
 
 async function bid() {
-  await test_bid(0x210, 5).then(v => {check_bid(v, true);});
-  await test_bid(0x211, 5).then(v => {check_bid(v, true);});
-  await test_bid(0x212, 5).then(v => {check_bid(v, true);});
-  await test_bid(0x213, 5).then(v => {check_bid(v, true);});
-  await test_bid(0x214, 5).then(v => {check_bid(v, true);});
-  await test_bid(0x215, 5).then(v => {check_bid(v, true);});
-  await test_bid(0x216, 5).then(v => {check_bid(v, true);});
-  await test_bid(0x217, 5).then(v => {check_bid(v, true);});
-  await test_bid(0x218, 5).then(v => {check_bid(v, true);});
-  await test_bid(0x219, 5).then(v => {check_bid(v, true);});
   await test_bid(0x220, 5).then(v => {check_bid(v, true);});
+  await test_bid(0x220, 5).then(v => {check_bid(v, false);});
+  await test_bid(0x220, 4).then(v => {check_bid(v, false);});
+  await test_bid(0x220, 6).then(v => {check_bid(v, true);});
   await test_bid(0x221, 5).then(v => {check_bid(v, true);});
+  await test_bid(0x221, 5).then(v => {check_bid(v, false);});
+  await test_bid(0x221, 4).then(v => {check_bid(v, false);});
+  await test_bid(0x221, 6).then(v => {check_bid(v, true);});
   await test_bid(0x222, 5).then(v => {check_bid(v, true);});
-  await test_bid(0x223, 5).then(v => {check_bid(v, true);});
-  await test_bid(0x224, 5).then(v => {check_bid(v, true);});
-  await test_bid(0x225, 5).then(v => {check_bid(v, true);});
-  await test_bid(0x226, 5).then(v => {check_bid(v, true);});
-  await test_bid(0x227, 5).then(v => {check_bid(v, true);});
-  await test_bid(0x228, 5).then(v => {check_bid(v, true);});
-  await test_bid(0x229, 5).then(v => {check_bid(v, true);});
+  await test_bid(0x222, 5).then(v => {check_bid(v, true);});
+  await test_bid(0x222, 5).then(v => {check_bid(v, true);});
+  await test_bid(0x222, 5).then(v => {check_bid(v, false);});
+  await test_bid(0x223, 4).then(v => {check_bid(v, false);});
+  await test_bid(0x223, 6).then(v => {check_bid(v, true);});
+  await test_bid(0x223, 5).then(v => {check_bid(v, false);});
+  await test_bid(0x223, 4).then(v => {check_bid(v, false);});
+  await test_bid(0x224, 6).then(v => {check_bid(v, true);});
+  await test_bid(0x224, 5).then(v => {check_bid(v, false);});
+  await test_bid(0x224, 4).then(v => {check_bid(v, false);});
+  await test_bid(0x224, 6).then(v => {check_bid(v, true);});
 }
 
 bid().then(v => {process.exit();});

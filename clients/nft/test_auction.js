@@ -11,13 +11,28 @@ async function test_auction(id, price) {
   let account = Config.monitor_account;
   let nft_client = new nft.NftClient(web3, Config, TokenInfo, NFTInfo, BiddingInfo, account);
   try {
-   // var mint_tx = await nft_client.mint(id); 
+    var mint_tx = await nft_client.mint(id); 
+    const token = await nft_client.token; 
+    const balance = await token.methods.balanceOf(account).call();
+    console.log("balance:", balance);
+    if(balance < price) {
+      console.log("balance is not enough!");
+      return false;
+    }
+    let auction_info_before = await nft_client.getAuctionInfo(id);
+    console.log("auction_before", auction_info_before)
+    if(auction_info_before.owner != 0) {
+        console.log("auction has already succeed");
+        return false;
+    }
     await nft_client.auction(id, price);
-    let auction_info = await nft_client.getAuctionInfo(id);
-    console.log(auction_info);
-    if (auction_info.price == price) {
+    auction_info_after = await nft_client.getAuctionInfo(id);
+    console.log("auction_after:",auction_info_after);
+    if (Number(auction_info_after.price) == price) {
+      console.log("auction succeed");
       return true;
     } else {
+      console.log("auction failed");
       return false;
     }
    } catch (error) {
@@ -36,21 +51,25 @@ function check_test(result, indicator) {
 }
 
 async function tests() {
-  await test_auction(0x152, 20).then(v => {check_test(v, true);});
-  await test_auction(0x152, 10).then(v => {check_test(v, false);});
-  await test_auction(0x152, 30).then(v => {check_test(v, false);});
-  await test_auction(0x152, 20).then(v => {check_test(v, false);});
- /* await test_auction(0x149, 20).then(v => {check_test(v, true);});
-  await test_auction(0x149, 10).then(v => {check_test(v, false);});
-  await test_auction(0x149, 30).then(v => {check_test(v, false);});
-  await test_auction(0x149, 20).then(v => {check_test(v, false);});
-  await test_auction(0x150, 20).then(v => {check_test(v, true);});
-  await test_auction(0x150, 10).then(v => {check_test(v, false);});
-  await test_auction(0x150, 30).then(v => {check_test(v, false);});
-  await test_auction(0x150, 20).then(v => {check_test(v, false);});
-  await test_auction(0x151, 20).then(v => {check_test(v, true);});
-  await test_auction(0x151, 10).then(v => {check_test(v, false);});
-  await test_auction(0x151, 30).then(v => {check_test(v, false);});
-  await test_auction(0x151, 20).then(v => {check_test(v, false);});*/
+  await test_auction(0x6, 2).then(v => {check_test(v, true);})
+  await test_auction(0x6, 1).then(v => {check_test(v, false);})
+  await test_auction(0x6, 3).then(v => {check_test(v, false);})
+  await test_auction(0x6, 2).then(v => {check_test(v, false);})
+  await test_auction(0x7, 2).then(v => {check_test(v, true);})
+  await test_auction(0x7, 1).then(v => {check_test(v, false);})
+  await test_auction(0x7, 3).then(v => {check_test(v, false);})
+  await test_auction(0x7, 2).then(v => {check_test(v, false);})
+  await test_auction(0x8, 2).then(v => {check_test(v, true);})
+  await test_auction(0x8, 1).then(v => {check_test(v, false);})
+  await test_auction(0x8, 3).then(v => {check_test(v, false);})
+  await test_auction(0x8, 2).then(v => {check_test(v, false);})
+  await test_auction(0x9, 2).then(v => {check_test(v, true);})
+  await test_auction(0x9, 1).then(v => {check_test(v, false);})
+  await test_auction(0x9, 3).then(v => {check_test(v, false);})
+  await test_auction(0x9, 2).then(v => {check_test(v, false);})
+  await test_auction(0x10, 2).then(v => {check_test(v, true);})
+  await test_auction(0x10, 1).then(v => {check_test(v, false);})
+  await test_auction(0x10, 3).then(v => {check_test(v, false);})
+  await test_auction(0x10, 2).then(v => {check_test(v, false);})
 }
 tests().then(v => {process.exit();});
