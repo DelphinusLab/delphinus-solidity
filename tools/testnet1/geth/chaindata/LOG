@@ -504,3 +504,37 @@
 11:39:25.663888 version@stat F·[2 2] S·4MiB[978KiB 3MiB] Sc·[0.50 0.03]
 11:39:25.675554 db@janitor F·6 G·0
 11:39:25.675590 db@open done T·33.3456ms
+=============== May 22, 2021 (CST) ===============
+16:05:16.456385 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+16:05:16.456921 version@stat F·[2 2] S·4MiB[978KiB 3MiB] Sc·[0.50 0.03]
+16:05:16.456970 db@open opening
+16:05:16.457110 journal@recovery F·1
+16:05:16.461499 journal@recovery recovering @124
+16:05:16.492620 memdb@flush created L0@126 N·17780 S·892KiB "B\x00\x00..\x059\xc8,v104742":"unc..own,v97878"
+16:05:16.497489 version@stat F·[3 2] S·5MiB[1MiB 3MiB] Sc·[0.75 0.03]
+16:05:16.508697 db@janitor F·7 G·0
+16:05:16.508732 db@open done T·51.746ms
+=============== May 24, 2021 (CST) ===============
+01:08:02.097350 db@close closing
+01:08:02.099585 db@close done T·2.2334ms
+=============== May 24, 2021 (CST) ===============
+01:08:07.135459 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+01:08:07.146349 version@stat F·[3 2] S·5MiB[1MiB 3MiB] Sc·[0.75 0.03]
+01:08:07.146437 db@open opening
+01:08:07.146610 journal@recovery F·1
+01:08:07.151715 journal@recovery recovering @127
+01:08:07.165413 memdb@flush created L0@129 N·3551 S·292KiB "\x00%\xab..\aCN,v119086":"\xf9\x85}..P-\xf3,v119091"
+01:08:07.170884 version@stat F·[4 2] S·5MiB[2MiB 3MiB] Sc·[1.00 0.03]
+01:08:07.182818 db@janitor F·8 G·0
+01:08:07.182854 db@open done T·36.4005ms
+01:08:07.182923 table@compaction L0·4 -> L1·2 S·5MiB Q·119210
+01:08:07.250187 table@build created L1@132 N·32066 S·2MiB "\x00%\xab..\aCN,v119086":"h\x00\x00..5`\xe4,v3327"
+01:08:07.299188 table@build created L1@133 N·23729 S·2MiB "h\x00\x00..`\xe4t,v3324":"h\x00\x00..W\xcb_,v104646"
+01:08:07.316285 table@build created L1@134 N·16912 S·847KiB "h\x00\x00..\xcb_t,v104643":"\xff\xc8\xc4..\x10_\xb2,v97859"
+01:08:07.316361 version@stat F·[0 3] S·4MiB[0B 4MiB] Sc·[0.00 0.05]
+01:08:07.317777 table@compaction committed F-3 S-599KiB Ke·0 D·13772 T·134.7777ms
+01:08:07.318254 table@remove removed @126
+01:08:07.318504 table@remove removed @123
+01:08:07.318896 table@remove removed @120
+01:08:07.319336 table@remove removed @118
+01:08:07.319691 table@remove removed @119

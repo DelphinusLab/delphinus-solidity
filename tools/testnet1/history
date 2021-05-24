@@ -198,3 +198,13 @@ eth.getBlock("latest").number
 eth.syncing
 miner.start(1)
 miner.stop()
+miner.start(1)
+miner.stop()
+miner.start(1)
+miner.stop()
+miner.start(1)
+miner.stop()
+miner.start(1)
+miner.stop()
+miner.start(1)
+miner.stop()
