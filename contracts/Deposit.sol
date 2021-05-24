@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
 import "./Verifier.sol";
-contract Withdraw is Verifier{
+contract Deposit is Verifier{
 
   uint8 constant _SET_BALANCE = 0x1;
   uint8 constant _SET_POOL = 0x2;
