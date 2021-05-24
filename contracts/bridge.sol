@@ -94,7 +94,10 @@ contract Bridge {
     require(balance >= amount, "Insuffecient Balance");
     underlying_token.transferFrom(msg.sender, address(this), amount);
     uint256 token_id = _l1_address(token);
-    _balances[token_id][l2account] += amount;
+    /*
+     * done via l2 broadcast
+     * _balances[token_id][l2account] += amount;
+     */
     _nonce[l2account] += 1;
     emit Deposit(_l1_address(token), l2account, amount , _nonce[l2account]);
   }
