@@ -43,7 +43,10 @@ class Bridge {
     return pool_id;
   }
 
-
+  async verify(l2account, calldata, nonce, rid) {
+    var rx = await this.bridge.methods.verify(l2account, calldata, nonce, rid).call();
+    return rx;
+  }
 
   async deposit (token_address, amount, l2account) {
     let token = Client.getContractByAddress(this.web3, token_address, ERC20, this.account);

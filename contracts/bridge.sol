@@ -20,7 +20,7 @@ contract Bridge {
   PoolInfo[] private _pools;
 
   address private owner;
-  uint8 private _cid;
+  uint32 private _cid;
 
   uint8 constant _SET_BALANCE = 0x1;
   uint8 constant _SET_POOL = 0x2;
@@ -30,7 +30,7 @@ contract Bridge {
   mapping (uint256 => uint256) private _nonce;
 
 
-  constructor(uint8 chain_id) {
+  constructor(uint32 chain_id) {
     _cid = chain_id;
   }
 
@@ -111,7 +111,8 @@ contract Bridge {
    * deltas = [| opcode; args |]
    */
   function _update_state(uint256[] memory deltas) private {
-    uint8 delta_code = _get_delta_code(deltas[0]);
+    uint8 delta_code1 = _get_delta_code(deltas[0]);
+    uint delta_code = deltas[0];
     if (delta_code == _WITHDRAW) {
       require(deltas.length == 4, "Withdraw: Insufficient arg number");
       _withdraw(deltas[1], deltas[2], deltas[3]);

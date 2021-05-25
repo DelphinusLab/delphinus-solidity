@@ -5,7 +5,7 @@ const Deposit = artifacts.require("Deposit");
 
 module.exports = async function(deployer) {
   id = await web3.eth.net.getId();
-  console.log(id);
+  console.log("netid", id);
 
   await deployer.deploy(TOKEN);
   token = await TOKEN.deployed();

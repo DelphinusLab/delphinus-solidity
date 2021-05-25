@@ -8,7 +8,7 @@ contract Deposit is Verifier{
   uint8 constant _WITHDRAW = 0x3;
 
   function verify(uint256[] calldata witness, uint cursor) public override returns (uint256[] memory) {
-    uint256[] memory ops = new uint256[](8);
+    uint256[] memory ops = new uint256[](4);
     uint256 l2account = witness[cursor];
     uint256 tokenId = witness[cursor+1];
     uint256 restAmount = witness[cursor+2];
@@ -24,4 +24,8 @@ contract Deposit is Verifier{
   function getVerifierInfo() public override pure returns (VerifierInfo memory) {
     return VerifierInfo(4);
   }
+  function testArgument(uint cursor, uint256[] calldata witness) public pure returns (uint256) {
+    return witness[cursor];
+  }
+
 }

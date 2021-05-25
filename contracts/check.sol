@@ -1,5 +1,5 @@
 pragma solidity ^0.8.0;
-contract CHECK{
+contract Check{
   event Tester(string message, bool status);
   string public name = "name";
   constructor() {}
@@ -13,5 +13,9 @@ contract CHECK{
   }
   function get_name() public view returns (string memory) {
     return name;
+  }
+  function check_encode(uint256 c) public pure returns (uint8) {
+    bytes memory info = abi.encodePacked(c);
+    return uint8(info[0]);
   }
 }
