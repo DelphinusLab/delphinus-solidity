@@ -44,7 +44,7 @@ class Bridge {
   }
 
   async verify(l2account, calldata, nonce, rid) {
-    var rx = await this.bridge.methods.verify(l2account, calldata, nonce, rid).call();
+    var rx = await this.bridge.methods.verify(l2account, calldata, nonce, rid).send();
     return rx;
   }
 
