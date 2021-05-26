@@ -44,6 +44,10 @@ contract Bridge {
     return (uint256(uint160(account))) + (uint256(_cid) << 160);
   }
 
+  function _is_local(uint256 l1address) private view returns (bool) {
+    return ((l1address >> 160) == (uint256(_cid)));
+  }
+
   function _get_verifier(uint256 call_info) private view returns(Verifier) {
     bytes memory info = abi.encodePacked(call_info);
     return verifiers[uint8(info[0])];
@@ -64,17 +68,17 @@ contract Bridge {
   }
 
   function _withdraw(uint256 tokenid, uint256 amount, uint256 l1recipent) public {
-    address token = address(uint160(tokenid));
-    require(_l1_address(token) == tokenid, "Withdraw: incorrect token_id");
-    address recipent = address(uint160(l1recipent));
+    if (_is_local(tokenid) && _is_local(l1recipent)) {
+      address token = address(uint160(tokenid));
+      address recipent = address(uint160(l1recipent));
 
-    // Sanitity checks
-    require(recipent!= address(0), "Withdraw to the zero address");
-    require(_l1_address(recipent) == l1recipent, "Withdraw: incorrect l1recipent");
+      // Sanitity checks
+      require(recipent!= address(0), "Withdraw to the zero address");
 
-    // transfer amount back to recipent
-    IERC20 underlying_token = IERC20(token);
-    underlying_token.transfer(recipent, amount);
+      // transfer amount back to recipent
+      IERC20 underlying_token = IERC20(token);
+      underlying_token.transfer(recipent, amount);
+    }
   }
 
 
@@ -111,17 +115,18 @@ contract Bridge {
    * deltas = [| opcode; args |]
    */
   function _update_state(uint256[] memory deltas) private {
-    uint8 delta_code1 = _get_delta_code(deltas[0]);
-    uint delta_code = deltas[0];
-    if (delta_code == _WITHDRAW) {
-      require(deltas.length == 4, "Withdraw: Insufficient arg number");
-      _withdraw(deltas[1], deltas[2], deltas[3]);
-    } else if (delta_code == _SET_BALANCE) {
-      require(deltas.length == 4, "Withdraw: Insufficient arg number");
-      _set_balance(deltas[1], deltas[2], deltas[3]);
-    } else if (delta_code == _SET_POOL) {
-      require(deltas.length == 3, "Withdraw: Insufficient arg number");
-      _set_pool(deltas[1], deltas[2], deltas[3]);
+    uint cursor = 0;
+    while (cursor < deltas.length) {
+      uint delta_code = deltas[0];
+      require(deltas.length >= cursor + 4, "Withdraw: Insufficient arg number");
+      if (delta_code == _WITHDRAW) {
+        _withdraw(deltas[cursor+1], deltas[cursor+2], deltas[cursor+3]);
+      } else if (delta_code == _SET_BALANCE) {
+        _set_balance(deltas[cursor+1], deltas[cursor+2], deltas[cursor+3]);
+      } else if (delta_code == _SET_POOL) {
+        _set_pool(deltas[cursor+1], deltas[cursor+2], deltas[cursor+3]);
+      }
+      cursor = cursor + 4;
     }
   }
 
