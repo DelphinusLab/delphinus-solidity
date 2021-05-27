@@ -11,24 +11,24 @@ async function test_auction(id, price) {
   let account = Config.monitor_account;
   let nft_client = new nft.NftClient(web3, Config, TokenInfo, NFTInfo, BiddingInfo, account);
   try {
-    var mint_tx = await nft_client.mint(id); 
+    var mint_tx = await nft_client.mint(id); // mint before auction 
     const token = await nft_client.token; 
-    const balance = await token.methods.balanceOf(account).call();
+    const balance = await token.methods.balanceOf(account).call(); // get balance before auction
     console.log("balance:", balance);
-    if(balance < price) {
+    if(balance < price) { // the price must be greater than the balance
       console.log("balance is not enough!");
       return false;
     }
-    let auction_info_before = await nft_client.getAuctionInfo(id);
+    let auction_info_before = await nft_client.getAuctionInfo(id); 
     console.log("auction_before", auction_info_before)
-    if(auction_info_before.owner != 0) {
+    if(auction_info_before.owner != 0) {  // owner should equal to zero 
         console.log("auction has already succeed");
         return false;
     }
     await nft_client.auction(id, price);
     auction_info_after = await nft_client.getAuctionInfo(id);
     console.log("auction_after:",auction_info_after);
-    if (Number(auction_info_after.price) == price) {
+    if (Number(auction_info_after.price) == price) { // the price should be updated
       console.log("auction succeed");
       return true;
     } else {
@@ -41,7 +41,7 @@ async function test_auction(id, price) {
       return false;
    }
 }
-
+// test the result of test_auction
 function check_test(result, indicator) {
   if(result == indicator){
     console.log("test correct");
@@ -49,7 +49,7 @@ function check_test(result, indicator) {
     console.log("test error");
   }
 }
-
+// test case
 async function tests() {
   await test_auction(0x6, 2).then(v => {check_test(v, true);})
   await test_auction(0x6, 1).then(v => {check_test(v, false);})
