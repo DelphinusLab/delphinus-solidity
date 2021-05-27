@@ -21,6 +21,7 @@ async function test_owner(id) {
       return false;
    }
 }
+//test the result
 function check_owner(result, indicator) {
   if(result == indicator){
     console.log("test correct!");
@@ -28,6 +29,7 @@ function check_owner(result, indicator) {
     console.log("test error!");
   }
 }
+// test case 
 async function test() {
   await test_owner(0x3).then(v => {check_owner(v, true)});
   await test_owner(0x4).then(v => {check_owner(v, true)});
