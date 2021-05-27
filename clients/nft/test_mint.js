@@ -12,22 +12,23 @@ async function test_mint(id) {
   let nft_client = new nft.NftClient(web3, Config, TokenInfo, NFTInfo, BiddingInfo, account);
   try {
     let mint_tx = await nft_client.mint(id);
-    return true;
+    return true; 
    } catch (error) {
     let msg = error.message.split(':')
     console.log(msg[msg.length - 1]);
     return false;
    }
 }
+// check result of test_mint
 function check_mint(result, indicator) {
   if(result == indicator) {
-    console.log("test correct");
+    console.log("test correct");  
   } else {
-    console.log("test error");
+    console.log("test error");  
   }
 }
 
-
+// test case
 async function mint20() { 
     await test_mint(0x2).then(v => {check_mint(v,true)});
     await test_mint(0x2).then(v => {check_mint(v,false)});

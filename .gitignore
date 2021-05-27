@@ -1,2 +1,6 @@
 /node_modules
 /build
+/tools/console
+/tools/data
+/tools/testnet1
+/package-lock.json
