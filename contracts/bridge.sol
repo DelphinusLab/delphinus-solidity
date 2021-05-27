@@ -97,9 +97,9 @@ contract Bridge {
     uint256 balance = underlying_token.balanceOf(msg.sender);
     require(balance >= amount, "Insuffecient Balance");
     underlying_token.transferFrom(msg.sender, address(this), amount);
-    uint256 token_id = _l1_address(token);
     /*
      * done via l2 broadcast
+     * uint256 token_id = _l1_address(token);
      * _balances[token_id][l2account] += amount;
      */
     _nonce[l2account] += 1;
@@ -117,7 +117,7 @@ contract Bridge {
   function _update_state(uint256[] memory deltas) private {
     uint cursor = 0;
     while (cursor < deltas.length) {
-      uint delta_code = deltas[0];
+      uint delta_code = deltas[cursor];
       require(deltas.length >= cursor + 4, "Withdraw: Insufficient arg number");
       if (delta_code == _WITHDRAW) {
         _withdraw(deltas[cursor+1], deltas[cursor+2], deltas[cursor+3]);
