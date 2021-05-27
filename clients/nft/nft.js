@@ -15,13 +15,16 @@ class NftClient {
 
   async auction(id, price) {
     var bidding_address = this.bidding.options.address;
+    // the method send is essential to the method approve because of the state is changed
     var tx = await this.nft.methods.approve(bidding_address, id).send();
     tx = await this.bidding.methods.auction(id, price).send();
     return tx;
   }
 
   async bid(id, price) {
-    var bidding_address = this.bidding.options.address;
+    // bidding_address is never used
+    //var bidding_address = this.bidding.options.address;
+    //invalid function argument, change bidding_address to this.bidding
     var tx = await Client.approveBalance(this.token, this.bidding, price);
     tx = await this.bidding.methods.bidding(id, price).send();
     return tx;
@@ -38,6 +41,8 @@ class NftClient {
   }
 
   async finalize(id) {
+    // the state is changed so use send rather than call
+    //let tx = await this.bidding.methods.finalize(id).send();
     let tx = await this.bidding.methods.finalize(id).send();
     return tx;
   }
