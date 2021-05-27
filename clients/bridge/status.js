@@ -12,7 +12,7 @@ const test_config = {
 async function test_main() {
   console.log("start calling");
   try {
-    let bridge = await BridgeABI.getBridge(false, "0x10");
+    let bridge = await BridgeABI.getBridge(EthConfig, false);
     let token = Client.getContract(bridge.web3, bridge.config,
                 TokenInfo, bridge.account);
 
