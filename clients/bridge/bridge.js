@@ -55,8 +55,7 @@ class Bridge {
     return rx;
   }
 
-  async balanceOf (l2account, token_address) {
-    let token_id = this.encode_l1address(token_address);
+  async balanceOf (l2account, token_id) {
     let balance = await this.bridge.methods.balanceOf(l2account, token_id).call();
     return balance;
   }
