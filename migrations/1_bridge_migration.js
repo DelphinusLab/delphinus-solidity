@@ -21,6 +21,6 @@ module.exports = async function(deployer) {
   await deployer.deploy(Bridge, id);
   bridge = await Bridge.deployed();
 
-  var tx = bridge.add_verifier(withdraw.address);
-  tx = bridge.add_verifier(deposit.address);
+  var tx = await bridge.add_verifier(withdraw.address);
+  tx = await bridge.add_verifier(deposit.address);
 };
