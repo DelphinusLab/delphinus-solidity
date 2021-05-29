@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@openzeppelin/contracts": "latest",
+    "@truffle/hdwallet-provider": "^1.4.0",
     "buffer": "^6.0.3",
     "mongodb": "^3.6.6",
     "next": "^10.2.0",
