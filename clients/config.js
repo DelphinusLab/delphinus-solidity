@@ -1,7 +1,8 @@
-const HDWalletProvider = require('@truffle/hdwallet-provider');
+const PrivateKeyProvider = require('web3-privatekey-provider');
 const fs = require('fs');
-const infura_id = fs.readFileSync("../../.secret.infura").toString().trim();
-const priv_key = fs.readFileSync("../../tools/key.prv").toString().trim();
+const infura_id = fs.readFileSync(__dirname + "/../.secret.infura").toString().trim();
+let priv_key = "0x" + fs.readFileSync(__dirname + "/../tools/key.prv").toString().trim();
+
 const contracts = __dirname + "/../build/contracts"; //FIXME: use path.join
 console.log(contracts);
 
@@ -23,6 +24,7 @@ module.exports = {
     device_id: "16",
   },
   bsctestnet: {
+    provider: () => new PrivateKeyProvider(priv_key, `https://data-seed-prebsc-1-s1.binance.org:8545`),
     mongodb_url: "mongodb://localhost:27017",
     web3_source: "wss://data-seed-prebsc-1-s1.binance.org:8546",
     monitor_account: "0x6f6ef6dfe681b6593ddf27da3bfde22083aef88b",
@@ -30,7 +32,7 @@ module.exports = {
     device_id: "97",
   },
   ropsten: {
-    provider: () => new HDWalletProvider(priv_key, "wss://ropsten.infura.io/ws/v3/" + infura_id),
+    provider: () => new PrivateKeyProvider(priv_key, "https://ropsten.infura.io/v3/" + infura_id),
     mongodb_url: "mongodb://localhost:27017",
     web3_source: "wss://ropsten.infura.io/ws/v3/" + infura_id,
     monitor_account: "0x6f6ef6dfe681b6593ddf27da3bfde22083aef88b",
