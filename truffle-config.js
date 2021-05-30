@@ -69,7 +69,7 @@ module.exports = {
       gas: 3100000,           // Gas sent with each transaction (default: ~6700000)
       websocket: true        // Enable EventEmitter interface for web3 (default: false)
     },
-    ropsten: {
+    ropsten: { //eth testnet
       provider: () => new HDWalletProvider(priv_key, "https://ropsten.infura.io/v3/" + infura_id),
       network_id: 3,       // Ropsten's id
       gas: 5500000,        // Ropsten has a lower block limit than mainnet
@@ -77,7 +77,7 @@ module.exports = {
       timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
       //skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
     },
-    bsctestnet: {
+    bsctestnet: { //bsc
       provider: () => new HDWalletProvider(priv_key, `https://data-seed-prebsc-1-s1.binance.org:8545`),
       network_id: 97,
       confirmations: 10,

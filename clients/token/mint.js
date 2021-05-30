@@ -5,10 +5,11 @@ const Client = require("web3subscriber/client")
 const TokenInfo = require("../../build/contracts/Token.json")
 
 
-async function test_mint() {
-  let account = Config.monitor_account;
-  let web3 = await Client.initWeb3(Config, false);
-  let token= Client.getContract(web3, Config, TokenInfo, account);
+async function test_mint(config_name) {
+  config = Config[config_name];
+  let account = config.monitor_account;
+  let web3 = await Client.initWeb3(config, false);
+  let token= Client.getContract(web3, config, TokenInfo, account);
   try {
     var balance = await Client.getBalance(token, account);
     console.log("balance before mint:", balance);
@@ -20,4 +21,6 @@ async function test_mint() {
   }
 }
 
-test_mint().then(v => {console.log("test done!"); process.exit();});
+
+console.log(Config[process.argv[2]]);
+test_mint(process.argv[2]).then(v => {console.log("test done!"); process.exit();});
