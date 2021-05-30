@@ -6,10 +6,13 @@ const Utils = require("../utils");
 
 async function get_balance(config_name) {
   config = Config[config_name];
+  console.log(config);
   let account = config.monitor_account;
   console.log("Check address balance:");
+  console.log("account", account);
   let web3 = await Client.initWeb3(config, false);
   let token= Client.getContract(web3, config, TokenInfo, account);
+  //console.log("token", token);
   try {
     let balance = await Client.getBalance(token, account);
     console.log("balance is", balance);
@@ -18,4 +21,4 @@ async function get_balance(config_name) {
   }
 }
 
-get_balance().then(v => {console.log("test done!"); process.exit();});
+get_balance(process.argv[2]).then(v => {console.log("test done!"); process.exit();});

@@ -3,6 +3,7 @@ const fs = require('fs');
 const infura_id = fs.readFileSync("../../.secret.infura").toString().trim();
 const priv_key = fs.readFileSync("../../tools/key.prv").toString().trim();
 const contracts = __dirname + "/../build/contracts"; //FIXME: use path.join
+console.log(contracts);
 
 module.exports = {
   localtestnet1: {
