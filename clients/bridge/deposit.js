@@ -9,11 +9,12 @@ const test_config = {
   l2account: "0x7a50c8fa50a39bd48dfd8053ebff44ba3da45dd8c3e90a5fec9fd73a4595251b",
 }
 
-async function test_main() {
+async function test_main(config_name) {
   console.log("start calling");
+  config = EthConfig[config_name];
   try {
 
-    let bridge = await BridgeABI.getBridge(false, "0x10");
+    let bridge = await BridgeABI.getBridge(config, false);
     let token = Client.getContract(bridge.web3, bridge.config,
                 TokenInfo, bridge.account);
 
@@ -45,4 +46,4 @@ async function test_main() {
   }
 }
 
-test_main().then(v => console.log("test done!"));
+test_main(process.argv[2]).then(v => console.log("test done!"));

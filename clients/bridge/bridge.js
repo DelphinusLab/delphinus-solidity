@@ -64,6 +64,7 @@ class Bridge {
 async function getBridgeClient(config, bridge, client_mode) {
   let web3 = await Client.initWeb3(config, client_mode);
   let netid = await web3.eth.net.getId();
+  console.log("netid:", netid);
   if (netid != config.device_id) {
     throw (new Error("UnmatchedNetworkId"));
   }
