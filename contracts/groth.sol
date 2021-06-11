@@ -197,7 +197,7 @@ contract Groth {
         proof.b = Pairing.G2Point([b[0][0], b[0][1]], [b[1][0], b[1][1]]);
         proof.c = Pairing.G1Point(c[0], c[1]);
         uint[] memory inputValues = new uint[](2);
-        
+
         for(uint i = 0; i < input.length; i++){
             inputValues[i] = input[i];
         }
