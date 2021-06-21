@@ -1,5 +1,6 @@
 const Web3 = require("web3")
 const Client = require("web3subscriber/client")
+const PBinder= require("web3subscriber/pbinder")
 
 /*
 async handle_generic_transaction(send_promise, hash_cb, ) {
@@ -20,12 +21,19 @@ class NftClient {
     return tx;
   }
 
-  async auction(id, price) {
-    var bidding_address = this.bidding.options.address;
-    // the method send is essential to the method approve because of the state is changed
-    var tx = await this.nft.methods.approve(bidding_address, id).send();
-    tx = await this.bidding.methods.auction(id, price).send();
-    return tx;
+  auction(id, price) {
+    let pbinder = new PBinder.PromiseBinder();
+    let r = pbinder.return (async () => {
+      var bidding_address = this.bidding.options.address;
+      var tx = await pbinder.bind("approve",
+        this.nft.methods.approve(bidding_address, id).send()
+      );
+      tx = await pbinder.bind("auction",
+        this.bidding.methods.auction(id, price).send()
+      );
+      return tx;
+    });
+    return r;
   }
 
   async bid(id, price) {
