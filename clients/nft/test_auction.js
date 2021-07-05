@@ -4,7 +4,6 @@ const NFTInfo = require("../../build/contracts/NFT.json");
 const BiddingInfo = require("../../build/contracts/Bidding.json");
 const Client = require("web3subscriber/client");
 const nft = require("./nft");
-
 async function test_auction(config, id, price) {
   let web3 = await Client.initWeb3(config, false);
   let account = config.monitor_account;
@@ -26,12 +25,12 @@ async function test_auction(config, id, price) {
         return false;
     }
 */
-    await nft_client.auction(id, price).when("auction","sending",()=>{
+    await nft_client.auction(id, price).when("approve","sending", ()=>{
+      console.log("waiting for approve ...");
+    }).when("auction","sending",()=>{
       console.log("sending auction transaction ...");
     }).when("auction","sent", ()=>{
       console.log("transaction is sent, waiting for process ...");
-    }).when("approve","sending", ()=>{
-      console.log("waiting for approve ...");
     }).when("auction", "transactionHash", hash=> {
       console.log("transaction hash:", hash);
     });
@@ -61,7 +60,7 @@ function check_test(result, indicator) {
 // test case
 async function tests(config_name) {
   let config = Config[config_name];
-  await test_auction(config, 0x18, 2).then(v => {check_test(v, true);})
+  await test_auction(config, 98, 2).then(v => {check_test(v, true);})
 /*
   await test_auction(config, 0x6, 1).then(v => {check_test(v, false);})
   await test_auction(config, 0x6, 3).then(v => {check_test(v, false);})

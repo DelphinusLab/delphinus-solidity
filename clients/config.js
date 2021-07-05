@@ -2,7 +2,6 @@ const HDWalletProvider = require('@truffle/hdwallet-provider');
 const secrets = require('../.secrets.json');
 
 const contracts = __dirname + "/../build/contracts"; //FIXME: use path.join
-console.log(contracts);
 
 const priv2 = "0xf6392ba9b8cb91490a3e06fe141d5140df89e73931b0e3570bad0de7ef1f25c3"
 

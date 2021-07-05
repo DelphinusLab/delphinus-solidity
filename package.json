@@ -6,7 +6,6 @@
     "@openzeppelin/contracts": "latest",
     "@truffle/hdwallet-provider": "^1.4.0",
     "buffer": "^6.0.3",
-    "mongodb": "^3.6.6",
     "next": "^10.2.0",
     "process": "^0.11.10",
     "react": "^17.0.2",

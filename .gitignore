@@ -2,4 +2,7 @@
 /tools/console
 /tools/data
 /tools/testnet1
+/tools
+/build
 /package-lock.json
+/.secrets.json

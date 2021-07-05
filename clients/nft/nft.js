@@ -16,14 +16,20 @@ class NftClient {
     this.nft = Client.getContract(web3, config, nftinfo, account);
     this.bidding = Client.getContract(web3, config, biddinginfo, account);
   }
-  async mint(id) {
-    let tx = await this.nft.methods.mint(id).send();
-    return tx;
+  mint(id) {
+    let pbinder = new PBinder.PromiseBinder();
+    let r = pbinder.return(async ()=>{
+      await new Promise((resolve)=>{resolve(1)})
+      var tx = await pbinder.bind("mint", this.nft.methods.mint(id).send());
+      return tx;
+    })
+    return r;
   }
 
   auction(id, price) {
     let pbinder = new PBinder.PromiseBinder();
     let r = pbinder.return (async () => {
+      await new Promise((resolve)=>{resolve(1)})
       var bidding_address = this.bidding.options.address;
       var tx = await pbinder.bind("approve",
         this.nft.methods.approve(bidding_address, id).send()
@@ -36,13 +42,15 @@ class NftClient {
     return r;
   }
 
-  async bid(id, price) {
-    // bidding_address is never used
-    //var bidding_address = this.bidding.options.address;
-    //invalid function argument, change bidding_address to this.bidding
-    var tx = await Client.approveBalance(this.token, this.bidding, price);
-    tx = await this.bidding.methods.bidding(id, price).send();
-    return tx;
+  bid(id, price) {
+    let pbinder = new PBinder.PromiseBinder();
+    let r = pbinder.return(async ()=>{
+      await new Promise((resolve)=>{resolve(1)})
+      var tx = await Client.approveBalance(this.token, this.bidding, price)
+      tx = await pbinder.bind("bidding", this.bidding.methods.bidding(id, price).send())
+      return tx;
+    })
+    return r;
   }
 
   async getOwner(id) {
@@ -51,15 +59,18 @@ class NftClient {
   }
 
   async getAuctionInfo(id) {
-    let r = await this.bidding.methods.getAuctionInfo(id).call();
-    return r;
+    var tx = await this.bidding.methods.getAuctionInfo(id).call()
+    return tx;
   }
 
-  async finalize(id) {
-    // the state is changed so use send rather than call
-    //let tx = await this.bidding.methods.finalize(id).send();
-    let tx = await this.bidding.methods.finalize(id).send();
-    return tx;
+  finalize(id) {
+    let pbinder = new PBinder.PromiseBinder();
+    let r = pbinder.return(async ()=>{
+      await new Promise((resolve)=>{resolve(1)})
+      var tx = await pbinder.bind("finalize", this.bidding.methods.finalize(id).send())
+      return tx;
+    })
+    return r;
   }
 }
 
