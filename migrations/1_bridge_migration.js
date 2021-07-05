@@ -1,4 +1,5 @@
 const TOKEN = artifacts.require("Token");
+const RIO = artifacts.require("Rio");
 const Bridge = artifacts.require("Bridge");
 const Withdraw = artifacts.require("Withdraw");
 const Deposit = artifacts.require("Deposit");
@@ -9,6 +10,9 @@ module.exports = async function(deployer) {
 
   await deployer.deploy(TOKEN);
   token = await TOKEN.deployed();
+
+  await deployer.deploy(RIO);
+  token = await RIO.deployed();
 
   await deployer.deploy(Withdraw);
   console.log(Withdraw.depolyed);

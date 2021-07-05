@@ -24,7 +24,7 @@ module.exports = {
   bsctestnet: {
     provider: () => new HDWalletProvider(secrets.priv_key, `https://bsc.getblock.io/testnet/?api_key=182a8e0d-c03a-44ac-b856-41d2e47801db`),
     mongodb_url: "mongodb://localhost:27017",
-    web3_source: "https://bsc.getblock.io/testnet/?api_key=182a8e0d-c03a-44ac-b856-41d2e47801db",
+    web3_source: "wss://bsc.getblock.io/testnet/?api_key=182a8e0d-c03a-44ac-b856-41d2e47801db",
     monitor_account: "0x6f6ef6dfe681b6593ddf27da3bfde22083aef88b",
     contracts: contracts,
     device_id: "97",

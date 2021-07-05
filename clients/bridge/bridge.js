@@ -33,6 +33,7 @@ class Bridge {
   async switch_net() {
     let id = await this.web3.eth.net.getId();
     let id_hex = "0x" + (new BigNumber(id)).toString(16);
+    console.log("switch", id_hex, this.chain_hex_id);
     if (id_hex != this.chain_hex_id && this.client_mode == true) {
        try {
          await this.web3.currentProvider.request({
@@ -44,6 +45,7 @@ class Bridge {
        }
     }
     id = await this.web3.eth.net.getId();
+    console.log("switched", id_hex, this.chain_hex_id);
     return true;
   }
 
@@ -72,10 +74,11 @@ class Bridge {
     let r = pbinder.return(async () => {
       let c = await this.switch_net();
       let token = Client.getContractByAddress(this.web3, token_address, ERC20, this.account);
-      pbinder.snapshot("Approving");
+      pbinder.snapshot("Approve");
       var rx = await pbinder.bind("Approve",
         token.methods.approve(this.bridge.options.address, amount).send()
       );
+      pbinder.snapshot("Deposit");
       rx = await pbinder.bind("Deposit",
         this.bridge.methods.deposit(token_address, amount, l2account).send()
       );
