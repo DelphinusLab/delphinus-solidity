@@ -11,9 +11,9 @@ contract Bridge {
   Verifier[] private verifiers;
 
   struct PoolInfo {
-    uint256 l1token0;
+    uint256 token0;
+    uint256 token1;
     uint256 l0;
-    uint256 l1token1;
     uint256 l1;
   }
 
@@ -25,13 +25,45 @@ contract Bridge {
   uint8 constant _SET_BALANCE = 0x1;
   uint8 constant _SET_POOL = 0x2;
   uint8 constant _WITHDRAW = 0x3;
+  uint8 constant _SET_SHARE = 0x4;
 
   mapping (uint256 => mapping(uint256 => uint256)) private _balances;
+  mapping (uint256 => mapping(uint256 => uint256)) private _pool_ids;
+  mapping (uint256 => mapping(uint256 => uint256)) private _pool_share; // pid => l1 account => share
   mapping (uint256 => uint256) private _nonce;
 
 
   constructor(uint32 chain_id) {
     _cid = chain_id;
+    _pools.push(PoolInfo(0,0,0,0));
+  }
+
+  function add_pool(uint256 token0, uint256 token1) private returns (uint) {
+    uint cursor = _pools.length;
+    _pools.push(PoolInfo(token0, token1, 0, 0));
+    return cursor;
+  }
+
+  function get_pool(uint256 token0, uint256 token1) public view returns (PoolInfo memory) {
+    uint256 _pid = _pool_ids[token0][token1];
+    return _pools[_pid];
+  }
+
+  function _set_pool(uint256 token0, uint256 token1, uint256 amount0, uint256 amount1) private {
+    uint256 _pid = _pool_ids[token0][token1];
+    if (_pid == 0) {
+      _pid = add_pool(token0, token1);
+    }
+    _pools[_pid].token0 = token0;
+    _pools[_pid].token1 = token1;
+    _pools[_pid].l0 = amount0;
+    _pools[_pid].l1 = amount1;
+  }
+
+  function _set_share(uint256 token0, uint256 token1, uint256 l2account, uint256 share) private {
+    uint256 _pid = _pool_ids[token0][token1];
+    require(_pid!= 0, "SetShare for non-exist token pair");
+    _pool_share[_pid][l2account] = share;
   }
 
   function add_verifier(address verifier) public returns (uint) {
@@ -60,11 +92,6 @@ contract Bridge {
 
   function _set_balance(uint256 token_id, uint256 l2account, uint256 amount) private {
     _balances[token_id][l2account] = amount;
-  }
-
-  function _set_pool(uint256 pool_id, uint256 amount0, uint256 amount1) private {
-    _pools[pool_id].l0 = amount0;
-    _pools[pool_id].l1 = amount1;
   }
 
   function _withdraw(uint256 tokenid, uint256 amount, uint256 l1recipent) public {
@@ -118,15 +145,23 @@ contract Bridge {
     uint cursor = 0;
     while (cursor < deltas.length) {
       uint delta_code = deltas[cursor];
-      require(deltas.length >= cursor + 4, "Withdraw: Insufficient arg number");
       if (delta_code == _WITHDRAW) {
+        require(deltas.length >= cursor + 4, "Withdraw: Insufficient arg number");
         _withdraw(deltas[cursor+1], deltas[cursor+2], deltas[cursor+3]);
+        cursor = cursor + 4;
       } else if (delta_code == _SET_BALANCE) {
+        require(deltas.length >= cursor + 4, "SetBalance: Insufficient arg number");
         _set_balance(deltas[cursor+1], deltas[cursor+2], deltas[cursor+3]);
+        cursor = cursor + 4;
       } else if (delta_code == _SET_POOL) {
-        _set_pool(deltas[cursor+1], deltas[cursor+2], deltas[cursor+3]);
+        require(deltas.length >= cursor + 5, "SetPool: Insufficient arg number");
+        _set_pool(deltas[cursor+1], deltas[cursor+2], deltas[cursor+3], deltas[cursor+4]);
+        cursor = cursor + 5;
+      } else if (delta_code == _SET_SHARE) {
+        require(deltas.length >= cursor + 5, "SetShare: Insufficient arg number");
+        _set_share(deltas[cursor+1], deltas[cursor+2], deltas[cursor+3], deltas[cursor+4]);
+        cursor = cursor + 5;
       }
-      cursor = cursor + 4;
     }
   }
 

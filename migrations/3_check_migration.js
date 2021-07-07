@@ -1,7 +1,10 @@
-const BiddingContract = artifacts.require("Bidding");
-const CHECK = artifacts.require("Check");
+const TOKEN = artifacts.require("Token");
+const RIO = artifacts.require("Rio");
 
 module.exports = async function(deployer) {
-  await deployer.deploy(CHECK);
-  check = await CHECK.deployed();
+  await deployer.deploy(TOKEN);
+  token = await TOKEN.deployed();
+
+  await deployer.deploy(RIO);
+  token = await RIO.deployed();
 };
