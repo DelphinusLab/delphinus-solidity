@@ -42,7 +42,7 @@ contract Supply is Verifier{
     return ops;
   }
   function getVerifierInfo() public override pure returns (VerifierInfo memory) {
-    return VerifierInfo(7);
+    return VerifierInfo(8);
   }
   function testArgument(uint cursor, uint256[] calldata witness) public pure returns (uint256) {
     return witness[cursor];
