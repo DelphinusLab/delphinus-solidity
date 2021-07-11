@@ -40,7 +40,9 @@ contract Bridge {
 
   function add_pool(uint256 token0, uint256 token1) private returns (uint) {
     uint cursor = _pools.length;
+    require (cursor >0, "Pool Cursor equals zero");
     _pools.push(PoolInfo(token0, token1, 0, 0));
+    _pool_ids[token0][token1] = cursor;
     return cursor;
   }
 
@@ -163,6 +165,8 @@ contract Bridge {
         require(deltas.length >= cursor + 5, "SetShare: Insufficient arg number");
         _set_share(deltas[cursor+1], deltas[cursor+2], deltas[cursor+3], deltas[cursor+4]);
         cursor = cursor + 5;
+      } else {
+        require(1==2, "Unknown delta_code");
       }
     }
   }

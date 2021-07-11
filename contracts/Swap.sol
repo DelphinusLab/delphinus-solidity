@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
 import "./Verifier.sol";
-contract Supply is Verifier{
+contract Swap is Verifier{
 
   uint8 constant _SET_BALANCE = 0x1;
   uint8 constant _SET_POOL = 0x2;
@@ -10,15 +10,14 @@ contract Supply is Verifier{
 
   function verify(uint256[] calldata witness, uint cursor) public pure override
     returns (uint256[] memory) {
-    require (witness.length >= cursor + 8, "Pool Op Error");
+    require (witness.length >= cursor + 7, "Pool Op Error");
     uint256 l2account = witness[cursor];
-    uint256 share = witness[cursor+1];
-    uint256 tokenId0 = witness[cursor+2];
-    uint256 tokenId1 = witness[cursor+3];
-    uint256 amount0 = witness[cursor+4];
-    uint256 amount1 = witness[cursor+5];
-    uint256 balance0 = witness[cursor+6];
-    uint256 balance1 = witness[cursor+7];
+    uint256 tokenId0 = witness[cursor+1];
+    uint256 tokenId1 = witness[cursor+2];
+    uint256 amount0 = witness[cursor+3];
+    uint256 amount1 = witness[cursor+4];
+    uint256 balance0 = witness[cursor+5];
+    uint256 balance1 = witness[cursor+6];
     /* We need to put snark verification here */
     /* set u_1 */
 
@@ -36,15 +35,10 @@ contract Supply is Verifier{
     ops[10] = tokenId1;
     ops[11] = l2account;
     ops[12] = balance1;
-    ops[13] = _SET_SHARE;
-    ops[14] = tokenId0;
-    ops[15] = tokenId1;
-    ops[16] = l2account;
-    ops[17] = share;
     return ops;
   }
   function getVerifierInfo() public override pure returns (VerifierInfo memory) {
-    return VerifierInfo(8);
+    return VerifierInfo(7);
   }
   function testArgument(uint cursor, uint256[] calldata witness) public pure returns (uint256) {
     return witness[cursor];
