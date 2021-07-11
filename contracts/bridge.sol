@@ -84,7 +84,6 @@ contract Bridge {
 
   function _get_verifier(uint256 call_info) private view returns(Verifier) {
     bytes memory info = abi.encodePacked(call_info);
-    require(verifiers.length == 3, "Insufficient verifiers");
     require(verifiers.length > uint8(info[0]), "Call Info index out of bound");
     return verifiers[uint8(info[0])];
   }

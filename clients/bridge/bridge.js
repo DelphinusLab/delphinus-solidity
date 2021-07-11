@@ -25,7 +25,8 @@ class Bridge {
   encode_l1address(address) {
     console.assert(address.substring(0,2) == "0x");
     //160 bits for erc20 address
-    let c = new BigNumber(this.chain_hex_id + "0000000000000000000000000000000000000000",'hex');
+    let chex = this.chain_hex_id.substring(2);
+    let c = new BigNumber(chex + "0000000000000000000000000000000000000000",'hex');
     let a = new BigNumber(address.substring(2),16);
     return c.add(a);
   }

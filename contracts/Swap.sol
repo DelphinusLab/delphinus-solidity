@@ -21,7 +21,7 @@ contract Swap is Verifier{
     /* We need to put snark verification here */
     /* set u_1 */
 
-    uint256[] memory ops = new uint256[](18);
+    uint256[] memory ops = new uint256[](13);
     ops[0] = _SET_POOL;
     ops[1] = tokenId0;
     ops[2] = tokenId1;
