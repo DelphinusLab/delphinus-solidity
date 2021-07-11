@@ -6,11 +6,11 @@ contract Supply is Verifier{
   uint8 constant _SET_BALANCE = 0x1;
   uint8 constant _SET_POOL = 0x2;
   uint8 constant _WITHDRAW = 0x3;
-  uint8 constant _SET_SHARE = 0x3;
+  uint8 constant _SET_SHARE = 0x4;
 
   function verify(uint256[] calldata witness, uint cursor) public pure override
     returns (uint256[] memory) {
-    uint256[] memory ops = new uint256[](18);
+    require (witness.length >= cursor + 8, "Pool Op Error");
     uint256 l2account = witness[cursor];
     uint256 share = witness[cursor+1];
     uint256 tokenId0 = witness[cursor+2];
@@ -21,6 +21,8 @@ contract Supply is Verifier{
     uint256 balance1 = witness[cursor+7];
     /* We need to put snark verification here */
     /* set u_1 */
+
+    uint256[] memory ops = new uint256[](18);
     ops[0] = _SET_POOL;
     ops[1] = tokenId0;
     ops[2] = tokenId1;
@@ -47,5 +49,4 @@ contract Supply is Verifier{
   function testArgument(uint cursor, uint256[] calldata witness) public pure returns (uint256) {
     return witness[cursor];
   }
-
 }
