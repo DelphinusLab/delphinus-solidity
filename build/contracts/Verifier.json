@@ -1,0 +1,657 @@
+{
+  "contractName": "Verifier",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "args",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "uint256",
+          "name": "cursor",
+          "type": "uint256"
+        }
+      ],
+      "name": "verify",
+      "outputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "",
+          "type": "uint256[]"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getVerifierInfo",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "nbArgs",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct VerifierInfo",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.4+commit.c7e474f2\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"getVerifierInfo\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"nbArgs\",\"type\":\"uint256\"}],\"internalType\":\"struct VerifierInfo\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256[]\",\"name\":\"args\",\"type\":\"uint256[]\"},{\"internalType\":\"uint256\",\"name\":\"cursor\",\"type\":\"uint256\"}],\"name\":\"verify\",\"outputs\":[{\"internalType\":\"uint256[]\",\"name\":\"\",\"type\":\"uint256[]\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"details\":\"Interface of the ERC20 standard as defined in the EIP.\",\"kind\":\"dev\",\"methods\":{\"verify(uint256[],uint256)\":{\"details\":\"snark verification stub\"}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/Verifier.sol\":\"Verifier\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/Verifier.sol\":{\"keccak256\":\"0x8481076a6f628812f7653cb892c08d98f0a2d118d206ba1f5e3da51591373e73\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://e85dc3f6fa945e6fc6bbe4bd8433df8d0dcfc2fe31dc3510e4b897bb6238a238\",\"dweb:/ipfs/QmP8oo9TkgzvsmDYcfeEZp67mnT6gabVgh66SisYottxFs\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "// SPDX-License-Identifier: UNLICENSED\npragma solidity ^0.8.0;\n\nstruct VerifierInfo{\n  uint nbArgs;\n}\n\n/**\n * @dev Interface of the ERC20 standard as defined in the EIP.\n */\n\ninterface Verifier {\n    /**\n     * @dev snark verification stub\n     */\n    function verify(uint256[] calldata args, uint cursor) external returns (uint256[] memory);\n    function getVerifierInfo() external pure returns (VerifierInfo memory);\n}\n",
+  "sourcePath": "/Users/leyingan/delphinus/playground/solidity/contracts/Verifier.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/Verifier.sol",
+    "exportedSymbols": {
+      "Verifier": [
+        4366
+      ],
+      "VerifierInfo": [
+        4346
+      ]
+    },
+    "id": 4367,
+    "license": "UNLICENSED",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 4343,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "39:23:17"
+      },
+      {
+        "canonicalName": "VerifierInfo",
+        "id": 4346,
+        "members": [
+          {
+            "constant": false,
+            "id": 4345,
+            "mutability": "mutable",
+            "name": "nbArgs",
+            "nameLocation": "92:6:17",
+            "nodeType": "VariableDeclaration",
+            "scope": 4346,
+            "src": "87:11:17",
+            "stateVariable": false,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_uint256",
+              "typeString": "uint256"
+            },
+            "typeName": {
+              "id": 4344,
+              "name": "uint",
+              "nodeType": "ElementaryTypeName",
+              "src": "87:4:17",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            },
+            "visibility": "internal"
+          }
+        ],
+        "name": "VerifierInfo",
+        "nameLocation": "71:12:17",
+        "nodeType": "StructDefinition",
+        "scope": 4367,
+        "src": "64:37:17",
+        "visibility": "public"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 4347,
+          "nodeType": "StructuredDocumentation",
+          "src": "103:70:17",
+          "text": " @dev Interface of the ERC20 standard as defined in the EIP."
+        },
+        "fullyImplemented": false,
+        "id": 4366,
+        "linearizedBaseContracts": [
+          4366
+        ],
+        "name": "Verifier",
+        "nameLocation": "185:8:17",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "documentation": {
+              "id": 4348,
+              "nodeType": "StructuredDocumentation",
+              "src": "200:47:17",
+              "text": " @dev snark verification stub"
+            },
+            "functionSelector": "5b2759f2",
+            "id": 4359,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "verify",
+            "nameLocation": "261:6:17",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4354,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4351,
+                  "mutability": "mutable",
+                  "name": "args",
+                  "nameLocation": "287:4:17",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4359,
+                  "src": "268:23:17",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_uint256_$dyn_calldata_ptr",
+                    "typeString": "uint256[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 4349,
+                      "name": "uint256",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "268:7:17",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "id": 4350,
+                    "nodeType": "ArrayTypeName",
+                    "src": "268:9:17",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
+                      "typeString": "uint256[]"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 4353,
+                  "mutability": "mutable",
+                  "name": "cursor",
+                  "nameLocation": "298:6:17",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4359,
+                  "src": "293:11:17",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 4352,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "293:4:17",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "267:38:17"
+            },
+            "returnParameters": {
+              "id": 4358,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4357,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4359,
+                  "src": "324:16:17",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_uint256_$dyn_memory_ptr",
+                    "typeString": "uint256[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 4355,
+                      "name": "uint256",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "324:7:17",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "id": 4356,
+                    "nodeType": "ArrayTypeName",
+                    "src": "324:9:17",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
+                      "typeString": "uint256[]"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "323:18:17"
+            },
+            "scope": 4366,
+            "src": "252:90:17",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "functionSelector": "e215abff",
+            "id": 4365,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getVerifierInfo",
+            "nameLocation": "356:15:17",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4360,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "371:2:17"
+            },
+            "returnParameters": {
+              "id": 4364,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4363,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4365,
+                  "src": "397:19:17",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_VerifierInfo_$4346_memory_ptr",
+                    "typeString": "struct VerifierInfo"
+                  },
+                  "typeName": {
+                    "id": 4362,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 4361,
+                      "name": "VerifierInfo",
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 4346,
+                      "src": "397:12:17"
+                    },
+                    "referencedDeclaration": 4346,
+                    "src": "397:12:17",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_VerifierInfo_$4346_storage_ptr",
+                      "typeString": "struct VerifierInfo"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "396:21:17"
+            },
+            "scope": 4366,
+            "src": "347:71:17",
+            "stateMutability": "pure",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 4367,
+        "src": "175:245:17",
+        "usedErrors": []
+      }
+    ],
+    "src": "39:382:17"
+  },
+  "legacyAST": {
+    "absolutePath": "project:/contracts/Verifier.sol",
+    "exportedSymbols": {
+      "Verifier": [
+        4366
+      ],
+      "VerifierInfo": [
+        4346
+      ]
+    },
+    "id": 4367,
+    "license": "UNLICENSED",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 4343,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "39:23:17"
+      },
+      {
+        "canonicalName": "VerifierInfo",
+        "id": 4346,
+        "members": [
+          {
+            "constant": false,
+            "id": 4345,
+            "mutability": "mutable",
+            "name": "nbArgs",
+            "nameLocation": "92:6:17",
+            "nodeType": "VariableDeclaration",
+            "scope": 4346,
+            "src": "87:11:17",
+            "stateVariable": false,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_uint256",
+              "typeString": "uint256"
+            },
+            "typeName": {
+              "id": 4344,
+              "name": "uint",
+              "nodeType": "ElementaryTypeName",
+              "src": "87:4:17",
+              "typeDescriptions": {
+                "typeIdentifier": "t_uint256",
+                "typeString": "uint256"
+              }
+            },
+            "visibility": "internal"
+          }
+        ],
+        "name": "VerifierInfo",
+        "nameLocation": "71:12:17",
+        "nodeType": "StructDefinition",
+        "scope": 4367,
+        "src": "64:37:17",
+        "visibility": "public"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 4347,
+          "nodeType": "StructuredDocumentation",
+          "src": "103:70:17",
+          "text": " @dev Interface of the ERC20 standard as defined in the EIP."
+        },
+        "fullyImplemented": false,
+        "id": 4366,
+        "linearizedBaseContracts": [
+          4366
+        ],
+        "name": "Verifier",
+        "nameLocation": "185:8:17",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "documentation": {
+              "id": 4348,
+              "nodeType": "StructuredDocumentation",
+              "src": "200:47:17",
+              "text": " @dev snark verification stub"
+            },
+            "functionSelector": "5b2759f2",
+            "id": 4359,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "verify",
+            "nameLocation": "261:6:17",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4354,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4351,
+                  "mutability": "mutable",
+                  "name": "args",
+                  "nameLocation": "287:4:17",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4359,
+                  "src": "268:23:17",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_uint256_$dyn_calldata_ptr",
+                    "typeString": "uint256[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 4349,
+                      "name": "uint256",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "268:7:17",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "id": 4350,
+                    "nodeType": "ArrayTypeName",
+                    "src": "268:9:17",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
+                      "typeString": "uint256[]"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 4353,
+                  "mutability": "mutable",
+                  "name": "cursor",
+                  "nameLocation": "298:6:17",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4359,
+                  "src": "293:11:17",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 4352,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "293:4:17",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "267:38:17"
+            },
+            "returnParameters": {
+              "id": 4358,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4357,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4359,
+                  "src": "324:16:17",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_uint256_$dyn_memory_ptr",
+                    "typeString": "uint256[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 4355,
+                      "name": "uint256",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "324:7:17",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "id": 4356,
+                    "nodeType": "ArrayTypeName",
+                    "src": "324:9:17",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
+                      "typeString": "uint256[]"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "323:18:17"
+            },
+            "scope": 4366,
+            "src": "252:90:17",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "functionSelector": "e215abff",
+            "id": 4365,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getVerifierInfo",
+            "nameLocation": "356:15:17",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 4360,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "371:2:17"
+            },
+            "returnParameters": {
+              "id": 4364,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 4363,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 4365,
+                  "src": "397:19:17",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_VerifierInfo_$4346_memory_ptr",
+                    "typeString": "struct VerifierInfo"
+                  },
+                  "typeName": {
+                    "id": 4362,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 4361,
+                      "name": "VerifierInfo",
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 4346,
+                      "src": "397:12:17"
+                    },
+                    "referencedDeclaration": 4346,
+                    "src": "397:12:17",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_VerifierInfo_$4346_storage_ptr",
+                      "typeString": "struct VerifierInfo"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "396:21:17"
+            },
+            "scope": 4366,
+            "src": "347:71:17",
+            "stateMutability": "pure",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 4367,
+        "src": "175:245:17",
+        "usedErrors": []
+      }
+    ],
+    "src": "39:382:17"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.4+commit.c7e474f2.Darwin.appleclang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.1",
+  "updatedAt": "2021-07-11T08:46:28.620Z",
+  "devdoc": {
+    "details": "Interface of the ERC20 standard as defined in the EIP.",
+    "kind": "dev",
+    "methods": {
+      "verify(uint256[],uint256)": {
+        "details": "snark verification stub"
+      }
+    },
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  }
+}
