@@ -1,10 +1,10 @@
-const Config = require("../config")
+let Config = require("../config")
 const TokenInfo = require("../../build/contracts/Token.json")
 const NFTInfo = require("../../build/contracts/NFT.json");
 const BiddingInfo = require("../../build/contracts/Bidding.json");
 const Client = require("web3subscriber/client");
 const nft = require("./nft");
-
+Config = Config["localtestnet1"]
 
 async function test_mint(id) {
   let web3 = await Client.initWeb3(Config, false);

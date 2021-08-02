@@ -43,7 +43,7 @@ contract Bidding {
     BiddingInfo memory winner = _assets[tokenId];
     address winner_address = winner.winner;
     uint256 final_price = winner.price;
-    require (price > final_price, "Bid at a lower price");
+    //require (price > final_price, "Bid at a lower price");
 
     // we first have to make sure the sender has enough token to bid
     underlying_token.transferFrom(msg.sender, address(this), price);
