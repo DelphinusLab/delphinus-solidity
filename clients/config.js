@@ -24,22 +24,23 @@ module.exports = {
     device_id: "16",
   },
   bsctestnet: {
-    //provider: () => new HDWalletProvider(secrets.priv_key, `https://bsc.getblock.io/testnet/?api_key=182a8e0d-c03a-44ac-b856-41d2e47801db`),
     provider: () => new HDWalletProvider(priv2, `https://bsc.getblock.io/testnet/?api_key=182a8e0d-c03a-44ac-b856-41d2e47801db`),
     mongodb_url: "mongodb://localhost:27017",
+    rpc_source: "https://bsc.getblock.io/testnet/?api_key=182a8e0d-c03a-44ac-b856-41d2e47801db`",
     web3_source: "wss://bsc.getblock.io/testnet/?api_key=182a8e0d-c03a-44ac-b856-41d2e47801db",
-    //monitor_account: "0x6f6ef6dfe681b6593ddf27da3bfde22083aef88b",
-
     monitor_account: "0x6ea23f9b85ba97890a87b83882696f64ad09f5b6",
     contracts: contracts,
     device_id: "97",
+    chain_name: "bsctestnet",
   },
   ropsten: {
     provider: () => new HDWalletProvider(secrets.priv_key, "https://ropsten.infura.io/v3/" + secrets.infura_id),
     mongodb_url: "mongodb://localhost:27017",
+    rpc_source: "https://ropsten.infura.io/v3/" + secrets.infura_id,
     web3_source: "wss://ropsten.infura.io/ws/v3/" + secrets.infura_id,
     monitor_account: "0x6f6ef6dfe681b6593ddf27da3bfde22083aef88b",
     contracts: contracts,
     device_id: "3",
+    chain_name: "ropsten",
   }
 }

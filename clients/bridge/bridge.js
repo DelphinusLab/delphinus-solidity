@@ -5,6 +5,12 @@ const PBinder= require("web3subscriber/pbinder")
 const ERC20 = require("../../build/contracts/ERC20.json");
 const VERIFIER = require("../../build/contracts/Verifier.json");
 
+function encode_l1address(address_hexstr, chex) {
+  let c = new BigNumber(chex + "0000000000000000000000000000000000000000",'hex');
+  let a = new BigNumber(address_hexstr,16);
+  return c.add(a);
+}
+
 class Bridge {
 
   constructor(web3, config, account, bridge_info, chain_hex, client_mode) {
@@ -13,22 +19,22 @@ class Bridge {
     this.chain_hex_id = chain_hex;
     this.client_mode = client_mode;
     this.account = account;
+    this.chain_name = config.chain_name;
   }
 
   async init(web3, config, account, bridge_info) {
     await this.switch_net();
     this.bridge = Client.getContract(web3, config, bridge_info, account);
+    console.log(`init_bridge on %s`, this.chain_name);
   }
 
 
   /* address must start with 0x */
   encode_l1address(address) {
     console.assert(address.substring(0,2) == "0x");
-    //160 bits for erc20 address
+    let address_hex = address.substring(2);
     let chex = this.chain_hex_id.substring(2);
-    let c = new BigNumber(chex + "0000000000000000000000000000000000000000",'hex');
-    let a = new BigNumber(address.substring(2),16);
-    return c.add(a);
+    return encode_l1address(address_hex, chex);
   }
 
   async switch_net() {
@@ -36,14 +42,37 @@ class Bridge {
     let id_hex = "0x" + (new BigNumber(id)).toString(16);
     console.log("switch", id_hex, this.chain_hex_id);
     if (id_hex != this.chain_hex_id && this.client_mode == true) {
-       try {
-         await this.web3.currentProvider.request({
-           method: 'wallet_switchEthereumChain',
-           params: [{ chainId: this.chain_hex_id }],
-         });
-       } catch (e) {
-         throw new Error("IncorrectNetworkId");
-       }
+      try {
+        await this.web3.currentProvider.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: this.chain_hex_id }],
+        });
+      } catch (e) {
+/*
+        if (e.code == 4902) {
+          try {
+            console.log("add chain");
+            await this.web3.currentProvider.request({
+              method: 'wallet_addEthereumChain',
+              params: [{
+                chainId: this.chain_hex_id,
+                chainName: this.chain_name,
+                rpcUrls: [config.rpc_source],
+              }]
+            });
+            console.log("add chain>>");
+            await this.web3.currentProvider.request({
+              method: 'wallet_switchEthereumChain',
+              params: [{ chainId: this.chain_hex_id}]
+            });
+          } catch (e) {
+            throw new Error("IncorrectNetworkId");
+          }
+        } else {
+          throw new Error("IncorrectNetworkId");
+        }
+*/
+      }
     }
     id = await this.web3.eth.net.getId();
     console.log("switched", id_hex, this.chain_hex_id);
@@ -107,4 +136,5 @@ async function getBridgeClient(config, bridge_info, client_mode) {
 
 module.exports = {
   getBridgeClient: getBridgeClient,
+  encodeL1Address: encode_l1address,
 }

@@ -33,4 +33,4 @@ async function test_main(config_name) {
   }
 }
 
-test_main(process.argv[2]).then(v => console.log("test done!"));
+test_main(process.argv[2]).then(v => {process.exit();})

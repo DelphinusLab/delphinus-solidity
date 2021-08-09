@@ -10,7 +10,7 @@ async function test_bid(id, price) {
   let web3 = await Client.initWeb3(Config, false);
   let account = Config.monitor_account;
   let nft_client = new nft.NftClient(web3, Config, TokenInfo, NFTInfo, BiddingInfo, account);
-  try { 
+  try {
     await nft_client.mint(id); // mint before auction 
     var token = await nft_client.token; 
     var balance_before = await token.methods.balanceOf(account).call(); // get balance before auction
