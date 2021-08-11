@@ -14,6 +14,7 @@ function test_mint(config_name) {
     let web3 = await Client.initWeb3(config, false);
     let token= Client.getContract(web3, config, TokenInfo, account);
     try {
+      console.log("mint token:", token.options.address);
       var balance = await Client.getBalance(token, account);
       console.log("balance before mint:", balance);
       await pbinder.bind("mint", token.methods.mint(0x100).send());

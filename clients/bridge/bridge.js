@@ -48,30 +48,26 @@ class Bridge {
           params: [{ chainId: this.chain_hex_id }],
         });
       } catch (e) {
-/*
         if (e.code == 4902) {
           try {
-            console.log("add chain");
             await this.web3.currentProvider.request({
               method: 'wallet_addEthereumChain',
               params: [{
                 chainId: this.chain_hex_id,
                 chainName: this.chain_name,
-                rpcUrls: [config.rpc_source],
+                rpcUrls: [this.config.rpc_source]
               }]
             });
-            console.log("add chain>>");
             await this.web3.currentProvider.request({
               method: 'wallet_switchEthereumChain',
               params: [{ chainId: this.chain_hex_id}]
             });
           } catch (e) {
-            throw new Error("IncorrectNetworkId");
+            throw new Error("Add Network Rejected by User.");
           }
         } else {
-          throw new Error("IncorrectNetworkId");
+          throw new Error("Can not switch to chain " + this.chain_hex_id);
         }
-*/
       }
     }
     id = await this.web3.eth.net.getId();
