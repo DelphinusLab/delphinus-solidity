@@ -89,10 +89,17 @@ class Bridge {
     return pool_id;
   }
 
-  async verify(l2account, calldata, nonce, rid) {
-    await this.switch_net();
-    var rx = await this.bridge.methods.verify(l2account, calldata, nonce, rid).send();
-    return rx;
+  verify(l2account, calldata, nonce, rid) {
+    let pbinder = new PBinder.PromiseBinder();
+    let r = pbinder.return(async () => {
+      await this.switch_net();
+      var rx = await pbinder.bind("Verify",
+        this.bridge.methods.verify(l2account, calldata, nonce, rid).send()
+      );
+      return rx;
+    });
+    console.log(r);
+    return r;
   }
 
   deposit (token_address, amount, l2account) {

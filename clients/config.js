@@ -63,7 +63,8 @@ module.exports = {
     chain_name: "bsctestnet",
   },
   ropsten: {
-    provider: () => new HDWalletProvider(secrets.priv_key, "https://ropsten.infura.io/v3/" + secrets.infura_id),
+    provider: () => new HDWalletProvider(secrets.priv_key, ws_provider(
+      "wss://ropsten.infura.io/ws/v3/" + secrets.infura_id)),
     mongodb_url: "mongodb://localhost:27017",
     rpc_source: "https://ropsten.infura.io/v3/" + secrets.infura_id,
     web3_source: "wss://ropsten.infura.io/ws/v3/" + secrets.infura_id,
