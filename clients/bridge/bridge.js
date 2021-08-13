@@ -93,7 +93,7 @@ class Bridge {
     let pbinder = new PBinder.PromiseBinder();
     let r = pbinder.return(async () => {
       await this.switch_net();
-      var rx = await pbinder.bind("Verify",
+      let rx = await pbinder.bind("Verify",
         this.bridge.methods.verify(l2account, calldata, nonce, rid).send()
       );
       return rx;

@@ -3,8 +3,8 @@ const FileSys = require("fs")
 const Config = require("../config")
 const Client = require("web3subscriber/client")
 const PBinder= require("web3subscriber/pbinder")
-//const TokenInfo = require("../../build/contracts/Token.json")
-const TokenInfo = require("../../build/contracts/Rio.json")
+const TokenInfo = require("../../build/contracts/Token.json")
+//const TokenInfo = require("../../build/contracts/Rio.json")
 
 function test_mint(config_name) {
   let pbinder = new PBinder.PromiseBinder();

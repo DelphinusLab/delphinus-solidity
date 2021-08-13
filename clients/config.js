@@ -30,8 +30,11 @@ const options = {
     }
 };
 
-const ws_provider = (url) => {
+const ws_provider = (url, onError) => {
     let p = new Web3WsProvider(url, options);
+    console.log(onError.resetter);
+    p.on("error", onError.resetter);
+    p.on("connect", () => console.log("%s connected", url));
     return p;
 }
 
@@ -53,7 +56,7 @@ module.exports = {
     device_id: "16",
   },
   bsctestnet: {
-    provider: () => new HDWalletProvider(priv2, ws_provider("wss://bsc.getblock.io/testnet/?api_key=182a8e0d-c03a-44ac-b856-41d2e47801db")),
+    provider: (onError) => new HDWalletProvider(priv2, ws_provider("wss://bsc.getblock.io/testnet/?api_key=182a8e0d-c03a-44ac-b856-41d2e47801db", onError)),
     mongodb_url: "mongodb://localhost:27017",
     rpc_source: "https://data-seed-prebsc-1-s1.binance.org:8545",
     web3_source: "wss://bsc.getblock.io/testnet/?api_key=182a8e0d-c03a-44ac-b856-41d2e47801db",
@@ -63,8 +66,8 @@ module.exports = {
     chain_name: "bsctestnet",
   },
   ropsten: {
-    provider: () => new HDWalletProvider(secrets.priv_key, ws_provider(
-      "wss://ropsten.infura.io/ws/v3/" + secrets.infura_id)),
+    provider: (onError) => new HDWalletProvider(secrets.priv_key, ws_provider(
+      "wss://ropsten.infura.io/ws/v3/" + secrets.infura_id, onError)),
     mongodb_url: "mongodb://localhost:27017",
     rpc_source: "https://ropsten.infura.io/v3/" + secrets.infura_id,
     web3_source: "wss://ropsten.infura.io/ws/v3/" + secrets.infura_id,
