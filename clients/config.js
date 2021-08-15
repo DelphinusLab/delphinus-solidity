@@ -7,6 +7,7 @@ console.log(contracts);
 const priv2 = "0xf6392ba9b8cb91490a3e06fe141d5140df89e73931b0e3570bad0de7ef1f25c3"
 
 const Web3WsProvider = require('web3-providers-ws');
+const Web3HttpProvider = require('web3-providers-http');
 
 const options = {
     timeout: 30000, // ms
@@ -30,9 +31,10 @@ const options = {
     }
 };
 
+
 const ws_provider = (url, onError) => {
     let p = new Web3WsProvider(url, options);
-    console.log(onError.resetter);
+    //let p = new Web3HttpProvider(url, request_kwargs={'timeout': 60});
     p.on("error", onError.resetter);
     p.on("connect", () => console.log("%s connected", url));
     return p;
@@ -58,7 +60,7 @@ module.exports = {
   bsctestnet: {
     provider: (onError) => new HDWalletProvider(priv2, ws_provider("wss://bsc.getblock.io/testnet/?api_key=182a8e0d-c03a-44ac-b856-41d2e47801db", onError)),
     mongodb_url: "mongodb://localhost:27017",
-    rpc_source: "https://data-seed-prebsc-1-s1.binance.org:8545",
+    rpc_source: "https://bsc.getblock.io/testnet/?api_key=182a8e0d-c03a-44ac-b856-41d2e47801db",
     web3_source: "wss://bsc.getblock.io/testnet/?api_key=182a8e0d-c03a-44ac-b856-41d2e47801db",
     monitor_account: "0x6ea23f9b85ba97890a87b83882696f64ad09f5b6",
     contracts: contracts,
