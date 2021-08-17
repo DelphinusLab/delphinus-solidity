@@ -5,7 +5,6 @@ const Client = require("web3subscriber/client")
 const PBinder= require("web3subscriber/pbinder")
 const TokenInfo = require("../../build/contracts/Token.json")
 const RioTokenInfo = require("../../build/contracts/Rio.json")
-
 function test_mint(config_name, tokenType) {
   let pbinder = new PBinder.PromiseBinder();
   let r = pbinder.return (async () => {
@@ -19,6 +18,7 @@ function test_mint(config_name, tokenType) {
       token= Client.getContract(web3, config, RioTokenInfo, account);
     }
     try {
+      console.log("mint token:", token.options.address);
       var balance = await Client.getBalance(token, account);
       console.log("balance before mint:", balance, account);
       await pbinder.bind("mint", token.methods.mint(0xf4240).send());
