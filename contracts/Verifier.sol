@@ -1,7 +1,12 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
 
-struct VerifierInfo{
+uint8 constant _SET_BALANCE = 0x1;
+uint8 constant _SET_POOL = 0x2;
+uint8 constant _WITHDRAW = 0x3;
+uint8 constant _SET_SHARE = 0x4;
+
+struct VerifierInfo {
   uint nbArgs;
 }
 

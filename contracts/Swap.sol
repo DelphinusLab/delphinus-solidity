@@ -3,11 +3,6 @@ pragma solidity ^0.8.0;
 import "./Verifier.sol";
 contract Swap is Verifier{
 
-  uint8 constant _SET_BALANCE = 0x1;
-  uint8 constant _SET_POOL = 0x2;
-  uint8 constant _WITHDRAW = 0x3;
-  uint8 constant _SET_SHARE = 0x4;
-
   function verify(uint256[] calldata witness, uint cursor) public pure override
     returns (uint256[] memory) {
     require (witness.length >= cursor + 7, "Pool Op Error");

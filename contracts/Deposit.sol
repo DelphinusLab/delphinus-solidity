@@ -3,10 +3,6 @@ pragma solidity ^0.8.0;
 import "./Verifier.sol";
 contract Deposit is Verifier{
 
-  uint8 constant _SET_BALANCE = 0x1;
-  uint8 constant _SET_POOL = 0x2;
-  uint8 constant _WITHDRAW = 0x3;
-
   function verify(uint256[] calldata witness, uint cursor) public override returns (uint256[] memory) {
     uint256[] memory ops = new uint256[](4);
     uint256 l2account = witness[cursor];
