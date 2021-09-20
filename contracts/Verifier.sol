@@ -1,10 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
 
-uint8 constant _SET_BALANCE = 0x1;
-uint8 constant _SET_POOL = 0x2;
-uint8 constant _WITHDRAW = 0x3;
-uint8 constant _SET_SHARE = 0x4;
+// SideEffects
+uint8 constant _WITHDRAW = 0x1;
 
 struct VerifierInfo {
   uint nbArgs;
@@ -18,6 +16,6 @@ interface Verifier {
     /**
      * @dev snark verification stub
      */
-    function verify(uint256[] calldata args, uint cursor) external returns (uint256[] memory);
+    function verify(uint256[] calldata args, uint cursor) external returns (uint256[] memory, uint256 merkle_root);
     function getVerifierInfo() external pure returns (VerifierInfo memory);
 }
