@@ -75,26 +75,25 @@ class Bridge {
     return true;
   }
 
-  async getVerifierInfo (idx) {
+  async getBridgeInfo (idx) {
     await this.switch_net();
-    let vinfo = await this.bridge.methods.getVerifierInfo(idx).call();
-    //let vc = Client.getContractByAddress(this.web3, vaddr, VERIFIER, this.account);
-    //let vinfo = vc.methods.getVerifierInfo(idx).call();
+    let vinfo = await this.bridge.methods.getBridgeInfo(idx).call();
     return vinfo;
   }
 
-  async createPool(token1, token2) {
+  async addToken(tokeid) {
     await this.switch_net();
-    let pool_id = await this.bridge.methods.createPool(token1, token2).send();
-    return pool_id;
+    let token_id = await this.bridge.methods.addToken(token).send();
+    return token_id;
   }
 
-  verify(l2account, calldata, nonce, rid) {
+  verify(l2account, calldata, verifydata, vid, nonce, rid) {
     let pbinder = new PBinder.PromiseBinder();
     let r = pbinder.return(async () => {
       await this.switch_net();
       let rx = await pbinder.bind("Verify",
-        this.bridge.methods.verify(l2account, calldata, nonce, rid).send()
+        this.bridge.methods.verify(l2account, calldata,
+            verifydata, vid, nonce, rid).send()
       );
       return rx;
     });
@@ -118,12 +117,6 @@ class Bridge {
       return rx;
     });
     return r;
-  }
-
-  async balanceOf (l2account, token_id) {
-    await this.switch_net();
-    let balance = await this.bridge.methods.balanceOf(l2account, token_id).call();
-    return balance;
   }
 }
 

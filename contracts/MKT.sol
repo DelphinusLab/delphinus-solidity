@@ -14,8 +14,8 @@ struct TokenInfo {
 
 struct BridgeInfo {
     uint128 chain_id;
-    uint128 amount_token;
-    uint128 amount_pool;
-    uint256 owner;
+    uint32 amount_token;
+    uint32 amount_pool;
+    address owner;
     uint256 merkle_root;
 }

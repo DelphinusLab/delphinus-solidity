@@ -2,6 +2,7 @@
 pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "./Verifier.sol";
+import "./Transaction.sol";
 import "./MKT.sol";
 contract Bridge {
 
@@ -11,6 +12,7 @@ contract Bridge {
 
   BridgeInfo _bridge_info;
 
+  Transaction[] private transactions;
   Verifier[] private verifiers;
 
   TokenInfo[] private _tokens;
@@ -26,17 +28,17 @@ contract Bridge {
   }
 
   /* Make sure token index is sain */
-  function token_index_check(uint128 tidx) private {
+  function token_index_check(uint128 tidx) private view {
     require(tidx < _bridge_info.amount_token, "OutOfBound: Token Index");
   }
 
   /* Make sure token index is sain and return token uid */
-  function get_token_uid(uint128 tidx) private {
+  function get_token_uid(uint128 tidx) private view returns (uint256){
     token_index_check(tidx);
     return _tokens[tidx].token_uid;
   }
 
-  function ensure_admin() private {
+  function ensure_admin() private view {
     require(_bridge_info.owner == msg.sender, "Authority: Require Admin");
   }
 
@@ -44,10 +46,10 @@ contract Bridge {
     return _bridge_info;
   }
 
-  function addToken(uint256 token) private returns (uint128) {
+  function addToken(uint256 token) private returns (uint32) {
     ensure_admin();
-    uint cursor = _tokens.length;
-    _tokens.push[TokenInfo(token)];
+    uint32 cursor = uint32(_tokens.length);
+    _tokens.push(TokenInfo(token));
     _bridge_info.amount_token = cursor;
     return cursor;
   }
@@ -72,10 +74,16 @@ contract Bridge {
     }
   }
 
-  function add_verifier(address verifier) public returns (uint) {
-    uint cursor = verifiers.length;
-    verifiers.push(Verifier(verifier));
+  function add_transaction(address txaddr) public returns (uint) {
+    uint cursor = transactions.length;
+    transactions.push(Transaction(txaddr));
     return cursor;
+  }
+
+  function _get_transaction(uint256 call_info) private view returns(Transaction) {
+    bytes memory info = abi.encodePacked(call_info);
+    require(transactions.length > uint8(info[0]), "Call Info index out of bound");
+    return transactions[uint8(info[0])];
   }
 
   function _get_verifier(uint256 call_info) private view returns(Verifier) {
@@ -104,11 +112,6 @@ contract Bridge {
     uint256 balance = underlying_token.balanceOf(msg.sender);
     require(balance >= amount, "Insuffecient Balance");
     underlying_token.transferFrom(msg.sender, address(this), amount);
-    /*
-     * done via l2 broadcast
-     * uint256 token_id = _l1_address(token);
-     * _balances[token_id][l2account] += amount;
-     */
     _nonce[l2account] += 1;
     emit Deposit(_l1_address(token), l2account, amount , _nonce[l2account]);
   }
@@ -127,10 +130,10 @@ contract Bridge {
       uint delta_code = deltas[cursor];
       if (delta_code == _WITHDRAW) {
         require(deltas.length >= cursor + 4, "Withdraw: Insufficient arg number");
-        _withdraw(deltas[cursor+1], deltas[cursor+2], deltas[cursor+3]);
+        _withdraw(uint128(deltas[cursor+1]), uint128(deltas[cursor+2]), deltas[cursor+3]);
         cursor = cursor + 4;
       } else {
-        require(1==2, "SideEffect: UnknownSideEffectCode");
+        revert("SideEffect: UnknownSideEffectCode");
       }
     }
   }
@@ -139,28 +142,38 @@ contract Bridge {
    * @dev Data encodes the delta functions with there verification in reverse order
    * data = opcode args; opcode' args'; ....
    */
-  function verify(uint256 l2account, uint256[] memory data,
-    uint256 nonce, uint256 rid) public {
+  function verify(uint256 l2account,
+      uint256[] memory tx_data,
+      uint256[] memory verify_data, // [8]: old root, [9]: new root, [10]: sha
+      uint256 vid,
+      uint256 nonce,
+      uint256 rid
+    ) public {
     //require(_nonce[l2account] == nonce, "Verify: Nonce does not match!");
-    require (data.length != 0, "Verify: Insufficient delta operations");
-    uint cursor = 0;
+    require (tx_data.length != 0, "Verify: Insufficient delta operations");
     uint256 merkle_root = _bridge_info.merkle_root;
-    while (cursor < data.length) {
-      uint256 op_code = data[cursor];
-      cursor += 1;
-      Verifier verifier = _get_verifier(op_code);
-      (uint256[] memory update, uint256 mr) = verifier.verify(data, cursor);
-      merkle_root = mr;
-      _update_state(update);
-      cursor += verifier.getVerifierInfo().nbArgs;
-    }
-    _bridge_info.merkle_root = merkle_root;
-    emit SwapAck(l2account, rid);
-  }
+    uint256 sha_pack = uint256(sha256(abi.encodePacked(tx_data)));
+    uint256 new_merkle_root = verify_data[9];
+    require(merkle_root == verify_data[8], "Inconstant: Merkle root dismatch");
+    require(sha_pack == verify_data[10], "Inconstant: Sha data inconsistant");
 
-  function getVerifierInfo(uint index) public view returns (VerifierInfo memory) {
-    Verifier verifier = verifiers[index];
-    return verifier.getVerifierInfo();
+    /* Perform zksnark check */
+    Verifier verifier = _get_verifier(vid);
+    bool v = verifier.verifyTx(verify_data);
+    require(v == true, "ZKVerify: zksnark check failed");
+
+    /* Perform transactions (withdraw ...) and update merkle root */
+    uint cursor = 0;
+    while (cursor < tx_data.length) {
+      uint256 op_code = tx_data[cursor];
+      cursor += 1;
+      Transaction transaction = _get_transaction(op_code);
+      uint256[] memory update = transaction.sideEffect(tx_data, cursor);
+      _update_state(update);
+      cursor += _TX_NUM_ARGS;
+    }
+    _bridge_info.merkle_root = new_merkle_root;
+    emit SwapAck(l2account, rid);
   }
 
 }

@@ -58,10 +58,10 @@ module.exports = {
     device_id: "16",
   },
   bsctestnet: {
-    provider: (onError) => new HDWalletProvider(priv2, ws_provider("wss://bsc.getblock.io/testnet/?api_key=182a8e0d-c03a-44ac-b856-41d2e47801db", onError)),
+    provider: (onError) => new HDWalletProvider(priv2, ws_provider("wss://bsc.getblock.io/testnet/?api_key="+secrets.getblock_key, onError)),
     mongodb_url: "mongodb://localhost:27017",
-    rpc_source: "https://bsc.getblock.io/testnet/?api_key=182a8e0d-c03a-44ac-b856-41d2e47801db",
-    web3_source: "wss://bsc.getblock.io/testnet/?api_key=182a8e0d-c03a-44ac-b856-41d2e47801db",
+    rpc_source: "https://bsc.getblock.io/testnet/?api_key=" + secrets.getblock_key,
+    web3_source: "wss://bsc.getblock.io/testnet/?api_key=" + secrets.get_block_key,
     monitor_account: "0x6ea23f9b85ba97890a87b83882696f64ad09f5b6",
     contracts: contracts,
     device_id: "97",

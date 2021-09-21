@@ -33,14 +33,6 @@ async function test_main(config_name) {
 
     console.log("test deposit...");
     await bridge.deposit(token_address, 0x1c, test_config.l2account);
-
-    //console.log("test withdraw...");
-    //rx = await bridge.methods.withdraw(l2account, token_address, 0x4c, l1account).send();
-    //balance = await bridge.methods.balanceOf(l2account, token_id).call();
-    //console.log("balance in bridge is", balance);
-
-    //console.log("test swap...");
-    //rx = await bridge.methods.swap(l2account, token_id, token_id,  0x10);
   } catch (err) {
     console.log("%s", err);
   }
