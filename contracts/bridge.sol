@@ -25,6 +25,7 @@ contract Bridge {
   constructor(uint32 chain_id) {
     _bridge_info.chain_id = chain_id;
     _bridge_info.owner = msg.sender;
+    _bridge_info.merkle_root = 0x151399c724e17408a7a43cdadba2fc000da9339c56e4d49c6cdee6c4356fbc68;
   }
 
   /* Make sure token index is sain */
@@ -74,11 +75,20 @@ contract Bridge {
     }
   }
 
-  function add_transaction(address txaddr) public returns (uint) {
+  function addTransaction(address txaddr) public returns (uint) {
+    ensure_admin();
     uint cursor = transactions.length;
     transactions.push(Transaction(txaddr));
     return cursor;
   }
+
+  function addVerifier(address vaddr) public returns (uint) {
+    ensure_admin();
+    uint cursor = verifiers.length;
+    verifiers.push(Verifier(vaddr));
+    return cursor;
+  }
+
 
   function _get_transaction(uint256 call_info) private view returns(Transaction) {
     bytes memory info = abi.encodePacked(call_info);
