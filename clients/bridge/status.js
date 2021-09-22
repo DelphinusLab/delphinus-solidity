@@ -26,8 +26,8 @@ async function test_main(config_name) {
     let bridge_address = bridge.bridge.options.address;
     let balance = await token.methods.balanceOf(bridge.account).call();
     console.log("balance is", balance);
-    balance = await bridge.balanceOf(test_config.l2account, token_address);
-    console.log("balance in bridge is", balance);
+    let info = await bridge.getBridgeInfo();
+    console.log("bridge info is", info);
   } catch (err) {
     console.log("%s", err);
   }

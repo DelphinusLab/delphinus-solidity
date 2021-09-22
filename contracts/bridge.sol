@@ -47,17 +47,21 @@ contract Bridge {
     return _bridge_info;
   }
 
-  function addToken(uint256 token) private returns (uint32) {
+  function addToken(uint256 token) public returns (uint32) {
     ensure_admin();
     uint32 cursor = uint32(_tokens.length);
     _tokens.push(TokenInfo(token));
-    _bridge_info.amount_token = cursor;
+    _bridge_info.amount_token = cursor + 1;
     return cursor;
   }
 
   function getToken(uint128 tidx) public view returns (TokenInfo memory) {
     token_index_check(tidx);
     return _tokens[tidx];
+  }
+
+  function allTokens() public view returns (TokenInfo[] memory) {
+    return _tokens;
   }
 
   function _withdraw(uint128 tidx, uint128 amount, uint256 l1recipent) public {

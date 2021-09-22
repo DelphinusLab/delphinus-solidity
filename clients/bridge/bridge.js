@@ -40,7 +40,7 @@ class Bridge {
   async switch_net() {
     let id = await this.web3.eth.net.getId();
     let id_hex = "0x" + (new BigNumber(id)).toString(16);
-    console.log("switch", id_hex, this.chain_hex_id);
+    console.log("switch chain", id_hex, this.chain_hex_id);
     if (id_hex != this.chain_hex_id && this.client_mode == true) {
       try {
         await this.web3.currentProvider.request({
@@ -75,16 +75,22 @@ class Bridge {
     return true;
   }
 
-  async getBridgeInfo (idx) {
+  async getBridgeInfo () {
     await this.switch_net();
-    let vinfo = await this.bridge.methods.getBridgeInfo(idx).call();
+    let vinfo = await this.bridge.methods.getBridgeInfo().call();
     return vinfo;
   }
 
-  async addToken(tokeid) {
+  async allTokens () {
     await this.switch_net();
-    let token_id = await this.bridge.methods.addToken(token).send();
-    return token_id;
+    let vinfo = await this.bridge.methods.allTokens().call();
+    return vinfo;
+  }
+
+  async addToken(tokenid) {
+    await this.switch_net();
+    let tx = await this.bridge.methods.addToken(tokenid).send();
+    return tx;
   }
 
   verify(l2account, calldata, verifydata, vid, nonce, rid) {
