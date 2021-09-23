@@ -26,6 +26,10 @@ contract Bridge {
     _bridge_info.chain_id = chain_id;
     _bridge_info.owner = msg.sender;
     _bridge_info.merkle_root = 0x151399c724e17408a7a43cdadba2fc000da9339c56e4d49c6cdee6c4356fbc68;
+    addToken(0);
+    addToken(0);
+    addToken(0);
+    addToken(0);
   }
 
   /* Make sure token index is sain */
@@ -167,9 +171,9 @@ contract Bridge {
     require (tx_data.length != 0, "Verify: Insufficient delta operations");
     uint256 merkle_root = _bridge_info.merkle_root;
     uint256 sha_pack = uint256(sha256(abi.encodePacked(tx_data)));
-    uint256 new_merkle_root = verify_data[9];
-    require(merkle_root == verify_data[8], "Inconstant: Merkle root dismatch");
-    require(sha_pack == verify_data[10], "Inconstant: Sha data inconsistant");
+    uint256 new_merkle_root = verify_data[11];
+    require(merkle_root == verify_data[10], "Inconstant: Merkle root dismatch");
+    require(sha_pack == verify_data[8], "Inconstant: Sha data inconsistant");
 
     /* Perform zksnark check */
     Verifier verifier = _get_verifier(vid);
