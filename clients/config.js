@@ -48,6 +48,7 @@ module.exports = {
     monitor_account: "0x6f6ef6dfe681b6593ddf27da3bfde22083aef88b",
     contracts: contracts,
     device_id: "15",
+    chain_name: "localtestnet1",
   },
   localtestnet2: {
     provider: () => "ws://127.0.0.1:8746",
@@ -56,6 +57,7 @@ module.exports = {
     monitor_account: "0x6f6ef6dfe681b6593ddf27da3bfde22083aef88b",
     contracts: contracts,
     device_id: "16",
+    chain_name: "localtestnet2",
   },
   bsctestnet: {
     provider: (onError) => new HDWalletProvider(priv2, ws_provider("wss://bsc.getblock.io/testnet/?api_key="+secrets.getblock_key, onError)),

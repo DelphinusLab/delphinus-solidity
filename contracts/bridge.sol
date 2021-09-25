@@ -170,10 +170,11 @@ contract Bridge {
     //require(_nonce[l2account] == nonce, "Verify: Nonce does not match!");
     require (tx_data.length != 0, "Verify: Insufficient delta operations");
     uint256 merkle_root = _bridge_info.merkle_root;
-    uint256 sha_pack = uint256(sha256(abi.encodePacked(tx_data)));
+    uint256 sha_pack = uint256(sha256(abi.encodePacked(uint256(0), tx_data)));
+
     uint256 new_merkle_root = verify_data[11];
     require(merkle_root == verify_data[10], "Inconstant: Merkle root dismatch");
-    require(sha_pack == verify_data[8], "Inconstant: Sha data inconsistant");
+    require(sha_pack == (verify_data[8] << 128) + verify_data[9], "Inconstant: Sha data inconsistant");
 
     /* Perform zksnark check */
     Verifier verifier = _get_verifier(vid);
