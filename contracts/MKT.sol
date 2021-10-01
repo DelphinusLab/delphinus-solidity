@@ -18,4 +18,5 @@ struct BridgeInfo {
     uint32 amount_pool;
     address owner;
     uint256 merkle_root;
+    uint256 rid;
 }

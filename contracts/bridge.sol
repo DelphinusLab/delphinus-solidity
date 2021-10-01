@@ -162,13 +162,15 @@ contract Bridge {
    */
   function verify(uint256 l2account,
       uint256[] memory tx_data,
-      uint256[] memory verify_data, // [8]: old root, [9]: new root, [10]: sha
+      uint256[] memory verify_data, // [8]: old root, [9]: new root, [10]: sha_low, [11]: sha_high
       uint256 vid,
       uint256 nonce,
       uint256 rid
     ) public {
     //require(_nonce[l2account] == nonce, "Verify: Nonce does not match!");
     require (tx_data.length != 0, "Verify: Insufficient delta operations");
+    require (_bridge_info.rid == rid-1, "Verify: Unexpected Request Id");
+    _bridge_info.rid += 1;
     uint256 merkle_root = _bridge_info.merkle_root;
     uint256 sha_pack = uint256(sha256(abi.encodePacked(uint256(0), tx_data)));
 
