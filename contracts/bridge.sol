@@ -100,14 +100,14 @@ contract Bridge {
 
   function _get_transaction(uint256 call_info) private view returns(Transaction) {
     bytes memory info = abi.encodePacked(call_info);
-    require(transactions.length > uint8(info[0]), "Call Info index out of bound");
-    return transactions[uint8(info[0])];
+    require(transactions.length > uint8(info[31]), "Call Info index out of bound");
+    return transactions[uint8(info[31])];
   }
 
   function _get_verifier(uint256 call_info) private view returns(Verifier) {
     bytes memory info = abi.encodePacked(call_info);
-    require(verifiers.length > uint8(info[0]), "Call Info index out of bound");
-    return verifiers[uint8(info[0])];
+    require(verifiers.length > uint8(info[31]), "Call Info index out of bound");
+    return verifiers[uint8(info[31])];
   }
 
   /* encode the l1 address into token_uid */
