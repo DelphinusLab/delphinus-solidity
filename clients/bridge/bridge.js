@@ -5,10 +5,52 @@ const PBinder= require("web3subscriber/pbinder")
 const ERC20 = require("../../build/contracts/ERC20.json");
 const VERIFIER = require("../../build/contracts/Verifier.json");
 
+const L1ADDR_BITS = 160;
+const Tokens = require("./tokenlist");
+
+function hexcmp(x, y) {
+  const xx = new BigNumber(x,'hex');
+  const yy = new BigNumber(y,'hex');
+  return xx.eq(yy);
+}
+
 function encode_l1address(address_hexstr, chex) {
   let c = new BigNumber(chex + "0000000000000000000000000000000000000000",'hex');
   let a = new BigNumber(address_hexstr,16);
   return c.add(a);
+}
+
+/* chain_id:dec * address:hex
+ */
+function decode_l1address(l1address) {
+  let uid = new BigNumber(l1address);
+  let chain_id = uid.shrn(L1ADDR_BITS);
+  let address_hex = uid.sub(chain_id.shln(L1ADDR_BITS)).toString(16);
+  let chain_hex= chain_id.toString(10);
+  return [chain_hex, address_hex];
+}
+
+function extract_chain_info(all_tokens) {
+  let valid_tokens = all_tokens.filter(t=>t.token_uid != '0');
+  valid_tokens = valid_tokens.map(token => {
+      let [cid, address] = decode_l1address(token.token_uid);
+      return {
+        chainId: cid,
+        name: Tokens.tokenInfo.find(x=>
+            hexcmp(x.address,address)
+            && x.chainId == x.chainId
+            && x.chainId == cid
+        )?.name || "unknown",
+        address: address,
+      }
+  });
+  let chain_list = Array.from(new Set(valid_tokens.map(x => x.chainId)));
+  let token_list = chain_list.map(chain_id => ({
+    chainId: chain_id,
+    name: Tokens.chainInfo[chain_id],
+    tokens: valid_tokens.filter(x => x.chainId == chain_id)
+  }));
+  return token_list;
 }
 
 class Bridge {
@@ -26,6 +68,27 @@ class Bridge {
     await this.switch_net();
     this.bridge = Client.getContract(web3, config, bridge_info, account);
     console.log(`init_bridge on %s`, this.chain_name);
+    const bi = await this.getBridgeInfo();
+    const tokens = await this.allTokens();
+    this.metadata = {
+        bridgeInfo: bi,
+        tokens: tokens,
+        chainInfo: extract_chain_info(tokens)
+    }
+  }
+
+  getTokenInfo(idx) {
+    const token = this.metadata.tokens[idx];
+    let [cid, addr] = decode_l1address(token.token_uid);
+    return {
+      chainId: cid,
+      chainName: Tokens.chainInfo[cid],
+      tokenAddress: addr,
+      tokenName: Tokens.tokenInfo.find(x=>
+            hexcmp(x.address,addr)
+            && x.chainId == cid
+        )?.name || "unknown",
+    }
   }
 
 
@@ -93,6 +156,10 @@ class Bridge {
     return tx;
   }
 
+  getMetaData() {
+    return this.metadata;
+  }
+
   verify(l2account, calldata, verifydata, vid, nonce, rid) {
     let pbinder = new PBinder.PromiseBinder();
     let r = pbinder.return(async () => {
@@ -139,4 +206,5 @@ async function getBridgeClient(config, bridge_info, client_mode) {
 module.exports = {
   getBridgeClient: getBridgeClient,
   encodeL1Address: encode_l1address,
+  decodeL1Address: decode_l1address,
 }
