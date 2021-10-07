@@ -41,6 +41,9 @@ function extract_chain_info(all_tokens) {
             && x.chainId == x.chainId
             && x.chainId == cid
         )?.name || "unknown",
+        index: all_tokens.findIndex(x=>
+            x.token_uid == token.token_uid
+        ),
         address: address,
       }
   });
