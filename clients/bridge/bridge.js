@@ -47,7 +47,7 @@ function extract_chain_info(all_tokens) {
   let chain_list = Array.from(new Set(valid_tokens.map(x => x.chainId)));
   let token_list = chain_list.map(chain_id => ({
     chainId: chain_id,
-    name: Tokens.chainInfo[chain_id],
+    chainName: Tokens.chainInfo[chain_id],
     tokens: valid_tokens.filter(x => x.chainId == chain_id)
   }));
   return token_list;
