@@ -6,6 +6,7 @@ const Swap = artifacts.require("Swap");
 const Retrive = artifacts.require("Retrive");
 const AddPool = artifacts.require("AddPool");
 const DummyVerifier = artifacts.require("DummyVerifier");
+const ZKPVerifier = artifacts.require("ZKPVerifier");
 
 module.exports = async function(deployer) {
   id = await web3.eth.net.getId();
@@ -32,8 +33,13 @@ module.exports = async function(deployer) {
   await deployer.deploy(Bridge, id);
   bridge = await Bridge.deployed();
 
+  /*
   await deployer.deploy(DummyVerifier, id);
   verifier = await DummyVerifier.deployed();
+  */
+
+  await deployer.deploy(ZKPVerifier, id);
+  verifier = await ZKPVerifier.deployed();
 
   var tx = await bridge.addTransaction(deposit.address);
   tx = await bridge.addTransaction(withdraw.address);

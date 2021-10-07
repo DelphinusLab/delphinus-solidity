@@ -13,17 +13,17 @@ const chain_info = {
 const token_info = [
   {
     chainId: "15",
-    address:TokenInfo.networks["15"].address.replace("0x", ""),
+    address:TokenInfo.networks["15"]?.address.replace("0x", ""),
     name:"tToken"
   },
   {
     chainId: "15",
-    address:RioInfo.networks["15"].address.replace("0x", ""),
+    address:RioInfo.networks["15"]?.address.replace("0x", ""),
     name:"rio"
   },
   {
     chainId: "16",
-    address:TokenInfo.networks["16"].address.replace("0x", ""),
+    address:TokenInfo.networks["16"]?.address.replace("0x", ""),
     name:"sToken",
   },
   {

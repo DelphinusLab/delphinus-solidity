@@ -4,26 +4,17 @@ const EthConfig = require("../config");
 const TokenInfo = require("../../build/contracts/Token.json");
 const BridgeABI = require("./abi");
 const BridgeHelper = require("./bridge");
-const BN = Web3.utils.BN;
 const fs = require("fs");
 const path = require("path");
 
 const Tokens = require("./tokenlist");
 
 function crunch_tokens() {
-  let token_ids = [];
-  for (chain of Tokens.chainList) {
-    let chain_hex = new BN(chain.chainId).toString(16);
-    if (chain.enable == true) {
-      for (token of chain.tokens) {
-        console.log(token.address);
-        console.log(chain_hex);
-        let token_uid = BridgeHelper.encodeL1Address(token.address, chain_hex);
-        token_ids.push(token_uid);
-      }
-    }
-  }
-  return token_ids;
+  return Tokens.tokenInfo
+    .filter((x) => x.address)
+    .map((x) =>
+      BridgeHelper.encodeL1Address(x.address, parseInt(x.chainId).toString(16))
+    );
 }
 
 const test_config = {
