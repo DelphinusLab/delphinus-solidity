@@ -16,6 +16,7 @@ contract Bridge {
   Verifier[] private verifiers;
 
   TokenInfo[] private _tokens;
+  mapping (uint256 => bool) private _tmap;
 
   address private _owner;
 
@@ -56,6 +57,10 @@ contract Bridge {
     uint32 cursor = uint32(_tokens.length);
     _tokens.push(TokenInfo(token));
     _bridge_info.amount_token = cursor + 1;
+    require(_tmap[token] == false, "AddToken: Token Already Exist");
+    if (token != 0) {
+        _tmap[token] = true;
+    }
     return cursor;
   }
 
@@ -127,6 +132,8 @@ contract Bridge {
 
   function deposit(address token, uint256 amount, uint256 l2account) public {
     IERC20 underlying_token = IERC20(token);
+    uint256 token_uid = _l1_address(token);
+    require(_tmap[token_uid] == true, "Deposit: Untracked Token");
     uint256 balance = underlying_token.balanceOf(msg.sender);
     require(balance >= amount, "Insuffecient Balance");
     underlying_token.transferFrom(msg.sender, address(this), amount);
