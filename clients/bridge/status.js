@@ -28,6 +28,7 @@ async function test_main(config_name) {
     console.log("balance is", balance);
     let metadata = bridge.getMetaData();
     console.log("metadata:", metadata);
+    console.log(metadata.bridgeInfo.rid);
   } catch (err) {
     console.log("%s", err);
   }

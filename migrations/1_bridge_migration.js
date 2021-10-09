@@ -6,7 +6,7 @@ const Swap = artifacts.require("Swap");
 const Retrive = artifacts.require("Retrive");
 const AddPool = artifacts.require("AddPool");
 const DummyVerifier = artifacts.require("DummyVerifier");
-const ZKPVerifier = artifacts.require("ZKPVerifier");
+const ZKPVerifier = artifacts.require("GrothVerifier");
 
 module.exports = async function(deployer) {
   id = await web3.eth.net.getId();

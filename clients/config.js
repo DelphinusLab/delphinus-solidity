@@ -61,15 +61,19 @@ module.exports = {
   },
   bsctestnet: {
     provider: (onError) => new HDWalletProvider(priv2, ws_provider("wss://bsc.getblock.io/testnet/?api_key="+secrets.getblock_key, onError)),
+    //provider: (onError) => new HDWalletProvider(secrets.priv_key, ws_provider("wss://bsc.getblock.io/testnet/?api_key="+secrets.getblock_key, onError)),
     mongodb_url: "mongodb://localhost:27017",
     rpc_source: "https://bsc.getblock.io/testnet/?api_key=" + secrets.getblock_key,
     web3_source: "wss://bsc.getblock.io/testnet/?api_key=" + secrets.get_block_key,
-    monitor_account: "0x6ea23f9b85ba97890a87b83882696f64ad09f5b6",
+    //monitor_account: "0x6ea23f9b85ba97890a87b83882696f64ad09f5b6",
+    monitor_account: "0x6f6ef6dfe681b6593ddf27da3bfde22083aef88b",
     contracts: contracts,
     device_id: "97",
     chain_name: "bsctestnet",
   },
   ropsten: {
+    //provider: (onError) => new HDWalletProvider(secrets.priv_key, ws_provider(
+    //  "wss://ropsten.infura.io/ws/v3/" + secrets.infura_id, onError)),
     provider: (onError) => new HDWalletProvider(secrets.priv_key, ws_provider(
       "wss://ropsten.infura.io/ws/v3/" + secrets.infura_id, onError)),
     mongodb_url: "mongodb://localhost:27017",

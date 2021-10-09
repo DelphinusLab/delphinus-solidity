@@ -14,7 +14,7 @@ async function test_snark(config_name) {
   let web3 = await Client.initWeb3(config, false);
   let snark = Client.getContract(web3, config, Groth, account);
   try {
-    let test = await snark.methods.verifyTx(snarkproof.proof.a,
+    let test = await snark.methods.verifyDelphinusTx(snarkproof.proof.a,
       snarkproof.proof.b,
       snarkproof.proof.c,
       snarkproof.inputs

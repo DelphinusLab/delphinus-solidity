@@ -13,7 +13,7 @@ contract Bridge {
   BridgeInfo _bridge_info;
 
   Transaction[] private transactions;
-  Verifier[] private verifiers;
+  DelphinusVerifier[] private verifiers;
 
   TokenInfo[] private _tokens;
   mapping (uint256 => bool) private _tmap;
@@ -53,7 +53,7 @@ contract Bridge {
   }
 
   function addToken(uint256 token) public returns (uint32) {
-    ensure_admin();
+    //ensure_admin();
     uint32 cursor = uint32(_tokens.length);
     _tokens.push(TokenInfo(token));
     _bridge_info.amount_token = cursor + 1;
@@ -98,7 +98,7 @@ contract Bridge {
   function addVerifier(address vaddr) public returns (uint) {
     ensure_admin();
     uint cursor = verifiers.length;
-    verifiers.push(Verifier(vaddr));
+    verifiers.push(DelphinusVerifier(vaddr));
     return cursor;
   }
 
@@ -109,7 +109,7 @@ contract Bridge {
     return transactions[uint8(info[31])];
   }
 
-  function _get_verifier(uint256 call_info) private view returns(Verifier) {
+  function _get_verifier(uint256 call_info) private view returns(DelphinusVerifier) {
     bytes memory info = abi.encodePacked(call_info);
     require(verifiers.length > uint8(info[31]), "Call Info index out of bound");
     return verifiers[uint8(info[31])];
@@ -186,8 +186,8 @@ contract Bridge {
     require(sha_pack == (verify_data[8] << 128) + verify_data[9], "Inconstant: Sha data inconsistant");
 
     /* Perform zksnark check */
-    Verifier verifier = _get_verifier(vid);
-    bool v = verifier.verifyTx(verify_data);
+    DelphinusVerifier verifier = _get_verifier(vid);
+    bool v = verifier.verifyDelphinusTx(verify_data);
     require(v == true, "ZKVerify: zksnark check failed");
 
     /* Perform transactions (withdraw ...) and update merkle root */

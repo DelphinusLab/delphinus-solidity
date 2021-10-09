@@ -1,10 +1,9 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
-import "./Verifier.sol";
 import "./ZKPVerifier.sol";
-contract GrothVerifier is ZKPVerifier {
-  function verifyTx(uint256[] calldata input)
-      public view override returns (bool)
+contract GrothVerifier is Verifier {
+  function verifyDelphinusTx(uint256[] calldata input)
+      public view returns (bool)
   {
       require(input.length == 12, "ZKPVerifier: input length is invalid");
 
