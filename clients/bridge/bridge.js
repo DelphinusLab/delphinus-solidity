@@ -26,6 +26,9 @@ function decode_l1address(l1address) {
   let uid = new BigNumber(l1address);
   let chain_id = uid.shrn(L1ADDR_BITS);
   let address_hex = uid.sub(chain_id.shln(L1ADDR_BITS)).toString(16);
+  //address is 160 thus we need to padding '0' at the begining
+  let prefix = Array(40 - address_hex.length + 1).join('0');
+  address_hex = prefix + address_hex;
   let chain_hex= chain_id.toString(10);
   return [chain_hex, address_hex];
 }
