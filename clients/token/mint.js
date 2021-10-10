@@ -12,10 +12,11 @@ function test_mint(config_name) {
     config = Config[config_name];
     let account = config.monitor_account;
     let web3 = await Client.initWeb3(config, false);
-    let token= Client.getContract(web3, config, TokenInfo, account);
+    let token = Client.getContract(web3, config, TokenInfo, account);
+    await web3.eth.net.getId();
     try {
       console.log("mint token:", token.options.address);
-      var balance = await Client.getBalance(token, account);
+      var balance = await token.methods.balanceOf(account).call();
       console.log("balance before mint:", balance);
       await pbinder.bind("mint", token.methods.mint(0x100).send());
       balance = await Client.getBalance(token, account);
