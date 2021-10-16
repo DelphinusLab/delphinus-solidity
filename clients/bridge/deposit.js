@@ -9,8 +9,7 @@ const test_config = {
   l2account: "0x7a50c8fa50a39bd48dfd8053ebff44ba3da45dd8c3e90a5fec9fd73a4595251b",
 }
 
-async function test_main(config_name) {
-  console.log("start calling");
+async function test_deposit(config_name) {
   config = EthConfig[config_name];
   try {
 
@@ -26,16 +25,18 @@ async function test_main(config_name) {
     let bridge_address = bridge.bridge.options.address;
 
     let balance = await token.methods.balanceOf(bridge.account).call();
-    console.log("balance is", balance);
     console.log("token id is", token_id.toString(16));
-    balance = await bridge.balanceOf(test_config.l2account, token_address);
-    console.log("balance in bridge is", balance);
+    console.log("staking balance is", balance);
 
     console.log("test deposit...");
     await bridge.deposit(token_address, 0x1c, test_config.l2account);
+    balance = await token.methods.balanceOf(bridge.account).call();
+    console.log("staking balance is", balance);
   } catch (err) {
     console.log("%s", err);
   }
 }
 
-test_main(process.argv[2]).then(v => console.log("test done!"));
+test_deposit(process.argv[2]).then(v =>
+    process.exit()
+);

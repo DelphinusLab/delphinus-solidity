@@ -32,11 +32,8 @@ const options = {
 };
 
 
-const ws_provider = (url, onError) => {
+const ws_provider = (url) => {
     let p = new Web3WsProvider(url, options);
-    //let p = new Web3HttpProvider(url, request_kwargs={'timeout': 60});
-    p.on("error", onError.resetter);
-    p.on("connect", () => console.log("%s connected", url));
     return p;
 }
 
@@ -60,8 +57,8 @@ module.exports = {
     chain_name: "localtestnet2",
   },
   bsctestnet: {
-    provider: (onError) => new HDWalletProvider(priv2, ws_provider("wss://bsc.getblock.io/testnet/?api_key="+secrets.getblock_key, onError)),
-    //provider: (onError) => new HDWalletProvider(secrets.priv_key, ws_provider("wss://bsc.getblock.io/testnet/?api_key="+secrets.getblock_key, onError)),
+    provider: () => new HDWalletProvider(priv2, ws_provider("wss://bsc.getblock.io/testnet/?api_key="+secrets.getblock_key, onError)),
+    //provider: () => new HDWalletProvider(secrets.priv_key, ws_provider("wss://bsc.getblock.io/testnet/?api_key="+secrets.getblock_key, onError)),
     mongodb_url: "mongodb://localhost:27017",
     rpc_source: "https://bsc.getblock.io/testnet/?api_key=" + secrets.getblock_key,
     web3_source: "wss://bsc.getblock.io/testnet/?api_key=" + secrets.getblock_key,
@@ -72,10 +69,10 @@ module.exports = {
     chain_name: "bsctestnet",
   },
   ropsten: {
-    //provider: (onError) => new HDWalletProvider(secrets.priv_key, ws_provider(
-    //  "wss://ropsten.infura.io/ws/v3/" + secrets.infura_id, onError)),
-    provider: (onError) => new HDWalletProvider(secrets.priv_key, ws_provider(
-      "wss://ropsten.infura.io/ws/v3/" + secrets.infura_id, onError)),
+    //provider: () => new HDWalletProvider(secrets.priv_key, ws_provider(
+    //  "wss://ropsten.infura.io/ws/v3/" + secrets.infura_id)),
+    provider: () => new HDWalletProvider(secrets.priv_key, ws_provider(
+      "wss://ropsten.infura.io/ws/v3/" + secrets.infura_id)),
     mongodb_url: "mongodb://localhost:27017",
     rpc_source: "https://ropsten.infura.io/v3/" + secrets.infura_id,
     web3_source: "wss://ropsten.infura.io/ws/v3/" + secrets.infura_id,
