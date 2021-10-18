@@ -18,7 +18,7 @@ function test_mint(config_name) {
       console.log("mint token:", token.options.address);
       var balance = await token.methods.balanceOf(account).call();
       console.log("balance before mint:", balance);
-      await pbinder.bind("mint", token.methods.mint(0x100).send());
+      await pbinder.bind("mint", token.methods.mint(0x10000000).send());
       balance = await Client.getBalance(token, account);
       console.log("balance after mint", balance);
     } catch (err) {

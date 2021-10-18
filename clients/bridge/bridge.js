@@ -2,7 +2,7 @@ const Web3 = require("web3")
 const BigNumber = Web3.utils.BN;
 const Client = require("web3subscriber/client")
 const PBinder= require("web3subscriber/pbinder")
-const ERC20 = require("../../build/contracts/ERC20.json");
+const ERC20 = require("../../build/contracts/IERC20.json");
 const VERIFIER = require("../../build/contracts/Verifier.json");
 
 const L1ADDR_BITS = 160;
