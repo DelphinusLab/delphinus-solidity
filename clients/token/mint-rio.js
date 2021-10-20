@@ -1,0 +1,33 @@
+const Web3 = require("web3")
+const FileSys = require("fs")
+const Config = require("../config")
+const Client = require("web3subscriber/client")
+const PBinder= require("web3subscriber/pbinder")
+//const TokenInfo = require("../../build/contracts/Token.json")
+const TokenInfo = require("../../build/contracts/Rio.json")
+
+function test_mint(config_name) {
+  let pbinder = new PBinder.PromiseBinder();
+  let r = pbinder.return (async () => {
+    config = Config[config_name];
+    let account = config.monitor_account;
+    let web3 = await Client.initWeb3(config, false);
+    let token = Client.getContract(web3, config, TokenInfo, account);
+    await web3.eth.net.getId();
+    try {
+      console.log("mint token:", token.options.address);
+      var balance = await token.methods.balanceOf(account).call();
+      console.log("balance before mint:", balance);
+      await pbinder.bind("mint", token.methods.mint(0x10000000000000).send());
+      balance = await Client.getBalance(token, account);
+      console.log("balance after mint", balance);
+    } catch (err) {
+      console.log("%s", err);
+    }
+  });
+  return r;
+}
+
+/* .once("transactionHash",hash => console.log(hash) */
+console.log(Config[process.argv[2]]);
+test_mint(process.argv[2]).when("mint","transactionHash", hash=>console.log(hash)).then(v => {console.log("test done!"); process.exit();});

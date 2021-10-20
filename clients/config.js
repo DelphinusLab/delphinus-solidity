@@ -9,7 +9,7 @@ const priv2 = "0xf6392ba9b8cb91490a3e06fe141d5140df89e73931b0e3570bad0de7ef1f25c
 const Web3WsProvider = require('web3-providers-ws');
 const Web3HttpProvider = require('web3-providers-http');
 
-const options = {
+const ws_options = {
     timeout: 30000, // ms
 
      clientConfig: {
@@ -31,9 +31,21 @@ const options = {
     }
 };
 
+const http_options = {
+        keepAlive: true,
+        timeout: 20000, // milliseconds,
+        headers: [{name: 'Access-Control-Allow-Origin', value: '*'}],
+        withCredentials: false
+};
+
 
 const ws_provider = (url) => {
-    let p = new Web3WsProvider(url, options);
+    let p = new Web3WsProvider(url, ws_options);
+    return p;
+}
+
+const http_provider = (url) => {
+    let p = new Web3HttpProvider(url, http_options);
     return p;
 }
 
@@ -57,10 +69,10 @@ module.exports = {
     chain_name: "localtestnet2",
   },
   bsctestnet: {
-    provider: () => new HDWalletProvider(secrets.priv_key, ws_provider("wss://bsc.getblock.io/testnet/?api_key="+secrets.getblock_key)),
-    monitor_account: "0x6f6ef6dfe681b6593ddf27da3bfde22083aef88b",
-    //provider: () => new HDWalletProvider(priv2, ws_provider("wss://bsc.getblock.io/testnet/?api_key="+secrets.getblock_key)),
-    //monitor_account: "0x6ea23f9b85ba97890a87b83882696f64ad09f5b6",
+    //provider: () => new HDWalletProvider(secrets.priv_key, ws_provider("wss://bsc.getblock.io/testnet/?api_key="+secrets.getblock_key)),
+    //monitor_account: "0x6f6ef6dfe681b6593ddf27da3bfde22083aef88b",
+    provider: () => new HDWalletProvider(priv2, http_provider("https://bsc.getblock.io/testnet/?api_key="+secrets.getblock_key)),
+    monitor_account: "0x6ea23f9b85ba97890a87b83882696f64ad09f5b6",
     mongodb_url: "mongodb://localhost:27017",
     rpc_source: "https://bsc.getblock.io/testnet/?api_key=" + secrets.getblock_key,
     web3_source: "wss://bsc.getblock.io/testnet/?api_key=" + secrets.getblock_key,
@@ -71,8 +83,8 @@ module.exports = {
   ropsten: {
     //provider: () => new HDWalletProvider(secrets.priv_key, ws_provider(
     //  "wss://ropsten.infura.io/ws/v3/" + secrets.infura_id)),
-    provider: () => new HDWalletProvider(secrets.priv_key, ws_provider(
-      "wss://ropsten.infura.io/ws/v3/" + secrets.infura_id)),
+    provider: () => new HDWalletProvider(secrets.priv_key, http_provider(
+      "https://ropsten.infura.io/v3/" + secrets.infura_id)),
     mongodb_url: "mongodb://localhost:27017",
     rpc_source: "https://ropsten.infura.io/v3/" + secrets.infura_id,
     web3_source: "wss://ropsten.infura.io/ws/v3/" + secrets.infura_id,
