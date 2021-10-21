@@ -1,8 +1,4 @@
 const HDWalletProvider = require('@truffle/hdwallet-provider');
-const secrets = require('../.secrets.json');
-
-const contracts = __dirname + "/../build/contracts"; //FIXME: use path.join
-console.log(contracts);
 
 const Web3WsProvider = require('web3-providers-ws');
 const Web3HttpProvider = require('web3-providers-http');
@@ -48,43 +44,44 @@ const http_provider = (url) => {
 }
 
 module.exports = {
-  localtestnet1: {
+  localtestnet1: () => {return {
     provider: () => "ws://127.0.0.1:8546",
     mongodb_url: "mongodb://localhost:27017",
-    web3_source: "ws://127.0.0.1:8546",
-    contracts: contracts,
+    ws_source: "ws://127.0.0.1:8546",
+    rpc_source: "ws://127.0.0.1:8545",
     device_id: "15",
+    monitor_account: "0x6f6ef6dfe681b6593ddf27da3bfde22083aef88b",
     chain_name: "localtestnet1",
-  },
-  localtestnet2: {
+  }},
+  localtestnet2: () => {return {
     provider: () => "ws://127.0.0.1:8746",
     mongodb_url: "mongodb://localhost:27017",
     rpc_source: "http://127.0.0.1:8745",
     ws_source: "ws://127.0.0.1:8746",
-    contracts: contracts,
+    monitor_account: "0x6f6ef6dfe681b6593ddf27da3bfde22083aef88b",
     device_id: "16",
     chain_name: "localtestnet2",
-  },
-  bsctestnet: {
+  }},
+  bsctestnet: (secrets) => {return {
     provider: () => new HDWalletProvider(secrets.accounts.deployer.priv,
       http_provider("https://bsc.getblock.io/testnet/?api_key="+secrets.getblock_key)
     ),
     mongodb_url: "mongodb://localhost:27017",
     rpc_source: "https://bsc.getblock.io/testnet/?api_key=" + secrets.getblock_key,
     ws_source: "wss://bsc.getblock.io/testnet/?api_key=" + secrets.getblock_key,
-    contracts: contracts,
+    monitor_account: "0x6f6ef6dfe681b6593ddf27da3bfde22083aef88b",
     device_id: "97",
     chain_name: "bsctestnet",
-  },
-  ropsten: {
+  }},
+  ropsten: (secrets) => {return {
     provider: () => new HDWalletProvider(secrets.accounts.deployer.priv,
       http_provider("https://ropsten.infura.io/v3/" + secrets.infura_id)
     ),
     mongodb_url: "mongodb://localhost:27017",
     rpc_source: "https://ropsten.infura.io/v3/" + secrets.infura_id,
     ws_source: "wss://ropsten.infura.io/ws/v3/" + secrets.infura_id,
-    contracts: contracts,
+    monitor_account: "0x6f6ef6dfe681b6593ddf27da3bfde22083aef88b",
     device_id: "3",
     chain_name: "ropsten",
-  }
+  }}
 }

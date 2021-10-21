@@ -3,9 +3,10 @@ const Config = require("../config")
 const Client = require("web3subscriber/client")
 const TokenInfo = require("../../build/contracts/Token.json")
 const Utils = require("../utils");
+const Secrets = require('../../.secrets');
 
 async function get_balance(config_name) {
-  config = Config[config_name];
+  config = Config[config_name](Secrets);
   let account = config.monitor_account;
   console.log("Check address balance:", account);
   let web3 = await Client.initWeb3(config, false);

@@ -1,16 +1,17 @@
 const Web3 = require("web3")
 const FileSys = require("fs")
 const Client = require("web3subscriber/client");
-const EthConfig = require('../config');
+const Config = require('../config');
 const BridgeABI = require('./abi');
 const TokenInfo = require("../../build/contracts/Token.json");
+const Secrets = require('../../.secrets');
 
 const test_config = {
   l2account: "0x7a50c8fa50a39bd48dfd8053ebff44ba3da45dd8c3e90a5fec9fd73a4595251b",
 }
 
 async function test_deposit(config_name) {
-  config = EthConfig[config_name];
+  config = Config[config_name](Secrets);
   try {
 
     let bridge = await BridgeABI.getBridge(config, false);
