@@ -4,8 +4,6 @@ const secrets = require('../.secrets.json');
 const contracts = __dirname + "/../build/contracts"; //FIXME: use path.join
 console.log(contracts);
 
-const priv2 = "0xf6392ba9b8cb91490a3e06fe141d5140df89e73931b0e3570bad0de7ef1f25c3"
-
 const Web3WsProvider = require('web3-providers-ws');
 const Web3HttpProvider = require('web3-providers-http');
 
@@ -54,7 +52,6 @@ module.exports = {
     provider: () => "ws://127.0.0.1:8546",
     mongodb_url: "mongodb://localhost:27017",
     web3_source: "ws://127.0.0.1:8546",
-    monitor_account: "0x6f6ef6dfe681b6593ddf27da3bfde22083aef88b",
     contracts: contracts,
     device_id: "15",
     chain_name: "localtestnet1",
@@ -62,33 +59,30 @@ module.exports = {
   localtestnet2: {
     provider: () => "ws://127.0.0.1:8746",
     mongodb_url: "mongodb://localhost:27017",
-    web3_source: "ws://127.0.0.1:8746",
-    monitor_account: "0x6f6ef6dfe681b6593ddf27da3bfde22083aef88b",
+    rpc_source: "http://127.0.0.1:8745",
+    ws_source: "ws://127.0.0.1:8746",
     contracts: contracts,
     device_id: "16",
     chain_name: "localtestnet2",
   },
   bsctestnet: {
-    //provider: () => new HDWalletProvider(secrets.priv_key, ws_provider("wss://bsc.getblock.io/testnet/?api_key="+secrets.getblock_key)),
-    //monitor_account: "0x6f6ef6dfe681b6593ddf27da3bfde22083aef88b",
-    provider: () => new HDWalletProvider(priv2, http_provider("https://bsc.getblock.io/testnet/?api_key="+secrets.getblock_key)),
-    monitor_account: "0x6ea23f9b85ba97890a87b83882696f64ad09f5b6",
+    provider: () => new HDWalletProvider(secrets.accounts.deployer.priv,
+      http_provider("https://bsc.getblock.io/testnet/?api_key="+secrets.getblock_key)
+    ),
     mongodb_url: "mongodb://localhost:27017",
     rpc_source: "https://bsc.getblock.io/testnet/?api_key=" + secrets.getblock_key,
-    web3_source: "wss://bsc.getblock.io/testnet/?api_key=" + secrets.getblock_key,
+    ws_source: "wss://bsc.getblock.io/testnet/?api_key=" + secrets.getblock_key,
     contracts: contracts,
     device_id: "97",
     chain_name: "bsctestnet",
   },
   ropsten: {
-    //provider: () => new HDWalletProvider(secrets.priv_key, ws_provider(
-    //  "wss://ropsten.infura.io/ws/v3/" + secrets.infura_id)),
-    provider: () => new HDWalletProvider(secrets.priv_key, http_provider(
-      "https://ropsten.infura.io/v3/" + secrets.infura_id)),
+    provider: () => new HDWalletProvider(secrets.accounts.deployer.priv,
+      http_provider("https://ropsten.infura.io/v3/" + secrets.infura_id)
+    ),
     mongodb_url: "mongodb://localhost:27017",
     rpc_source: "https://ropsten.infura.io/v3/" + secrets.infura_id,
-    web3_source: "wss://ropsten.infura.io/ws/v3/" + secrets.infura_id,
-    monitor_account: "0x6f6ef6dfe681b6593ddf27da3bfde22083aef88b",
+    ws_source: "wss://ropsten.infura.io/ws/v3/" + secrets.infura_id,
     contracts: contracts,
     device_id: "3",
     chain_name: "ropsten",

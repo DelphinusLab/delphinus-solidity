@@ -18,14 +18,24 @@
  *
  */
 
-const HDWalletProvider = require('@truffle/hdwallet-provider');
-// const infuraKey = "fj4jll3k.....";
-//
-const fs = require('fs');
-//const mnemonic = fs.readFileSync(".secret").toString().trim();
-const priv_key = fs.readFileSync("tools/key.prv").toString().trim();
+const Web3WsProvider = require('web3-providers-ws');
+const Web3HttpProvider = require('web3-providers-http');
 
-const infura_id = '1c8e4178f8954e01a95c8eef7b8af2b7';
+const HDWalletProvider = require('@truffle/hdwallet-provider');
+const fs = require('fs');
+const secrets = require('./.secrets.json');
+
+const http_options = {
+        keepAlive: true,
+        timeout: 20000, // milliseconds,
+        headers: [{name: 'Access-Control-Allow-Origin', value: '*'}],
+        withCredentials: false
+};
+
+const http_provider = (url) => {
+    let p = new Web3HttpProvider(url, http_options);
+    return p;
+}
 
 module.exports = {
   /**
@@ -70,7 +80,9 @@ module.exports = {
       websocket: true        // Enable EventEmitter interface for web3 (default: false)
     },
     ropsten: { //eth testnet
-      provider: () => new HDWalletProvider(priv_key, "https://ropsten.infura.io/v3/" + infura_id),
+      provider: () => new HDWalletProvider(secrets.accounts.deployer.priv,
+        http_provider("https://ropsten.infura.io/v3/" + secrets.infura_id)
+      ),
       network_id: 3,       // Ropsten's id
       gas: 5500000,        // Ropsten has a lower block limit than mainnet
       confirmations: 2,    // # of confs to wait between deployments. (default: 0)
@@ -78,7 +90,9 @@ module.exports = {
       skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
     },
     bsctestnet: { //bsc
-      provider: () => new HDWalletProvider(priv_key, `https://data-seed-prebsc-1-s1.binance.org:8545`),
+      provider: () => new HDWalletProvider(secrets.accounts.deployer.priv,
+        http_provider("https://bsc.getblock.io/testnet/?api_key="+secrets.getblock_key)
+      ),
       network_id: 97,
       confirmations: 10,
       timeoutBlocks: 200,
@@ -98,8 +112,6 @@ module.exports = {
     }
   },
 
-  // Truffle DB is currently disabled by default; to enable it, change enabled: false to enabled: true
-  //
   // Note: if you migrated your contracts prior to enabling this field in your Truffle project and want
   // those previously migrated contracts available in the .db directory, you will need to run the following:
   // $ truffle migrate --reset --compile-all
