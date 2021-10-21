@@ -28,7 +28,6 @@ const ws_options = {
 const http_options = {
         keepAlive: true,
         timeout: 20000, // milliseconds,
-        headers: [{name: 'Access-Control-Allow-Origin', value: '*'}],
         withCredentials: false
 };
 
