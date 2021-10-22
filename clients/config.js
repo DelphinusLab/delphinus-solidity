@@ -26,7 +26,7 @@ const ws_options = {
 };
 
 const http_options = {
-        keepAlive: true,
+        keepAlive: false,
         timeout: 20000, // milliseconds,
         withCredentials: false
 };
