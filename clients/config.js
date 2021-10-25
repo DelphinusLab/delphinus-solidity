@@ -62,9 +62,11 @@ module.exports = {
     chain_name: "localtestnet2",
   }},
   bsctestnet: (secrets) => {return {
-    provider: () => new HDWalletProvider(secrets.accounts.deployer.priv,
-      http_provider("https://bsc.getblock.io/testnet/?api_key="+secrets.getblock_key)
-    ),
+    provider: () => new HDWalletProvider({
+      privateKeys: [secrets.accounts.deployer.priv],
+      providerOrUrl: http_provider("https://bsc.getblock.io/testnet/?api_key="+secrets.getblock_key),
+      shareNonce: false
+    }),
     mongodb_url: "mongodb://localhost:27017",
     rpc_source: "https://bsc.getblock.io/testnet/?api_key=" + secrets.getblock_key,
     ws_source: "wss://bsc.getblock.io/testnet/?api_key=" + secrets.getblock_key,
@@ -73,9 +75,11 @@ module.exports = {
     chain_name: "bsctestnet",
   }},
   ropsten: (secrets) => {return {
-    provider: () => new HDWalletProvider(secrets.accounts.deployer.priv,
-      http_provider("https://ropsten.infura.io/v3/" + secrets.infura_id)
-    ),
+    provider: () => new HDWalletProvider({
+      privateKeys: [secrets.accounts.deployer.priv],
+      providerOrUrl: http_provider("https://ropsten.infura.io/v3/" + secrets.infura_id),
+      shareNonce: false
+    }),
     mongodb_url: "mongodb://localhost:27017",
     rpc_source: "https://ropsten.infura.io/v3/" + secrets.infura_id,
     ws_source: "wss://ropsten.infura.io/ws/v3/" + secrets.infura_id,
