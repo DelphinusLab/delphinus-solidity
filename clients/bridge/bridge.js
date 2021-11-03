@@ -209,6 +209,10 @@ class Bridge {
     });
     return r;
   }
+
+  async close() {
+    this.web3.currentProvider.connection.close();
+  }
 }
 
 async function getBridgeClient(config, bridge_info, client_mode) {
