@@ -211,7 +211,7 @@ class Bridge {
   }
 
   async close() {
-    this.web3.currentProvider.connection.close();
+    this.web3.currentProvider.engine.stop();
   }
 }
 
