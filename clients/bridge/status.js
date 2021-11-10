@@ -1,6 +1,6 @@
 const Web3 = require("web3")
 const FileSys = require("fs")
-const Client = require("web3subscriber/client");
+const Client = require("web3subscriber/src/client");
 const Config = require('../config');
 const BridgeABI = require('./abi');
 const TokenInfo = require("../../build/contracts/Token.json");

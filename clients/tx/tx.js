@@ -1,8 +1,8 @@
 const Web3 = require("web3")
 const FileSys = require("fs")
 const Config = require("../config")
-const Client = require("web3subscriber/client")
-const PBinder= require("web3subscriber/pbinder")
+const Client = require("web3subscriber/src/client")
+const PBinder= require("web3subscriber/src/pbinder")
 const TokenInfo = require("../../build/contracts/Token.json")
 const Secrets = require('../../.secrets');
 

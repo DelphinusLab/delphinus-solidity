@@ -1,5 +1,5 @@
 const Web3 = require("web3");
-const Client = require("web3subscriber/client");
+const Client = require("web3subscriber/src/client");
 const Config = require('../config');
 const TokenInfo = require("../../build/contracts/Token.json");
 const BridgeABI = require("./abi");
