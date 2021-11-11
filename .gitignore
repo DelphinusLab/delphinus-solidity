@@ -7,5 +7,5 @@ clients/config.js
 clients/config.js.map
 clients/bridge/bridge.js
 clients/bridge/bridge.js.map
-clients/types/bridge.js
-clients/types/bridge.js.map
+clients/types/*.js
+clients/types/*.js.map
