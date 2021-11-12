@@ -11,3 +11,5 @@ clients/bridge/init.js
 clients/bridge/init.js.map
 clients/types/*.js
 clients/types/*.js.map
+clients/token/mint.js
+clients/token/mint.js.map
