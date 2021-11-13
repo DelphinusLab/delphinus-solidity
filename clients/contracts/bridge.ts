@@ -3,8 +3,7 @@ import { DelphinusContract, DelphinusWeb3 } from "web3subscriber/src/client";
 import { decodeL1address } from "web3subscriber/src/addresses";
 import { PromiseBinder } from "web3subscriber/src/pbinder";
 import { TokenContract } from "./token";
-import { Tokens } from "./tokenlist";
-
+import { Tokens, Chains } from "./tokenlist";
 const BridgeContractABI = require("../../build/contracts/Bridge.json");
 
 /*
@@ -143,7 +142,7 @@ export class BridgeContract extends DelphinusContract {
         return {
           address: address,
           name:
-            Tokens.tokenInfo.find(
+            Tokens.find(
               (x: any) => hexcmp(x.address, address) && x.chainId == cid
             )?.name || "unknown",
           chainId: cid,
@@ -155,7 +154,7 @@ export class BridgeContract extends DelphinusContract {
     let chain_list = Array.from(new Set(tokens.map((x) => x.chainId)));
     let token_list = chain_list.map((chain_id) => ({
       chainId: chain_id,
-      chainName: Tokens.chainInfo[chain_id],
+      chainName: Chains[chain_id],
       tokens: tokens.filter((x) => x.chainId == chain_id),
       enable: true,
     }));
@@ -167,10 +166,10 @@ export class BridgeContract extends DelphinusContract {
     let [cid, addr] = decodeL1address(token.token_uid);
     return {
       chainId: cid,
-      chainName: Tokens.chainInfo[cid],
+      chainName: Chains[cid],
       tokenAddress: addr,
       tokenName:
-        Tokens.tokenInfo.find(
+        Tokens.find(
           (x: any) => hexcmp(x.address, addr) && x.chainId == cid
         )?.name || "unknown",
       index: idx,

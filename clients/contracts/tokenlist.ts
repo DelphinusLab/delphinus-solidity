@@ -3,7 +3,8 @@
 
 const TokenInfo = require("../../build/contracts/Token.json");
 const RioInfo = require("../../build/contracts/Rio.json");
-const chain_info = {
+
+export const Chains : Record<string, string> = {
     "15": "local-test-net1",
     "16": "local-test-net2",
     "3":  "ropsten",
