@@ -10,7 +10,7 @@ const chain_info = {
     "97":  "bsctestnet",
 }
 
-const token_info = [
+export const Tokens = [
   {
     chainId: "15",
     address:TokenInfo.networks["15"]?.address.replace("0x", ""),
@@ -42,8 +42,3 @@ const token_info = [
     name:"sToken"
   },
 ];
-
-module.exports = {
-  chainInfo: chain_info,
-  tokenInfo: token_info,
-}

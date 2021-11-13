@@ -1,33 +1,30 @@
-import { Bridge, withBridgeClient } from "../bridge/bridge";
-import { EthConfig } from "../config";
+import { withL1Client, L1Client } from "../../client";
+import { EthConfig } from "../../config";
 
-const Config = require("../config");
 const PBinder = require("web3subscriber/src/pbinder");
-const TokenInfo = require("../../build/contracts/Token.json");
 const Secrets = require("../../.secrets");
 
 function main(configName: string, targetAccount: string) {
   let config = EthConfig[configName](Secrets);
   let account = config.monitor_account;
-  let address = TokenInfo.networks[config.device_id].address;
   let pbinder = new PBinder.PromiseBinder();
   let r = pbinder.return(async () => {
-    withBridgeClient(config, false, async (bridge: Bridge) => {
-      let token = bridge.web3.getContract(TokenInfo, address, account);
+    withL1Client(config, false, async (l1client: L1Client) => {
+      let token = l1client.getTokenContract();
       // await web3.eth.net.getId();
       try {
-        console.log("mint token:", token.getContractInstance().options.address);
-        let balance = await token.getBalance(account);
+        console.log("mint token:", token.address());
+        let balance = await token.balanceOf(account);
         console.log("sender: balance before mint:", balance);
-        await pbinder.bind("mint", token.getContractInstance().methods.mint(0x10000000).send());
-        balance = await token.getBalance(account);
+        await pbinder.bind("mint", token.mint(0x10000000));
+        balance = await token.balanceOf(account);
         console.log("sender: balance after mint", balance);
         if (targetAccount) {
           await pbinder.bind(
             "transfer",
-            token.getContractInstance().methods.transfer(targetAccount, 0x10000000).send()
+            token.transfer(targetAccount, 0x10000000)
           );
-          balance = await token.getBalance(targetAccount);
+          balance = await token.balanceOf(targetAccount);
           console.log("balance of recipient after transfer", balance);
         }
       } catch (err) {

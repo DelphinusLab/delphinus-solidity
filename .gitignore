@@ -5,6 +5,8 @@
 /package-lock.json
 clients/config.js
 clients/config.js.map
+clients/client.js
+clients/client.js.map
 clients/bridge/bridge.js
 clients/bridge/bridge.js.map
 clients/bridge/init.js
@@ -13,3 +15,6 @@ clients/types/*.js
 clients/types/*.js.map
 clients/token/mint.js
 clients/token/mint.js.map
+clients/contracts/*.js
+clients/contracts/*.js.map
+
