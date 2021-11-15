@@ -5,7 +5,7 @@ import {
   Web3ProviderMode,
 } from "web3subscriber/src/client";
 import { encodeL1address } from "web3subscriber/src/addresses";
-import { ChainConfig } from "./config";
+import { ChainConfig } from "delphinus-deployment/src/config";
 import { BridgeContract } from "./contracts/bridge";
 import { TokenContract } from "./contracts/token";
 

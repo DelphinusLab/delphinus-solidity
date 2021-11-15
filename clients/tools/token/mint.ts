@@ -1,5 +1,5 @@
 import { withL1Client, L1Client } from "../../client";
-import { EthConfig } from "../../config";
+import { EthConfig } from "delphinus-deployment/src/config";
 
 const PBinder = require("web3subscriber/src/pbinder");
 const Secrets = require("../../.secrets");

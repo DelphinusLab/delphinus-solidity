@@ -1,4 +1,4 @@
-import { EthConfig } from "../../config";
+import { EthConfig } from "delphinus-deployment/src/config";
 import { L1Client, withL1Client } from "../../client";
 import { encodeL1address } from "web3subscriber/src/addresses";
 

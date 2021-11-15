@@ -23,7 +23,7 @@ const Web3HttpProvider = require('web3-providers-http');
 
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 const fs = require('fs');
-const secrets = require('./.secrets.json');
+const secrets = require('delphinus-deployment/src/secrets');
 
 const http_options = {
         keepAlive: true,
@@ -80,7 +80,7 @@ module.exports = {
       websocket: true        // Enable EventEmitter interface for web3 (default: false)
     },
     ropsten: { //eth testnet
-      provider: () => new HDWalletProvider(secrets.accounts.deployer.priv,
+      provider: () => new HDWalletProvider(secrets.Secrets.accounts.deployer.priv,
         http_provider("https://ropsten.infura.io/v3/" + secrets.infura_id)
       ),
       network_id: 3,       // Ropsten's id
@@ -90,7 +90,7 @@ module.exports = {
       skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
     },
     bsctestnet: { //bsc
-      provider: () => new HDWalletProvider(secrets.accounts.deployer.priv,
+      provider: () => new HDWalletProvider(secrets.Secrets.accounts.deployer.priv,
         http_provider(`https://data-seed-prebsc-1-s1.binance.org:8545`)
         //http_provider("https://bsc.getblock.io/testnet/?api_key="+secrets.getblock_key)
       ),

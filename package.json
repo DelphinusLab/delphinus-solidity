@@ -12,7 +12,8 @@
     "react": "^17.0.2",
     "truffle": "latest",
     "web3": "1.5.3",
-    "web3subscriber": "*"
+    "web3subscriber": "*",
+    "delphinus-deployment": "*"
   },
   "scripts": {
     "dev": "npx truffle dev",
