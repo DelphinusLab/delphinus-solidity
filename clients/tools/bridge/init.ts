@@ -1,14 +1,13 @@
-import { EthConfig } from "delphinus-deployment/src/config";
+import { EthConfigEnabled } from "delphinus-deployment/src/config";
 import { L1Client, withL1Client } from "../../client";
 import { encodeL1address } from "web3subscriber/src/addresses";
+import { Tokens } from "../../contracts/tokenlist";
 
-const Tokens = require("./tokenlist");
-const Secrets = require("../../.secrets");
 const fs = require("fs");
 const path = require("path");
 
 function crunchTokens() {
-  return Tokens.tokenInfo
+  return Tokens
     .filter((x: any) => x.address)
     .map((x: any) =>
     encodeL1address(x.address, parseInt(x.chainId).toString(16))
@@ -17,7 +16,7 @@ function crunchTokens() {
 
 async function main(config_name: string) {
   console.log("start calling");
-  let config = EthConfig[config_name](Secrets);
+  let config = EthConfigEnabled.find(config => config.chain_name === config_name)!;
   try {
     withL1Client(config, false, async (l1client: L1Client) => {
       let bridge = l1client.getBridgeContract();
@@ -30,11 +29,11 @@ async function main(config_name: string) {
         let tx = await bridge.addToken(tokenUid);
         console.log(tx);
 
-        output[tokenUid] = index++;
+        output[tokenUid.toString()] = index++;
       }
 
       fs.writeFileSync(
-        path.resolve(__dirname, "..", "token-index.json"),
+        path.resolve(__dirname, "../../../../deployment/src", "token-index.json"),
         JSON.stringify(output, undefined, 2)
       );
 
