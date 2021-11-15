@@ -1,6 +1,7 @@
 import { DelphinusContract, DelphinusWeb3 } from "web3subscriber/src/client";
 
-const TokenABI = require("../../build/contracts/IERC20.json");
+const TokenContractABI = require("../../build/contracts/Token.json");
+// const TokenABI = require("../../build/contracts/IERC20.json");
 
 export class TokenContract extends DelphinusContract {
   constructor(web3: DelphinusWeb3, address: string, account?: string) {
@@ -8,25 +9,27 @@ export class TokenContract extends DelphinusContract {
   }
 
   static getJsonInterface(): any {
-    return TokenABI;
+    return TokenContractABI;
   }
 
-  async approve(address: string, amount: number) {
-    return await this.getWeb3Contract().methods.approve(address, amount).send();
+  static getContractAddress(chainId: string) {
+    return TokenContractABI.networks[chainId].address;
   }
 
-  async balanceOf(account?: string) {
-    return account
-      ? await this.getWeb3Contract().methods.balanceOf(account).call()
-      : await this.getWeb3Contract().methods.balanceOf().call();
+  approve(address: string, amount: number) {
+    return this.getWeb3Contract().methods.approve(address, amount).send();
   }
 
-  async mint(amount: number) {
-    return await this.getWeb3Contract().methods.mint(amount).send();
+  balanceOf(account: string) {
+    return this.getWeb3Contract().methods.balanceOf(account).call();
   }
 
-  async transfer(address: string, amount: number) {
-    return await this.getWeb3Contract()
+  mint(amount: number) {
+    return this.getWeb3Contract().methods.mint(amount).send();
+  }
+
+  transfer(address: string, amount: number) {
+    return this.getWeb3Contract()
       .methods.transfer(address, amount)
       .send();
   }

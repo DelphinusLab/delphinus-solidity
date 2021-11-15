@@ -1,15 +1,13 @@
 import { withL1Client, L1Client } from "../../client";
-import { EthConfig } from "delphinus-deployment/src/config";
-
-const PBinder = require("web3subscriber/src/pbinder");
-const Secrets = require("../../.secrets");
+import { EthConfigEnabled } from "delphinus-deployment/src/config";
+import { PromiseBinder  } from "web3subscriber/src/pbinder";
 
 function main(configName: string, targetAccount: string) {
-  let config = EthConfig[configName](Secrets);
+  let config = EthConfigEnabled.find(config => config.chain_name == configName)!;
   let account = config.monitor_account;
-  let pbinder = new PBinder.PromiseBinder();
+  let pbinder = new PromiseBinder();
   let r = pbinder.return(async () => {
-    withL1Client(config, false, async (l1client: L1Client) => {
+    await withL1Client(config, false, async (l1client: L1Client) => {
       let token = l1client.getTokenContract();
       // await web3.eth.net.getId();
       try {

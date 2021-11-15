@@ -59,7 +59,7 @@ export class L1Client {
   getTokenContract(address?: string, account?: string) {
     return new TokenContract(
       this.web3,
-      address || BridgeContract.getContractAddress(this.config.device_id),
+      address || TokenContract.getContractAddress(this.config.device_id),
       account
     );
   }

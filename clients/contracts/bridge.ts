@@ -1,4 +1,4 @@
-import BN from "bn.js";
+import BN = require('bn.js');
 import { DelphinusContract, DelphinusWeb3 } from "web3subscriber/src/client";
 import { decodeL1address } from "web3subscriber/src/addresses";
 import { PromiseBinder } from "web3subscriber/src/pbinder";
@@ -63,19 +63,19 @@ export class BridgeContract extends DelphinusContract {
     return BridgeContractABI.networks[chainId].address;
   }
 
-  async getBridgeInfo() {
+  getBridgeInfo() {
     return this.getWeb3Contract().methods.getBridgeInfo().call();
   }
 
-  async allTokens(): Promise<TokenInfo[]> {
-    return await this.getWeb3Contract().methods.allTokens().call();
+  allTokens(): Promise<TokenInfo[]> {
+    return this.getWeb3Contract().methods.allTokens().call();
   }
 
-  async addToken(tokenid: BN) {
-    return await this.getWeb3Contract().methods.addToken(tokenid).send();
+  addToken(tokenid: BN) {
+    return this.getWeb3Contract().methods.addToken(tokenid).send();
   }
 
-  private async _verify(
+  private _verify(
     l2account: string,
     calldata: BN[],
     verifydata: BN[],
@@ -83,13 +83,13 @@ export class BridgeContract extends DelphinusContract {
     nonce: number,
     rid: BN
   ) {
-    return await this.getWeb3Contract()
+    return this.getWeb3Contract()
       .methods.verify(l2account, calldata, verifydata, vid, nonce, rid)
       .send();
   }
 
-  private async _deposit(tokenAddress: string, amount: number, l2account: string) {
-    return await this.getWeb3Contract()
+  private _deposit(tokenAddress: string, amount: number, l2account: string) {
+    return this.getWeb3Contract()
       .methods.deposit(tokenAddress, amount, l2account)
       .send();
   }
