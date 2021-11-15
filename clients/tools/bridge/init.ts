@@ -33,7 +33,7 @@ async function main(config_name: string) {
       }
 
       fs.writeFileSync(
-        path.resolve(__dirname, "../../../../deployment/src", "token-index.json"),
+        path.resolve(__dirname, "../../../../deployment/src/local", "token-index.json"),
         JSON.stringify(output, undefined, 2)
       );
 
