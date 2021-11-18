@@ -21,10 +21,7 @@ function getDelphinusProviderFromConfig(config: ChainConfig) {
     case ProviderType.WebsocketProvider:
       return new DelphinusWsProvider(config.wsSource);
     case ProviderType.HDWalletProvider:
-      return new DelphinusHDWalletProvider(
-        config.privateKey,
-        config.rpcSource
-      );
+      return new DelphinusHDWalletProvider(config.privateKey, config.rpcSource);
     case ProviderType.HttpProvider:
       return new DelphinusHttpProvider(config.wsSource);
   }
