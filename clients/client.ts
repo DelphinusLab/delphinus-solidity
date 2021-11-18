@@ -16,6 +16,20 @@ import {
 
 const L1ADDR_BITS = 160;
 
+function getDelphinusProviderFromConfig(config: ChainConfig) {
+  switch (config.providerType) {
+    case ProviderType.WebsocketProvider:
+      return new DelphinusWsProvider(config.wsSource);
+    case ProviderType.HDWalletProvider:
+      return new DelphinusHDWalletProvider(
+        config.privateKey,
+        config.rpcSource
+      );
+    case ProviderType.HttpProvider:
+      return new DelphinusHttpProvider(config.wsSource);
+  }
+}
+
 export class L1Client {
   readonly web3: DelphinusWeb3;
   private readonly config: ChainConfig;
@@ -24,25 +38,8 @@ export class L1Client {
     if (clientMode) {
       this.web3 = new Web3BrowsersMode();
     } else {
-      let provider;
-
-      switch (config.providerType) {
-        case ProviderType.WebsocketProvider:
-          provider = new DelphinusWsProvider(config.wsSource);
-          break;
-        case ProviderType.HDWalletProvider:
-          provider = new DelphinusHDWalletProvider(
-            config.privateKey,
-            config.rpcSource
-          );
-          break;
-        case ProviderType.HttpProvider:
-          provider = new DelphinusHttpProvider(config.wsSource);
-          break;
-      }
-
       this.web3 = new Web3ProviderMode({
-        provider: provider,
+        provider: getDelphinusProviderFromConfig(config),
         monitorAccount: config.monitorAccount,
       });
     }
