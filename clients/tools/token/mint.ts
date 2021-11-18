@@ -1,10 +1,11 @@
 import { withL1Client, L1Client } from "../../client";
-import { EthConfigEnabled } from "delphinus-deployment/src/config";
+import { getConfigByChainName } from "delphinus-deployment/src/config";
 import { PromiseBinder  } from "web3subscriber/src/pbinder";
+import { L1ClientRole } from "delphinus-deployment/src/types";
 
-function main(configName: string, targetAccount: string) {
-  let config = EthConfigEnabled.find(config => config.chain_name == configName)!;
-  let account = config.monitor_account;
+async function main(configName: string, targetAccount: string) {
+  let config = await getConfigByChainName(L1ClientRole.Monitor, configName);
+  let account = config.monitorAccount;
   let pbinder = new PromiseBinder();
   let r = pbinder.return(async () => {
     await withL1Client(config, false, async (l1client: L1Client) => {
@@ -30,12 +31,12 @@ function main(configName: string, targetAccount: string) {
       }
     });
   });
-  return r;
+  await r.when(
+    "mint",
+    "transactionHash",
+    (hash: string) => console.log(hash)
+  );
 }
 
 /* .once("transactionHash",hash => console.log(hash) */
-main(process.argv[2], process.argv[3]).when(
-  "mint",
-  "transactionHash",
-  (hash: string) => console.log(hash)
-);
+main(process.argv[2], process.argv[3]);

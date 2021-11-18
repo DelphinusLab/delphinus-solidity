@@ -1,7 +1,8 @@
-import { EthConfigEnabled } from "delphinus-deployment/src/config";
+import { getConfigByChainName } from "delphinus-deployment/src/config";
 import { L1Client, withL1Client } from "../../client";
 import { encodeL1address } from "web3subscriber/src/addresses";
 import { Tokens } from "../../contracts/tokenlist";
+import { L1ClientRole } from "delphinus-deployment/src/types";
 
 const fs = require("fs");
 const path = require("path");
@@ -16,9 +17,9 @@ function crunchTokens() {
 
 async function main(config_name: string) {
   console.log("start calling");
-  let config = EthConfigEnabled.find(config => config.chain_name === config_name)!;
+  let config = await getConfigByChainName(L1ClientRole.Monitor, config_name);
   try {
-    withL1Client(config, false, async (l1client: L1Client) => {
+    await withL1Client(config, false, async (l1client: L1Client) => {
       let bridge = l1client.getBridgeContract();
       let output: any = {};
       let index = 4;

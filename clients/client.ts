@@ -5,9 +5,14 @@ import {
   Web3ProviderMode,
 } from "web3subscriber/src/client";
 import { encodeL1address } from "web3subscriber/src/addresses";
-import { ChainConfig } from "delphinus-deployment/src/config";
+import { ChainConfig, ProviderType } from "delphinus-deployment/src/types";
 import { BridgeContract } from "./contracts/bridge";
 import { TokenContract } from "./contracts/token";
+import {
+  DelphinusHDWalletProvider,
+  DelphinusHttpProvider,
+  DelphinusWsProvider,
+} from "web3subscriber/src/provider";
 
 const L1ADDR_BITS = 160;
 
@@ -19,10 +24,26 @@ export class L1Client {
     if (clientMode) {
       this.web3 = new Web3BrowsersMode();
     } else {
+      let provider;
+
+      switch (config.providerType) {
+        case ProviderType.WebsocketProvider:
+          provider = new DelphinusWsProvider(config.wsSource);
+          break;
+        case ProviderType.HDWalletProvider:
+          provider = new DelphinusHDWalletProvider(
+            config.privateKey,
+            config.rpcSource
+          );
+          break;
+        case ProviderType.HttpProvider:
+          provider = new DelphinusHttpProvider(config.wsSource);
+          break;
+      }
+
       this.web3 = new Web3ProviderMode({
-        provider: config.provider(),
-        closeProvider: config.close_provider,
-        monitorAccount: config.monitor_account,
+        provider: provider,
+        monitorAccount: config.monitorAccount,
       });
     }
 
@@ -30,7 +51,7 @@ export class L1Client {
   }
 
   async init() {
-    console.log(`init_bridge on %s`, this.config.chain_name);
+    console.log(`init_bridge on %s`, this.config.chainName);
 
     await this.web3.connect();
     await this.switchNet();
@@ -41,7 +62,7 @@ export class L1Client {
   }
 
   getChainIdHex() {
-    return "0x" + new BN(this.config.device_id).toString(16);
+    return "0x" + new BN(this.config.deviceId).toString(16);
   }
 
   getDefaultAccount() {
@@ -51,7 +72,7 @@ export class L1Client {
   getBridgeContract(account?: string) {
     return new BridgeContract(
       this.web3,
-      BridgeContract.getContractAddress(this.config.device_id),
+      BridgeContract.getContractAddress(this.config.deviceId),
       account
     );
   }
@@ -59,7 +80,7 @@ export class L1Client {
   getTokenContract(address?: string, account?: string) {
     return new TokenContract(
       this.web3,
-      address || TokenContract.getContractAddress(this.config.device_id),
+      address || TokenContract.getContractAddress(this.config.deviceId),
       account
     );
   }
@@ -67,8 +88,8 @@ export class L1Client {
   private async switchNet() {
     await this.web3.switchNet(
       this.getChainIdHex(),
-      this.config.chain_name,
-      this.config.rpc_source
+      this.config.chainName,
+      this.config.rpcSource
     );
   }
 
