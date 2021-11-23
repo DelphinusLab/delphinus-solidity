@@ -23,7 +23,7 @@ const Web3HttpProvider = require('web3-providers-http');
 
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 const fs = require('fs');
-const secrets = require('delphinus-deployment/src/remote/monitor-secrets.json');
+const secrets = require('delphinus-deployment/server/config/monitor-secrets.json');
 
 const http_options = {
         keepAlive: true,
