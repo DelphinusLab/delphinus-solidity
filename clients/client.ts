@@ -8,6 +8,7 @@ import { encodeL1address } from "web3subscriber/src/addresses";
 import { ChainConfig, ProviderType } from "delphinus-deployment/src/types";
 import { BridgeContract } from "./contracts/bridge";
 import { TokenContract } from "./contracts/token";
+import { RioContract } from "./contracts/rio";
 import {
   DelphinusHDWalletProvider,
   DelphinusHttpProvider,
@@ -67,6 +68,14 @@ export class L1Client {
     return new BridgeContract(
       this.web3,
       BridgeContract.getContractAddress(this.config.deviceId),
+      account
+    );
+  }
+
+  getRioContract(address?: string, account?: string) {
+    return new RioContract(
+      this.web3,
+      address || RioContract.getContractAddress(this.config.deviceId),
       account
     );
   }
