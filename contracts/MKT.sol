@@ -12,9 +12,14 @@ struct TokenInfo {
     uint256 token_uid;
 }
 
+struct NFTAddressInfo {
+    uint256 nft_address;
+}
+
 struct BridgeInfo {
     uint128 chain_id;
     uint32 amount_token;
+    uint32 amount_nft_contract;
     uint32 amount_pool;
     address owner;
     uint256 merkle_root;

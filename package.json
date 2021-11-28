@@ -12,15 +12,18 @@
     "react": "^17.0.2",
     "truffle": "latest",
     "web3": "1.5.3",
-    "web3subscriber": "*"
+    "web3subscriber": "*",
+    "delphinus-deployment": "*"
   },
   "scripts": {
     "dev": "npx truffle dev",
     "migrate1": "cp ./truffle-config1.js ./truffle-config.js && npx truffle migrate",
-    "migrate2": "cp ./truffle-config2.js ./truffle-config.js && npx truffle migrate"
+    "migrate2": "cp ./truffle-config2.js ./truffle-config.js && npx truffle migrate",
+    "prepare": "npx tsc"
   },
   "devDependencies": {
     "@webpack-cli/serve": "^1.3.1",
+    "typescript": "^4.4.4",
     "webpack-cli": "^4.6.0"
   }
 }
