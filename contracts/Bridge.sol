@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "./Verifier.sol";
 import "./Transaction.sol";
 import "./MKT.sol";
@@ -9,6 +10,7 @@ contract Bridge {
   event Deposit(uint256 l1token, uint256 l2account, uint256 amount, uint256 nonce);
   event WithDraw(uint256 l1account, uint256 l2account, uint256 amount, uint256 nonce);
   event SwapAck(uint256 l2account, uint256 rid);
+  event DepositNFT(uint256 nftaddr, uint256 l2account, uint256 tokenId, uint256 nonce);
 
   BridgeInfo _bridge_info;
 
@@ -16,12 +18,13 @@ contract Bridge {
   DelphinusVerifier[] private verifiers;
 
   TokenInfo[] private _tokens;
+  NFTAddressInfo[] private _nft_addresses;
+
   mapping (uint256 => bool) private _tmap;
 
   address private _owner;
 
   mapping (uint256 => uint256) private _nonce;
-
 
   constructor(uint32 chain_id) {
     _bridge_info.chain_id = chain_id;
@@ -34,10 +37,21 @@ contract Bridge {
     require(tidx < _bridge_info.amount_token, "OutOfBound: Token Index");
   }
 
+  /* Make sure nft index is sain */
+  function nft_index_check(uint128 nidx) private view {
+    require(nidx < _bridge_info.amount_nft_contract, "OutOfBound: NFT Contract Index");
+  }
+
   /* Make sure token index is sain and return token uid */
   function get_token_uid(uint128 tidx) private view returns (uint256){
     token_index_check(tidx);
     return _tokens[tidx].token_uid;
+  }
+
+  /* Make sure token index is sain and return nft address*/
+  function get_nft_address(uint128 nidx) private view returns (uint256){
+    nft_index_check(nidx);
+    return _nft_addresses[nidx].nft_address;
   }
 
   function ensure_admin() private view {
@@ -81,6 +95,21 @@ contract Bridge {
       // transfer amount back to recipent
       IERC20 underlying_token = IERC20(token);
       underlying_token.transfer(recipent, amount);
+    }
+  }
+
+  function _withdraw_nft(uint128 nidx, uint256 nftid, uint256 l1recipent) public {
+    uint256 nft_addr = get_nft_address(nidx);
+    if (_is_local(nft_addr) && _is_local(l1recipent)) {
+      address nft = address(uint160(nft_addr));
+      address recipent = address(uint160(l1recipent));
+
+      // Sanitity checks
+      require(recipent!= address(0), "WithdrawNFT to the zero address");
+
+      // transfer amount back to recipent
+      IERC721 underlying_nft = IERC721(nft);
+      underlying_nft.transferFrom(address(this), recipent, nftid);
     }
   }
 
@@ -135,6 +164,14 @@ contract Bridge {
     underlying_token.transferFrom(msg.sender, address(this), amount);
     _nonce[l2account] += 1;
     emit Deposit(_l1_address(token), l2account, amount , _nonce[l2account]);
+  }
+
+  function deposit_nft(address nft, uint256 nftId, uint256 l2account) public {
+    IERC721 underlying_nft = IERC721(nft);
+    uint256 nft_address = _l1_address(nft);
+    underlying_nft.transferFrom(msg.sender, address(this), nftId);
+    _nonce[l2account] +=1;
+    emit DepositNFT(nft_address, l2account, nftId, _nonce[l2account]);
   }
 
   function nonceOf(uint256 l2account) public view returns(uint256) {
