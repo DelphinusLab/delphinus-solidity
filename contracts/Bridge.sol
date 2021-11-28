@@ -27,10 +27,6 @@ contract Bridge {
     _bridge_info.chain_id = chain_id;
     _bridge_info.owner = msg.sender;
     _bridge_info.merkle_root = 0x151399c724e17408a7a43cdadba2fc000da9339c56e4d49c6cdee6c4356fbc68;
-    addToken(0);
-    addToken(0);
-    addToken(0);
-    addToken(0);
   }
 
   /* Make sure token index is sain */

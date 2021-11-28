@@ -22,7 +22,7 @@ async function main(config_name: string) {
     await withL1Client(config, false, async (l1client: L1Client) => {
       let bridge = l1client.getBridgeContract();
       let output: any = {};
-      let index = 4;
+      let index = 0;
 
       console.log("Testing bridge [id=%s]", l1client.getChainIdHex());
       for (let tokenUid of crunchTokens()) {
