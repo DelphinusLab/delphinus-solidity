@@ -5,10 +5,11 @@ const Supply = artifacts.require("Supply");
 const Swap = artifacts.require("Swap");
 const Retrive = artifacts.require("Retrive");
 const AddPool = artifacts.require("AddPool");
+const SetKey = artifacts.require("SetKey");
 const DummyVerifier = artifacts.require("DummyVerifier");
 const ZKPVerifier = artifacts.require("GrothVerifier");
 
-module.exports = async function(deployer) {
+module.exports = async function (deployer) {
   id = await web3.eth.net.getId();
   console.log("netid", id);
 
@@ -21,13 +22,16 @@ module.exports = async function(deployer) {
   await deployer.deploy(Swap);
   swap = await Swap.deployed();
 
-  await deployer.deploy(Supply);
-  supply = await Supply.deployed();
-
   await deployer.deploy(Retrive);
   retrive = await Retrive.deployed();
 
+  await deployer.deploy(Supply);
+  supply = await Supply.deployed();
+
   await deployer.deploy(AddPool);
+  addpool = await AddPool.deployed();
+
+  await deployer.deploy(SetKey);
   addpool = await AddPool.deployed();
 
   await deployer.deploy(Bridge, id);
