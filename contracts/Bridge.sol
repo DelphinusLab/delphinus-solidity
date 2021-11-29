@@ -175,7 +175,7 @@ contract Bridge {
     require (_bridge_info.rid == rid-1, "Verify: Unexpected Request Id");
     _bridge_info.rid += 1;
     uint256 merkle_root = _bridge_info.merkle_root;
-    uint256 sha_pack = uint256(sha256(abi.encodePacked(uint256(0), tx_data)));
+    uint256 sha_pack = uint256(sha256(abi.encodePacked(uint8(tx_data[0]), uint64(tx_data[4]), uint32(tx_data[5]), uint32(tx_data[6]), uint256(tx_data[7]), uint256(tx_data[8]))));
 
     uint256 new_merkle_root = verify_data[11];
     require(merkle_root == verify_data[10], "Inconstant: Merkle root dismatch");
