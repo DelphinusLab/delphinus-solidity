@@ -13,37 +13,29 @@ module.exports = async function (deployer) {
   id = await web3.eth.net.getId();
   console.log("netid", id);
 
-  await deployer.deploy(Deposit);
+  await Promise.all([
+    deployer.deploy(Deposit),
+    deployer.deploy(Withdraw),
+    deployer.deploy(Swap),
+    deployer.deploy(Retrive),
+    deployer.deploy(Supply),
+    deployer.deploy(AddPool),
+    deployer.deploy(SetKey),
+    deployer.deploy(Bridge, id),
+    deployer.deploy(ZKPVerifier, id),
+    //deployer.deploy(DummyVerifier, id),
+  ]);
+
   deposit = await Deposit.deployed();
-
-  await deployer.deploy(Withdraw);
   withdraw = await Withdraw.deployed();
-
-  await deployer.deploy(Swap);
   swap = await Swap.deployed();
-
-  await deployer.deploy(Retrive);
   retrive = await Retrive.deployed();
-
-  await deployer.deploy(Supply);
   supply = await Supply.deployed();
-
-  await deployer.deploy(AddPool);
   addpool = await AddPool.deployed();
-
-  await deployer.deploy(SetKey);
-  addpool = await AddPool.deployed();
-
-  await deployer.deploy(Bridge, id);
+  setkey = await SetKey.deployed();
   bridge = await Bridge.deployed();
-
-  /*
-  await deployer.deploy(DummyVerifier, id);
-  verifier = await DummyVerifier.deployed();
-  */
-
-  await deployer.deploy(ZKPVerifier, id);
-  verifier = await ZKPVerifier.deployed();
+  zkverifier = await ZKPVerifier.deployed();
+  //dmverifier = await DummyVerifier.deployed();
 
   var tx = await bridge.addTransaction(deposit.address);
   tx = await bridge.addTransaction(withdraw.address);
@@ -51,5 +43,7 @@ module.exports = async function (deployer) {
   tx = await bridge.addTransaction(supply.address);
   tx = await bridge.addTransaction(retrive.address);
   tx = await bridge.addTransaction(addpool.address);
-  tx = await bridge.addVerifier(verifier.address);
+  tx = await bridge.addTransaction(setkey.address);
+  tx = await bridge.addVerifier(zkverifier.address);
+  //tx = await bridge.addVerifier(dmverifier.address);
 };
