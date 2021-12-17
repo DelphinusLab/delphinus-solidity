@@ -8,7 +8,7 @@ uint8 constant _WITHDRAW = 0x1;
  * @dev Interface of the ERC20 standard as defined in the EIP.
  */
 
-uint8 constant _TX_NUM_ARGS = 0x8;
+uint8 constant _TX_NUM_ARGS = 0x5;
 
 interface Transaction {
     /**
