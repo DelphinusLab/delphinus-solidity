@@ -6,47 +6,32 @@ import "./Transaction.sol";
 import "./MKT.sol";
 
 contract Bridge {
-    event Deposit(
-        uint256 l1token,
-        uint256 l2account,
-        uint256 amount,
-        uint256 nonce
-    );
-    event WithDraw(
-        uint256 l1account,
-        uint256 l2account,
-        uint256 amount,
-        uint256 nonce
-    );
-    event SwapAck(uint256 l2account, uint256 rid);
-
-    BridgeInfo _bridge_info;
-
-    Transaction[] private transactions;
-    DelphinusVerifier[] private verifiers;
+    event Deposit(uint256 l1token, uint256 l2account, uint256 amount);
+    event WithDraw(uint256 l1account, uint256 l2account, uint256 amount);
+    event SwapAck(uint256 rid);
 
     TokenInfo[] private _tokens;
-    mapping(uint256 => bool) private _tmap;
+    Transaction[] private transactions;
+    DelphinusVerifier[] private verifiers;
+    BridgeInfo _bridge_info;
 
+    mapping(uint256 => bool) private _tmap;
     address private _owner;
 
-    mapping(uint256 => uint256) private _nonce;
+    mapping(uint256 => bool) private hasSideEffiect;
+    uint256 merkle_root;
+    uint256 rid;
 
     constructor(uint32 chain_id) {
         _bridge_info.chain_id = chain_id;
         _bridge_info.owner = msg.sender;
-        _bridge_info
-            .merkle_root = 0x151399c724e17408a7a43cdadba2fc000da9339c56e4d49c6cdee6c4356fbc68;
-    }
-
-    /* Make sure token index is sain */
-    function token_index_check(uint128 tidx) private view {
-        require(tidx < _bridge_info.amount_token, "OutOfBound: Token Index");
+        merkle_root = 0x151399c724e17408a7a43cdadba2fc000da9339c56e4d49c6cdee6c4356fbc68;
+        rid = 0;
     }
 
     /* Make sure token index is sain and return token uid */
     function get_token_uid(uint128 tidx) private view returns (uint256) {
-        token_index_check(tidx);
+        require(tidx < _bridge_info.amount_token, "OutOfBound: Token Index");
         return _tokens[tidx].token_uid;
     }
 
@@ -55,7 +40,15 @@ contract Bridge {
     }
 
     function getBridgeInfo() public view returns (BridgeInfo memory) {
-        return _bridge_info;
+        return
+            BridgeInfo(
+                _bridge_info.chain_id,
+                _bridge_info.amount_token,
+                _bridge_info.amount_pool,
+                _bridge_info.owner,
+                merkle_root,
+                rid
+            );
     }
 
     function addToken(uint256 token) public returns (uint32) {
@@ -68,11 +61,6 @@ contract Bridge {
             _tmap[token] = true;
         }
         return cursor;
-    }
-
-    function getToken(uint128 tidx) public view returns (TokenInfo memory) {
-        token_index_check(tidx);
-        return _tokens[tidx];
     }
 
     function allTokens() public view returns (TokenInfo[] memory) {
@@ -98,44 +86,33 @@ contract Bridge {
         }
     }
 
-    function addTransaction(address txaddr) public returns (uint256) {
+    function addTransaction(address txaddr, bool sideEffect) public returns (uint256) {
         ensure_admin();
         uint256 cursor = transactions.length;
+        require(transactions.length < 255, "TX index out of bound");
         transactions.push(Transaction(txaddr));
+        if (sideEffect) {
+          hasSideEffiect[cursor] = sideEffect;
+        }
         return cursor;
     }
 
     function addVerifier(address vaddr) public returns (uint256) {
         ensure_admin();
         uint256 cursor = verifiers.length;
+        require(verifiers.length < 255, "Verifier index out of bound");
         verifiers.push(DelphinusVerifier(vaddr));
         return cursor;
     }
 
-    function _get_transaction(uint256 call_info)
-        private
-        view
-        returns (Transaction)
-    {
-        bytes memory info = abi.encodePacked(call_info);
-        require(
-            transactions.length > uint8(info[31]),
-            "Call Info index out of bound"
-        );
-        return transactions[uint8(info[31])];
+    function _get_transaction(uint8 tid) private view returns (Transaction) {
+        require(transactions.length > tid, "TX index out of bound");
+        return transactions[tid];
     }
 
-    function _get_verifier(uint256 call_info)
-        private
-        view
-        returns (DelphinusVerifier)
-    {
-        bytes memory info = abi.encodePacked(call_info);
-        require(
-            verifiers.length > uint8(info[31]),
-            "Call Info index out of bound"
-        );
-        return verifiers[uint8(info[31])];
+    function _get_verifier(uint8 vid) private view returns (DelphinusVerifier) {
+        require(verifiers.length > vid, "Verifier index out of bound");
+        return verifiers[vid];
     }
 
     /* encode the l1 address into token_uid */
@@ -149,11 +126,6 @@ contract Bridge {
         return ((l1address >> 160) == (uint256(_bridge_info.chain_id)));
     }
 
-    function _get_delta_code(uint256 call_info) private pure returns (uint8) {
-        bytes memory info = abi.encodePacked(call_info);
-        return uint8(info[0]);
-    }
-
     function deposit(
         address token,
         uint256 amount,
@@ -165,12 +137,7 @@ contract Bridge {
         uint256 balance = underlying_token.balanceOf(msg.sender);
         require(balance >= amount, "Insuffecient Balance");
         underlying_token.transferFrom(msg.sender, address(this), amount);
-        _nonce[l2account] += 1;
-        emit Deposit(_l1_address(token), l2account, amount, _nonce[l2account]);
-    }
-
-    function nonceOf(uint256 l2account) public view returns (uint256) {
-        return _nonce[l2account];
+        emit Deposit(_l1_address(token), l2account, amount);
     }
 
     /*
@@ -198,89 +165,56 @@ contract Bridge {
         }
     }
 
-    uint8 BATCH_SIZE = 10;
+    uint256 constant BATCH_SIZE = 10;
+    uint256 constant OP_SIZE = 81;
 
     /*
      * @dev Data encodes the delta functions with there verification in reverse order
      * data = opcode args; opcode' args'; ....
      */
     function verify(
-        uint256 l2account,
-        uint256[] memory tx_data,
-        uint256[] memory verify_data, // [8]: old root, [9]: new root, [10]: sha_low, [11]: sha_high
-        uint256 vid,
-        uint256 nonce,
-        uint256 rid
+        bytes calldata tx_data,
+        uint256[] calldata verify_data, // [8]: old root, [9]: new root, [10]: sha_low, [11]: sha_high
+        uint8 _vid,
+        uint256 _rid
     ) public {
-        //require(_nonce[l2account] == nonce, "Verify: Nonce does not match!");
-        require(_bridge_info.rid == rid, "Verify: Unexpected Request Id");
-        _bridge_info.rid += BATCH_SIZE;
+        require(rid == _rid, "Verify: Unexpected Request Id");
 
-        uint256 op_length = 6;
         require(
-            tx_data.length == op_length * BATCH_SIZE,
+            tx_data.length == OP_SIZE * BATCH_SIZE,
             "Verify: Insufficient delta operations"
         );
 
-        {
-            uint256 l = 0;
-            bytes[] memory s = new bytes[](BATCH_SIZE);
-            for (uint256 i = 0; i < BATCH_SIZE; i++) {
-                s[i] = abi.encodePacked(
-                    uint8(tx_data[0 + i * op_length]),
-                    uint64(tx_data[1 + i * op_length]),
-                    uint32(tx_data[2 + i * op_length]),
-                    uint32(tx_data[3 + i * op_length]),
-                    uint256(tx_data[4 + i * op_length]),
-                    uint256(tx_data[5 + i * op_length])
-                );
-                l += s[i].length;
-            }
+        uint256 sha_pack = uint256(sha256(tx_data));
+        require(
+            sha_pack == (verify_data[8] << 128) + verify_data[9],
+            "Inconstant: Sha data inconsistant"
+        );
 
-            uint offset = 0;
-            bytes memory s_all = new bytes(l);
-            for (uint256 i = 0; i < BATCH_SIZE; i++) {
-                for (uint256 j = 0; j < s[i].length; j++) {
-                    s_all[offset++] = s[i][j];
-                }
-            }
+        uint256 merkle_root = merkle_root;
+        require(
+            merkle_root == verify_data[10],
+            "Inconstant: Merkle root dismatch"
+        );
 
-/*
-            uint256 sha_pack = uint256(sha256(s_all));
-            require(
-                sha_pack == (verify_data[8] << 128) + verify_data[9],
-                "Inconstant: Sha data inconsistant"
-            );
-            */
-        }
-
-        {
-            uint256 merkle_root = _bridge_info.merkle_root;
-            require(
-                merkle_root == verify_data[10],
-                "Inconstant: Merkle root dismatch"
-            );
-        }
-
-/*
-        DelphinusVerifier verifier = _get_verifier(vid);
+        DelphinusVerifier verifier = _get_verifier(_vid);
         bool v = verifier.verifyDelphinusTx(verify_data);
         require(v == true, "ZKVerify: zksnark check failed");
-*/
 
-        uint256 cursor = 0;
-        while (cursor < tx_data.length) {
-            uint256 op_code = tx_data[cursor];
-            cursor += 1;
-            //Transaction transaction = _get_transaction(op_code);
-            //uint256[] memory update = transaction.sideEffect(tx_data, cursor);
-            //_update_state(update);
-            cursor += _TX_NUM_ARGS;
+        for (uint i = 0; i < BATCH_SIZE; i++) {
+            uint8 op_code = uint8(tx_data[i * OP_SIZE]);
+            require(transactions.length > op_code, "TX index out of bound");
+            if (hasSideEffiect[op_code]) {
+              Transaction transaction = _get_transaction(op_code);
+              uint256[] memory update = transaction.sideEffect(tx_data, i * OP_SIZE + 1);
+              _update_state(update);
+            }
         }
 
         uint256 new_merkle_root = verify_data[11];
-        _bridge_info.merkle_root = new_merkle_root;
+        merkle_root = new_merkle_root;
+        rid = _rid + BATCH_SIZE;
 
-        emit SwapAck(l2account, rid + BATCH_SIZE);
+        emit SwapAck(_rid);
     }
 }

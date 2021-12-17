@@ -37,13 +37,13 @@ module.exports = async function (deployer) {
   zkverifier = await ZKPVerifier.deployed();
   //dmverifier = await DummyVerifier.deployed();
 
-  var tx = await bridge.addTransaction(deposit.address);
-  tx = await bridge.addTransaction(withdraw.address);
-  tx = await bridge.addTransaction(swap.address);
-  tx = await bridge.addTransaction(supply.address);
-  tx = await bridge.addTransaction(retrive.address);
-  tx = await bridge.addTransaction(addpool.address);
-  tx = await bridge.addTransaction(setkey.address);
+  var tx = await bridge.addTransaction(deposit.address, false);
+  tx = await bridge.addTransaction(withdraw.address, true);
+  tx = await bridge.addTransaction(swap.address, false);
+  tx = await bridge.addTransaction(supply.address, false);
+  tx = await bridge.addTransaction(retrive.address, false);
+  tx = await bridge.addTransaction(addpool.address, false);
+  tx = await bridge.addTransaction(setkey.address, false);
   tx = await bridge.addVerifier(zkverifier.address);
   //tx = await bridge.addVerifier(dmverifier.address);
 };

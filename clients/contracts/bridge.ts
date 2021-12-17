@@ -76,16 +76,13 @@ export class BridgeContract extends DelphinusContract {
   }
 
   private _verify(
-    l2account: string,
-    calldata: BN[],
+    calldata: number[],
     verifydata: BN[],
     vid: number,
-    nonce: number,
     rid: BN
   ) {
-    return this.getWeb3Contract()
-      .methods.verify(l2account, calldata, verifydata, vid, nonce, rid)
-      .send();
+    const tx = this.getWeb3Contract().methods.verify(calldata, verifydata, vid, rid);
+    return tx.send();
   }
 
   private _deposit(tokenAddress: string, amount: number, l2account: string) {
@@ -95,11 +92,9 @@ export class BridgeContract extends DelphinusContract {
   }
 
   verify(
-    l2account: string,
-    calldata: BN[],
+    calldata: number[],
     verifydata: BN[],
     vid: number,
-    nonce: number,
     rid: BN
   ) {
     const pbinder = new PromiseBinder();
@@ -107,7 +102,7 @@ export class BridgeContract extends DelphinusContract {
     return pbinder.return(async () => {
       return await pbinder.bind(
         "Verify",
-        this._verify(l2account, calldata, verifydata, vid, nonce, rid)
+        this._verify(calldata, verifydata, vid, rid)
       );
     });
   }
