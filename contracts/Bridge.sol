@@ -8,7 +8,7 @@ import "./MKT.sol";
 contract Bridge {
     event Deposit(uint256 l1token, uint256 l2account, uint256 amount);
     event WithDraw(uint256 l1account, uint256 l2account, uint256 amount);
-    event SwapAck(uint256 rid);
+    event SwapAck(uint256 rid, uint256 l2account);
 
     TokenInfo[] private _tokens;
     Transaction[] private transactions;
@@ -205,9 +205,9 @@ contract Bridge {
             uint8 op_code = uint8(tx_data[i * OP_SIZE]);
             require(transactions.length > op_code, "TX index out of bound");
             if (hasSideEffiect[op_code]) {
-              Transaction transaction = _get_transaction(op_code);
-              uint256[] memory update = transaction.sideEffect(tx_data, i * OP_SIZE + 1);
-              _update_state(update);
+                Transaction transaction = _get_transaction(op_code);
+                uint256[] memory update = transaction.sideEffect(tx_data, i * OP_SIZE + 1);
+                _update_state(update);
             }
         }
 
@@ -215,6 +215,6 @@ contract Bridge {
         merkle_root = new_merkle_root;
         rid = _rid + BATCH_SIZE;
 
-        emit SwapAck(_rid);
+        emit SwapAck(_rid, 0);
     }
 }
