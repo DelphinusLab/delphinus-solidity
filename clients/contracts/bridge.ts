@@ -1,4 +1,4 @@
-import BN = require('bn.js');
+import BN from 'bn.js';
 import { DelphinusContract, DelphinusWeb3 } from "web3subscriber/src/client";
 import { decodeL1address } from "web3subscriber/src/addresses";
 import { PromiseBinder } from "web3subscriber/src/pbinder";
