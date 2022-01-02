@@ -5,7 +5,7 @@ import {
   Web3ProviderMode,
 } from "web3subscriber/src/client";
 import { encodeL1address } from "web3subscriber/src/addresses";
-import { ChainConfig, ProviderType } from "delphinus-deployment/src/types";
+import { ChainConfig } from "delphinus-deployment/src/types";
 import { BridgeContract } from "./contracts/bridge";
 import { TokenContract } from "./contracts/token";
 import { RioContract } from "./contracts/rio";
@@ -18,13 +18,11 @@ import {
 const L1ADDR_BITS = 160;
 
 function getDelphinusProviderFromConfig(config: ChainConfig) {
-  switch (config.providerType) {
-    case ProviderType.WebsocketProvider:
+  // FIXME: use ethers
+  if (config.privateKey === "") {
       return new DelphinusWsProvider(config.wsSource);
-    case ProviderType.HDWalletProvider:
+  } else {
       return new DelphinusHDWalletProvider(config.privateKey, config.rpcSource);
-    case ProviderType.HttpProvider:
-      return new DelphinusHttpProvider(config.wsSource);
   }
 }
 
