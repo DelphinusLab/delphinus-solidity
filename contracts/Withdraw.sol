@@ -8,12 +8,12 @@ contract Withdraw is Transaction {
         pure
         returns (uint256)
     {
-        require(bs.length >= start + len, "slicing out of range");
+        require(bs.length >= start + 32, "slicing out of range");
         uint256 x;
         assembly {
-            x := mload(add(bs, add(len, start)))
+            x := mload(add(bs, add(start, 0x20)))
         }
-        return x;
+        return x >> (32 - len) * 8;
     }
 
     function sideEffect(bytes memory witness, uint256 cursor)
