@@ -191,7 +191,6 @@ contract Bridge {
             "Inconstant: Sha data inconsistant"
         );
 
-        uint256 merkle_root = merkle_root;
         require(
             merkle_root == verify_data[10],
             "Inconstant: Merkle root dismatch"
