@@ -1,6 +1,6 @@
 const Web3 = require("web3")
 const Config = require("../config")
-const Client = require("web3subscriber/client")
+const Client = require("web3subscriber/src/client")
 const TokenInfo = require("../../build/contracts/Token.json")
 const Utils = require("../utils");
 const Secrets = require('../../.secrets');

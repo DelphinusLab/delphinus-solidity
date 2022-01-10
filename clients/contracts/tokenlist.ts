@@ -3,14 +3,15 @@
 
 const TokenInfo = require("../../build/contracts/Token.json");
 const RioInfo = require("../../build/contracts/Rio.json");
-const chain_info = {
+
+export const Chains : Record<string, string> = {
     "15": "local-test-net1",
     "16": "local-test-net2",
     "3":  "ropsten",
     "97":  "bsctestnet",
 }
 
-const token_info = [
+export const Tokens = [
   {
     chainId: "15",
     address:TokenInfo.networks["15"]?.address.replace("0x", ""),
@@ -42,8 +43,3 @@ const token_info = [
     name:"sToken"
   },
 ];
-
-module.exports = {
-  chainInfo: chain_info,
-  tokenInfo: token_info,
-}

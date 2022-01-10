@@ -5,47 +5,45 @@ const Supply = artifacts.require("Supply");
 const Swap = artifacts.require("Swap");
 const Retrive = artifacts.require("Retrive");
 const AddPool = artifacts.require("AddPool");
+const SetKey = artifacts.require("SetKey");
 const DummyVerifier = artifacts.require("DummyVerifier");
 const ZKPVerifier = artifacts.require("GrothVerifier");
 
-module.exports = async function(deployer) {
+module.exports = async function (deployer) {
   id = await web3.eth.net.getId();
   console.log("netid", id);
 
-  await deployer.deploy(Deposit);
+  await Promise.all([
+    deployer.deploy(Deposit),
+    deployer.deploy(Withdraw),
+    deployer.deploy(Swap),
+    deployer.deploy(Retrive),
+    deployer.deploy(Supply),
+    deployer.deploy(AddPool),
+    deployer.deploy(SetKey),
+    deployer.deploy(Bridge, id),
+    deployer.deploy(ZKPVerifier, id),
+    //deployer.deploy(DummyVerifier, id),
+  ]);
+
   deposit = await Deposit.deployed();
-
-  await deployer.deploy(Withdraw);
   withdraw = await Withdraw.deployed();
-
-  await deployer.deploy(Swap);
   swap = await Swap.deployed();
-
-  await deployer.deploy(Supply);
-  supply = await Supply.deployed();
-
-  await deployer.deploy(Retrive);
   retrive = await Retrive.deployed();
-
-  await deployer.deploy(AddPool);
+  supply = await Supply.deployed();
   addpool = await AddPool.deployed();
-
-  await deployer.deploy(Bridge, id);
+  setkey = await SetKey.deployed();
   bridge = await Bridge.deployed();
+  zkverifier = await ZKPVerifier.deployed();
+  //dmverifier = await DummyVerifier.deployed();
 
-  /*
-  await deployer.deploy(DummyVerifier, id);
-  verifier = await DummyVerifier.deployed();
-  */
-
-  await deployer.deploy(ZKPVerifier, id);
-  verifier = await ZKPVerifier.deployed();
-
-  var tx = await bridge.addTransaction(deposit.address);
-  tx = await bridge.addTransaction(withdraw.address);
-  tx = await bridge.addTransaction(swap.address);
-  tx = await bridge.addTransaction(supply.address);
-  tx = await bridge.addTransaction(retrive.address);
-  tx = await bridge.addTransaction(addpool.address);
-  tx = await bridge.addVerifier(verifier.address);
+  var tx = await bridge.addTransaction(deposit.address, false);
+  tx = await bridge.addTransaction(withdraw.address, true);
+  tx = await bridge.addTransaction(swap.address, false);
+  tx = await bridge.addTransaction(supply.address, false);
+  tx = await bridge.addTransaction(retrive.address, false);
+  tx = await bridge.addTransaction(addpool.address, false);
+  tx = await bridge.addTransaction(setkey.address, false);
+  tx = await bridge.addVerifier(zkverifier.address);
+  //tx = await bridge.addVerifier(dmverifier.address);
 };
