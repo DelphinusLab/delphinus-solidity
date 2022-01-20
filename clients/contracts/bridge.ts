@@ -1,5 +1,9 @@
-import BN from 'bn.js';
-import { DelphinusContract, DelphinusWeb3 } from "web3subscriber/src/client";
+import BN from "bn.js";
+import {
+  DelphinusContract,
+  DelphinusProvider,
+  DelphinusAccount,
+} from "web3subscriber/src/client";
 import { decodeL1address } from "web3subscriber/src/addresses";
 import { PromiseBinder } from "web3subscriber/src/pbinder";
 import { TokenContract } from "./token";
@@ -51,8 +55,12 @@ function hexcmp(x: string, y: string) {
 }
 
 export class BridgeContract extends DelphinusContract {
-  constructor(web3: DelphinusWeb3, address: string, account?: string) {
-    super(web3, BridgeContract.getJsonInterface(), address, account);
+  constructor(
+    provider: DelphinusProvider,
+    address: string,
+    account?: DelphinusAccount
+  ) {
+    super(provider, BridgeContract.getJsonInterface(), address, account);
   }
 
   static getJsonInterface(): any {
@@ -75,13 +83,13 @@ export class BridgeContract extends DelphinusContract {
     return this.getWeb3Contract().methods.addToken(tokenid).send();
   }
 
-  private _verify(
-    calldata: number[],
-    verifydata: BN[],
-    vid: number,
-    rid: BN
-  ) {
-    const tx = this.getWeb3Contract().methods.verify(calldata, verifydata, vid, rid);
+  private _verify(calldata: number[], verifydata: BN[], vid: number, rid: BN) {
+    const tx = this.getWeb3Contract().methods.verify(
+      calldata,
+      verifydata,
+      vid,
+      rid
+    );
     return tx.send();
   }
 
@@ -91,12 +99,7 @@ export class BridgeContract extends DelphinusContract {
       .send();
   }
 
-  verify(
-    calldata: number[],
-    verifydata: BN[],
-    vid: number,
-    rid: BN
-  ) {
+  verify(calldata: number[], verifydata: BN[], vid: number, rid: BN) {
     const pbinder = new PromiseBinder();
 
     return pbinder.return(async () => {
@@ -107,11 +110,7 @@ export class BridgeContract extends DelphinusContract {
     });
   }
 
-  deposit(
-    tokenContract: TokenContract,
-    amount: number,
-    l2account: string
-  ) {
+  deposit(tokenContract: TokenContract, amount: number, l2account: string) {
     const pbinder = new PromiseBinder();
 
     return pbinder.return(async () => {
@@ -164,9 +163,8 @@ export class BridgeContract extends DelphinusContract {
       chainName: Chains[cid],
       tokenAddress: addr,
       tokenName:
-        Tokens.find(
-          (x: any) => hexcmp(x.address, addr) && x.chainId == cid
-        )?.name || "unknown",
+        Tokens.find((x: any) => hexcmp(x.address, addr) && x.chainId == cid)
+          ?.name || "unknown",
       index: idx,
     };
   }

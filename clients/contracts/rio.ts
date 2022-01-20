@@ -1,11 +1,19 @@
-import { DelphinusContract, DelphinusWeb3 } from "web3subscriber/src/client";
+import {
+  DelphinusContract,
+  DelphinusProvider,
+  DelphinusAccount,
+} from "web3subscriber/src/client";
 
 const RioContractABI = require("../../build/contracts/Rio.json");
 // const TokenABI = require("../../build/contracts/IERC20.json");
 
 export class RioContract extends DelphinusContract {
-  constructor(web3: DelphinusWeb3, address: string, account?: string) {
-    super(web3, RioContract.getJsonInterface(), address, account);
+  constructor(
+    provider: DelphinusProvider,
+    address: string,
+    account?: DelphinusAccount
+  ) {
+    super(provider, RioContract.getJsonInterface(), address, account);
   }
 
   static getJsonInterface(): any {
@@ -29,8 +37,6 @@ export class RioContract extends DelphinusContract {
   }
 
   transfer(address: string, amount: number) {
-    return this.getWeb3Contract()
-      .methods.transfer(address, amount)
-      .send();
+    return this.getWeb3Contract().methods.transfer(address, amount).send();
   }
 }
