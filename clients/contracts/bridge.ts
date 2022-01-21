@@ -71,32 +71,33 @@ export class BridgeContract extends DelphinusContract {
     return BridgeContractABI.networks[chainId].address;
   }
 
-  getBridgeInfo() {
-    return this.getWeb3Contract().methods.getBridgeInfo().call();
+  async getBridgeInfo(): Promise<BridgeInfo> {
+    return this.getWeb3Contract().getBridgeInfo();
   }
 
-  allTokens(): Promise<TokenInfo[]> {
-    return this.getWeb3Contract().methods.allTokens().call();
+  async allTokens(): Promise<TokenInfo[]> {
+    return this.getWeb3Contract().allTokens();
   }
 
-  addToken(tokenid: BN) {
-    return this.getWeb3Contract().methods.addToken(tokenid).send();
+  async addToken(tokenid: BN) {
+    return this.getWeb3Contract().addToken(tokenid);
   }
 
-  private _verify(calldata: number[], verifydata: BN[], vid: number, rid: BN) {
-    const tx = this.getWeb3Contract().methods.verify(
-      calldata,
-      verifydata,
-      vid,
-      rid
-    );
-    return tx.send();
+  private async _verify(
+    calldata: number[],
+    verifydata: BN[],
+    vid: number,
+    rid: BN
+  ) {
+    return this.getWeb3Contract().verify(calldata, verifydata, vid, rid);
   }
 
-  private _deposit(tokenAddress: string, amount: number, l2account: string) {
-    return this.getWeb3Contract()
-      .methods.deposit(tokenAddress, amount, l2account)
-      .send();
+  private async _deposit(
+    tokenAddress: string,
+    amount: number,
+    l2account: string
+  ) {
+    return this.getWeb3Contract().deposit(tokenAddress, amount, l2account);
   }
 
   verify(calldata: number[], verifydata: BN[], vid: number, rid: BN) {
@@ -105,7 +106,7 @@ export class BridgeContract extends DelphinusContract {
     return pbinder.return(async () => {
       return await pbinder.bind(
         "Verify",
-        this._verify(calldata, verifydata, vid, rid)
+        await this._verify(calldata, verifydata, vid, rid)
       );
     });
   }
@@ -117,12 +118,12 @@ export class BridgeContract extends DelphinusContract {
       pbinder.snapshot("Approve");
       await pbinder.bind(
         "Approve",
-        tokenContract.approve(this.address(), amount)
+        await tokenContract.approve(this.address(), amount)
       );
       pbinder.snapshot("Deposit");
       return await pbinder.bind(
         "Deposit",
-        this._deposit(tokenContract.address(), amount, l2account)
+        await this._deposit(tokenContract.address(), amount, l2account)
       );
     });
   }

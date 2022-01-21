@@ -44,14 +44,14 @@ export class L1Client {
   }
 
   getDefaultAccount() {
-    return this.provider.getDefaultAccount();
+    return this.provider.getDefaultSigner().getAddress();
   }
 
   getBridgeContract(account?: string) {
     return new BridgeContract(
       this.provider,
       BridgeContract.getContractAddress(this.config.deviceId),
-      account
+      this.provider.getSigner(account)
     );
   }
 
@@ -59,7 +59,7 @@ export class L1Client {
     return new RioContract(
       this.provider,
       address || RioContract.getContractAddress(this.config.deviceId),
-      account
+      this.provider.getSigner(account)
     );
   }
 
@@ -67,7 +67,7 @@ export class L1Client {
     return new TokenContract(
       this.provider,
       address || TokenContract.getContractAddress(this.config.deviceId),
-      account
+      this.provider.getSigner(account)
     );
   }
 
