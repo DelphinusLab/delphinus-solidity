@@ -72,15 +72,15 @@ export class BridgeContract extends DelphinusContract {
   }
 
   async getBridgeInfo(): Promise<BridgeInfo> {
-    return this.getWeb3Contract().getBridgeInfo();
+    return this.methods().getBridgeInfo();
   }
 
   async allTokens(): Promise<TokenInfo[]> {
-    return this.getWeb3Contract().allTokens();
+    return this.methods().allTokens();
   }
 
   async addToken(tokenid: BN) {
-    return this.getWeb3Contract().addToken(tokenid);
+    return this.methods().addToken(tokenid);
   }
 
   private async _verify(
@@ -89,7 +89,7 @@ export class BridgeContract extends DelphinusContract {
     vid: number,
     rid: BN
   ) {
-    return this.getWeb3Contract().verify(calldata, verifydata, vid, rid);
+    return this.methods().verify(calldata, verifydata, vid, rid);
   }
 
   private async _deposit(
@@ -97,7 +97,7 @@ export class BridgeContract extends DelphinusContract {
     amount: number,
     l2account: string
   ) {
-    return this.getWeb3Contract().deposit(tokenAddress, amount, l2account);
+    return this.methods().deposit(tokenAddress, amount, l2account);
   }
 
   verify(calldata: number[], verifydata: BN[], vid: number, rid: BN) {

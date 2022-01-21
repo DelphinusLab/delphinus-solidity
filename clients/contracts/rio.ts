@@ -25,18 +25,18 @@ export class RioContract extends DelphinusContract {
   }
 
   approve(address: string, amount: number) {
-    return this.getWeb3Contract().approve(address, amount);
+    return this.methods().approve(address, amount);
   }
 
   balanceOf(account: string) {
-    return this.getWeb3Contract().balanceOf(account);
+    return this.methods().balanceOf(account);
   }
 
   mint(amount: number) {
-    return this.getWeb3Contract().mint(amount);
+    return this.methods().mint(amount);
   }
 
   transfer(address: string, amount: number) {
-    return this.getWeb3Contract().transfer(address, amount);
+    return this.methods().transfer(address, amount);
   }
 }
