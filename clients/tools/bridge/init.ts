@@ -2,13 +2,14 @@ import { getConfigByChainName } from "delphinus-deployment/src/config";
 import { L1Client, withL1Client } from "../../client";
 import { encodeL1address } from "web3subscriber/src/addresses";
 import { Tokens } from "../../contracts/tokenlist";
+import { extraTokens} from "delphinus-deployment/config/extratokens";
 import { L1ClientRole } from "delphinus-deployment/src/types";
 
 const fs = require("fs");
 const path = require("path");
 
 function crunchTokens() {
-  return Tokens
+  return Tokens.concat(extraTokens)
     .filter((x: any) => x.address)
     .map((x: any) =>
     encodeL1address(x.address, parseInt(x.chainId).toString(16))
