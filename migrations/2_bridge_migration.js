@@ -14,13 +14,6 @@ module.exports = async function (deployer) {
   console.log("netid", id);
 
   await Promise.all([
-    deployer.deploy(Deposit),
-    deployer.deploy(Withdraw),
-    deployer.deploy(Swap),
-    deployer.deploy(Retrive),
-    deployer.deploy(Supply),
-    deployer.deploy(AddPool),
-    deployer.deploy(SetKey),
     deployer.deploy(Bridge, id),
     deployer.deploy(ZKPVerifier, id),
     //deployer.deploy(DummyVerifier, id),
