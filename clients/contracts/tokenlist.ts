@@ -40,6 +40,6 @@ export const Tokens = [
   {
     chainId: "97",
     address:TokenInfo.networks["97"]?.address.replace("0x", ""),
-    name:"sToken"
+    name:"tToken"
   },
 ];
