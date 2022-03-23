@@ -22,15 +22,25 @@ async function main(config_name: string) {
   try {
     await withL1Client(config, false, async (l1client: L1Client) => {
       let bridge = l1client.getBridgeContract();
+      let existing_tokens = await bridge.allTokens();
+      let init_tokens = crunchTokens();
       let output: any = {};
       let index = 0;
-
-      console.log("Testing bridge [id=%s]", l1client.getChainIdHex());
+      console.log("Init tokens in bridge [id=%s]", l1client.getChainIdHex());
+      console.log("Existing tokens:");
       for (let tokenUid of crunchTokens()) {
-        console.log("Adding token uid: 0x", tokenUid.toString(16));
-        let tx = await bridge.addToken(tokenUid);
-        console.log(tx);
-
+        let uidstr = tokenUid.toString(16);
+        if (index < existing_tokens.length) {
+            console.log(`Existing token uid: ${existing_tokens[index]}`);
+            if (existing_tokens[index].token_uid !== tokenUid.toString()) {
+                console.log("Token does not match");
+                process.exit();
+            }
+        } else {
+          console.log(`Adding token uid: ${tokenUid.toString(16)}`);
+          let tx = await bridge.addToken(tokenUid);
+          console.log(tx);
+        }
         output[tokenUid.toString()] = index++;
       }
 
