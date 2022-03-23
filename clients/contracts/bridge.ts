@@ -4,7 +4,10 @@ import { decodeL1address } from "web3subscriber/src/addresses";
 import { PromiseBinder } from "web3subscriber/src/pbinder";
 import { TokenContract } from "./token";
 import { Tokens, Chains } from "./tokenlist";
+import { extraTokens} from "delphinus-deployment/config/extratokens";
 const BridgeContractABI = require("../../build/contracts/Bridge.json");
+
+const registeredTokens = Tokens.concat(extraTokens);
 
 /*
  * Types
@@ -137,7 +140,7 @@ export class BridgeContract extends DelphinusContract {
         return {
           address: address,
           name:
-            Tokens.find(
+            registeredTokens.find(
               (x: any) => hexcmp(x.address, address) && x.chainId == cid
             )?.name || "unknown",
           chainId: cid,
