@@ -167,7 +167,7 @@ export class BridgeContract extends DelphinusContract {
       chainName: Chains[cid],
       tokenAddress: addr,
       tokenName:
-        Tokens.find(
+        registeredTokens.find(
           (x: any) => hexcmp(x.address, addr) && x.chainId == cid
         )?.name || "unknown",
       index: idx,
