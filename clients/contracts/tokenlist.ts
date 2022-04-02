@@ -2,7 +2,7 @@
 // For main net deployment, we needed to append our targeting coin
 
 const TokenInfo = require("../../build/contracts/Token.json");
-const RioInfo = require("../../build/contracts/Rio.json");
+const GasInfo = require("../../build/contracts/Gas.json");
 
 export const Chains : Record<string, string> = {
     "15": "local-test-net1",
@@ -19,7 +19,7 @@ export const Tokens = [
   },
   {
     chainId: "15",
-    address:RioInfo.networks["15"]?.address.replace("0x", ""),
+    address:GasInfo.networks["15"]?.address.replace("0x", ""),
     name:"rio"
   },
   {
@@ -34,7 +34,7 @@ export const Tokens = [
   },
   {
     chainId: "3",
-    address:RioInfo.networks["3"]?.address.replace("0x", ""),
+    address:GasInfo.networks["3"]?.address.replace("0x", ""),
     name:"rio",
   },
   {

@@ -1,10 +1,10 @@
 const TOKEN = artifacts.require("Token");
-const RIO = artifacts.require("Rio");
+const GAS = artifacts.require("Gas");
 
 module.exports = async function(deployer) {
   await deployer.deploy(TOKEN);
   token = await TOKEN.deployed();
 
-  await deployer.deploy(RIO);
-  token = await RIO.deployed();
+  await deployer.deploy(GAS);
+  token = await GAS.deployed();
 };

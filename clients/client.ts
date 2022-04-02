@@ -8,7 +8,7 @@ import { encodeL1address } from "web3subscriber/src/addresses";
 import { ChainConfig } from "delphinus-deployment/src/types";
 import { BridgeContract } from "./contracts/bridge";
 import { TokenContract } from "./contracts/token";
-import { RioContract } from "./contracts/rio";
+import { GasContract } from "./contracts/gas";
 import {
   DelphinusHDWalletProvider,
   DelphinusHttpProvider,
@@ -25,6 +25,21 @@ function getDelphinusProviderFromConfig(config: ChainConfig) {
       return new DelphinusHDWalletProvider(config.privateKey, config.rpcSource);
   }
 }
+
+
+const GasTokenInfo = require("./build/contracts/Gas.json");
+
+export function getChargeAddress(deviceId: string) {
+  let chargeAddress = GasTokenInfo.networks[deviceId].address;
+  let deviceIdHex = parseInt(deviceId).toString(16);
+  let encodedChargeAddress =
+    "0x" +
+    encodeL1address(chargeAddress.substring(2), deviceIdHex).toString(
+      16
+    );
+  return encodedChargeAddress;
+}
+
 
 export class L1Client {
   readonly web3: DelphinusWeb3;
@@ -70,10 +85,10 @@ export class L1Client {
     );
   }
 
-  getRioContract(address?: string, account?: string) {
-    return new RioContract(
+  getGasContract(address?: string, account?: string) {
+    return new GasContract(
       this.web3,
-      address || RioContract.getContractAddress(this.config.deviceId),
+      address || GasContract.getContractAddress(this.config.deviceId),
       account
     );
   }

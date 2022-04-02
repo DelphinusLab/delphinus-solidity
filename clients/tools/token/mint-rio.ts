@@ -9,7 +9,7 @@ async function main(configName: string, targetAccount: string) {
   let pbinder = new PromiseBinder();
   let r = pbinder.return(async () => {
     await withL1Client(config, false, async (l1client: L1Client) => {
-      let token = l1client.getRioContract();
+      let token = l1client.getGasContract();
       // await web3.eth.net.getId();
       try {
         console.log("mint token:", token.address());

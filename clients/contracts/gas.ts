@@ -1,19 +1,19 @@
 import { DelphinusContract, DelphinusWeb3 } from "web3subscriber/src/client";
 
-const RioContractABI = require("../../build/contracts/Rio.json");
+const GasContractABI = require("../../build/contracts/Gas.json");
 // const TokenABI = require("../../build/contracts/IERC20.json");
 
-export class RioContract extends DelphinusContract {
+export class GasContract extends DelphinusContract {
   constructor(web3: DelphinusWeb3, address: string, account?: string) {
-    super(web3, RioContract.getJsonInterface(), address, account);
+    super(web3, GasContract.getJsonInterface(), address, account);
   }
 
   static getJsonInterface(): any {
-    return RioContractABI;
+    return GasContractABI;
   }
 
   static getContractAddress(chainId: string) {
-    return RioContractABI.networks[chainId].address;
+    return GasContractABI.networks[chainId].address;
   }
 
   approve(address: string, amount: number) {
