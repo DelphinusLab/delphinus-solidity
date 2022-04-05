@@ -27,7 +27,7 @@ function getDelphinusProviderFromConfig(config: ChainConfig) {
 }
 
 
-const GasTokenInfo = require("./build/contracts/Gas.json");
+const GasTokenInfo = require("../build/contracts/Gas.json");
 
 export function getChargeAddress(deviceId: string) {
   let chargeAddress = GasTokenInfo.networks[deviceId].address;

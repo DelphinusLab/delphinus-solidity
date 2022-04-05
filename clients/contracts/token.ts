@@ -1,6 +1,7 @@
 import { DelphinusContract, DelphinusWeb3 } from "web3subscriber/src/client";
 
 const TokenContractABI = require("../../build/contracts/Token.json");
+import { PromiseBinder } from "web3subscriber/src/pbinder";
 // const TokenABI = require("../../build/contracts/IERC20.json");
 
 export class TokenContract extends DelphinusContract {
@@ -24,8 +25,18 @@ export class TokenContract extends DelphinusContract {
     return this.getWeb3Contract().methods.balanceOf(account).call();
   }
 
-  mint(amount: number) {
+  private _mint(amount: number) {
     return this.getWeb3Contract().methods.mint(amount).send();
+  }
+
+  mint(amount: number) {
+    const pbinder = new PromiseBinder();
+    return pbinder.return(async () => {
+      return await pbinder.bind(
+        "Mint",
+        this._mint(amount)
+      );
+    });
   }
 
   transfer(address: string, amount: number) {
