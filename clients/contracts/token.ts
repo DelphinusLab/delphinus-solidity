@@ -31,17 +31,14 @@ export class TokenContract extends DelphinusContract {
 
   mint(amount: number) {
     const pbinder = new PromiseBinder();
+
     return pbinder.return(async () => {
-      return await pbinder.bind(
-        "Mint",
-        this._mint(amount)
-      );
+      await pbinder.bind("Mint", console.log("Minting"));
+      return await pbinder.bind("Transfer", this._mint(amount));
     });
   }
 
   transfer(address: string, amount: number) {
-    return this.getWeb3Contract()
-      .methods.transfer(address, amount)
-      .send();
+    return this.getWeb3Contract().methods.transfer(address, amount).send();
   }
 }
