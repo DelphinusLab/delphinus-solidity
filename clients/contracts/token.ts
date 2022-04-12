@@ -25,18 +25,8 @@ export class TokenContract extends DelphinusContract {
     return this.getWeb3Contract().methods.balanceOf(account).call();
   }
 
-  private _mint(amount: number) {
-    return this.getWeb3Contract().methods.mint(amount).send();
-  }
-
   mint(amount: number) {
-    const pbinder = new PromiseBinder();
-    return pbinder.return(async () => {
-      return await pbinder.bind(
-        "Mint",
-        this._mint(amount)
-      );
-    });
+    return this.getWeb3Contract().methods.mint(amount).send();
   }
 
   transfer(address: string, amount: number) {

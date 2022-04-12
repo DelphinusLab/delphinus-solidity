@@ -12,6 +12,7 @@ async function main(configName: string, targetAccount: string) {
       let token = l1client.getTokenContract();
       // await web3.eth.net.getId();
       try {
+        pbinder.snapshot("Mint");
         console.log("mint token:", token.address());
         let balance = await token.balanceOf(account);
         console.log("sender: balance before mint:", balance);
