@@ -33,8 +33,8 @@ export class TokenContract extends DelphinusContract {
     const pbinder = new PromiseBinder();
 
     return pbinder.return(async () => {
-      await pbinder.bind("Mint", console.log("Minting"));
-      return await pbinder.bind("Transfer", this._mint(amount));
+      await new Promise((f) => setTimeout(f, 1000));
+      return await pbinder.bind("Mint", this._mint(amount));
     });
   }
 
