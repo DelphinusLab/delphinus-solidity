@@ -88,7 +88,7 @@ export class BridgeContract extends DelphinusContract {
     return tx.send();
   }
 
-  private _deposit(tokenAddress: string, amount: number, l2account: string) {
+  private _deposit(tokenAddress: string, amount: BN, l2account: string) {
     return this.getWeb3Contract()
       .methods.deposit(tokenAddress, amount, l2account)
       .send();
@@ -112,7 +112,7 @@ export class BridgeContract extends DelphinusContract {
 
   deposit(
     tokenContract: TokenContract,
-    amount: number,
+    amount: BN,
     l2account: string
   ) {
     const pbinder = new PromiseBinder();
@@ -137,13 +137,14 @@ export class BridgeContract extends DelphinusContract {
       .filter((t) => t.token_uid != "0")
       .map((token) => {
         let [cid, address] = decodeL1address(token.token_uid);
+        let registeredToken = registeredTokens.find(
+              (x: any) => hexcmp(x.address, address) && x.chainId == cid
+            )!;
         return {
           address: address,
-          name:
-            registeredTokens.find(
-              (x: any) => hexcmp(x.address, address) && x.chainId == cid
-            )?.name || "unknown",
+          name: registeredToken.name,
           chainId: cid,
+          wei: registeredToken.wei,
           index: tokenInfos.findIndex(
             (x: TokenInfo) => x.token_uid == token.token_uid
           ),
@@ -162,14 +163,15 @@ export class BridgeContract extends DelphinusContract {
   async getTokenInfo(idx: number) {
     const token = (await this.allTokens())[idx];
     let [cid, addr] = decodeL1address(token.token_uid);
+    let registeredToken = registeredTokens.find(
+          (x: any) => hexcmp(x.address, addr) && x.chainId == cid
+        )!;
     return {
       chainId: cid,
       chainName: Chains[cid],
       tokenAddress: addr,
-      tokenName:
-        registeredTokens.find(
-          (x: any) => hexcmp(x.address, addr) && x.chainId == cid
-        )?.name || "unknown",
+      wei: registeredToken.wei,
+      tokenName: registeredToken.name,
       index: idx,
     };
   }
