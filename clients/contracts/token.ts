@@ -27,6 +27,12 @@ export class TokenContract extends DelphinusContract {
     return new BN(amount, 10);
   }
 
+  async allowanceOf(account: string, spender: string ): Promise<BN> {
+    let amount = await this.getWeb3Contract().methods.allowance(account, spender).call();
+    return new BN(amount, 10);
+  }
+
+
   mint(amount: BN) {
     return this.getWeb3Contract().methods.mint(amount).send();
   }
