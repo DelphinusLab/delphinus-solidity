@@ -1,3 +1,4 @@
+import BN from 'bn.js';
 import { withL1Client, L1Client } from "../../client";
 import { getConfigByChainName } from "delphinus-deployment/src/config";
 import { PromiseBinder  } from "web3subscriber/src/pbinder";
@@ -16,7 +17,7 @@ async function main(configName: string, targetAccount: string) {
         console.log("mint token:", token.address());
         let balance = await token.balanceOf(account);
         console.log("sender: balance before mint:", balance);
-        await pbinder.bind("mint", token.mint(0x10000000));
+        await pbinder.bind("mint", token.mint(new BN(0x10000000)));
         balance = await token.balanceOf(account);
         console.log("sender: balance after mint", balance);
         if (targetAccount) {

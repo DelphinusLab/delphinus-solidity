@@ -15,31 +15,37 @@ export const Tokens = [
   {
     chainId: "15",
     address:TokenInfo.networks["15"]?.address.replace("0x", ""),
+    wei:12,
     name:"tToken"
   },
   {
     chainId: "15",
     address:GasInfo.networks["15"]?.address.replace("0x", ""),
+    wei:12,
     name:"rio"
   },
   {
     chainId: "16",
     address:TokenInfo.networks["16"]?.address.replace("0x", ""),
+    wei:12,
     name:"sToken",
   },
   {
     chainId: "3",
     address:TokenInfo.networks["3"]?.address.replace("0x", ""),
+    wei:12,
     name:"tToken"
   },
   {
     chainId: "3",
     address:GasInfo.networks["3"]?.address.replace("0x", ""),
+    wei:12,
     name:"rio",
   },
   {
     chainId: "97",
     address:TokenInfo.networks["97"]?.address.replace("0x", ""),
+    wei:12,
     name:"tToken"
   },
 ];

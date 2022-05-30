@@ -1,4 +1,5 @@
 import { DelphinusContract, DelphinusWeb3 } from "web3subscriber/src/client";
+import BN from 'bn.js';
 
 const TokenContractABI = require("../../build/contracts/Token.json");
 import { PromiseBinder } from "web3subscriber/src/pbinder";
@@ -17,15 +18,16 @@ export class TokenContract extends DelphinusContract {
     return TokenContractABI.networks[chainId].address;
   }
 
-  approve(address: string, amount: number) {
+  approve(address: string, amount: BN) {
     return this.getWeb3Contract().methods.approve(address, amount).send();
   }
 
-  balanceOf(account: string) {
-    return this.getWeb3Contract().methods.balanceOf(account).call();
+  async balanceOf(account: string): Promise<BN> {
+    let amount = await this.getWeb3Contract().methods.balanceOf(account).call();
+    return new BN(amount, 10);
   }
 
-  mint(amount: number) {
+  mint(amount: BN) {
     return this.getWeb3Contract().methods.mint(amount).send();
   }
 
