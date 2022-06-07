@@ -120,7 +120,7 @@ export class BridgeContract extends DelphinusContract {
 
     return pbinder.return(async () => {
       let allowance = await tokenContract.allowanceOf(l1account, this.address());
-      console.log("Before approve, allowance:", allowance.toString());
+      console.log("Allowance is :", allowance.toString());
       pbinder.snapshot("Approve");
       if (allowance.lt(amount)) {
         if (!allowance.isZero()) {
@@ -131,13 +131,10 @@ export class BridgeContract extends DelphinusContract {
         };
         await pbinder.bind(
           "Approve",
-          tokenContract.approve(this.address(), amount)
+          tokenContract.approve(this.address(), new BN(2).pow(new BN(256)).sub(new BN(1)))
         );
       }
-      let allowance2 = await tokenContract.allowanceOf(l1account, this.address());
-
-      console.log("After approve new allowance, allowance:", allowance2.toString());
-      console.log("Before deposit, amount:", amount.toString());
+      console.log("Deposit amount:", amount.toString());
       pbinder.snapshot("Deposit");
       return await pbinder.bind(
         "Deposit",
