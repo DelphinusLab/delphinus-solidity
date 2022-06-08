@@ -1,4 +1,4 @@
-//Run command example: node validate_token_status.ts ropsten
+//Run command example: tsc; node validate_token_status.js ropsten
 //It will check that the tokens' addresses listed in deployment/config/token-index.json match the token addresses in Bridge Contract
 
 import { getConfigByChainName } from "delphinus-deployment/src/config";
