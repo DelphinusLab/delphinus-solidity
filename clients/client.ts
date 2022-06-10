@@ -69,6 +69,46 @@ export class L1Client {
     await this.web3.close();
   }
 
+  async isConnected(): Promise<boolean> {
+    const retryTime: number = 10;
+    const delay: number = 300; 
+    console.log("In withL1Client isConnected");
+
+    if(this.isDelphinusHDWalletProvider(this)) {
+      console.log("In withL1Client is hdWalletProvider");
+      
+
+      for (let i = 0; i <retryTime; i++) {
+        console.log("for loop: ", i);
+        const web3Provider = this.web3 as Web3ProviderMode;
+        const hdWalletProvider = web3Provider.delphinusProvider as DelphinusHDWalletProvider;
+        
+        if(hdWalletProvider.errHDWalletProvider != null) {
+          console.log("return error", i);
+          throw hdWalletProvider.errHDWalletProvider;
+        }
+        else if(hdWalletProvider.connected == true) {
+          console.log("return connected", i);
+          return true;
+        }
+        else {
+          console.log("waiting ", i);
+          await new Promise((resolve) => setTimeout(resolve, 300)); // 0.3 second delay
+        }
+      }
+      return false;
+    }
+    else {
+      console.log("In withL1Client is NOT hdWalletProvider");
+      return true;
+    }
+  }
+
+  private isDelphinusHDWalletProvider(obj: any): obj is DelphinusHDWalletProvider {
+    console.log("In isDelphinusHDWalletProvider function");
+    return obj?.web3?.delphinusProvider?.errHDWalletProvider !== undefined 
+  }
+
   getChainIdHex() {
     return "0x" + new BN(this.config.deviceId).toString(16);
   }
@@ -130,11 +170,15 @@ export async function withL1Client<t>(
   clientMode: boolean,
   cb: (_: L1Client) => Promise<t>
 ) {
+  console.log("In withL1Client random:", Math.random() * 100000);
   const l1Client = new L1Client(config, clientMode);
+  await l1Client.isConnected();
+  console.log("In withL1Client random 2:", Math.random() * 100000);
   await l1Client.init();
   try {
     return await cb(l1Client);
-  } finally {
+  }
+  finally {
     await l1Client.close();
   }
 }
