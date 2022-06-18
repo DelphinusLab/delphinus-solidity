@@ -3,9 +3,10 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "./Verifier.sol";
 import "./Transaction.sol";
+import "./DelphinusBridge.sol";
 import "./MKT.sol";
 
-contract Bridge {
+contract Bridge is DelphinusBridge {
     event Deposit(uint256 l1token, uint256 l2account, uint256 amount);
     event WithDraw(uint256 l1account, uint256 l2account, uint256 amount);
     event SwapAck(uint256 rid, uint256 l2account);

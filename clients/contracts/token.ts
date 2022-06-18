@@ -1,9 +1,7 @@
-import { DelphinusContract, DelphinusWeb3 } from "web3subscriber/src/client";
 import BN from 'bn.js';
-
-const TokenContractABI = require("../../build/contracts/Token.json");
+import { DelphinusContract, DelphinusWeb3 } from "web3subscriber/src/client";
 import { PromiseBinder } from "web3subscriber/src/pbinder";
-// const TokenABI = require("../../build/contracts/IERC20.json");
+import { contractsInfo } from "delphinus-deployment/config/contractsinfo";
 
 export class TokenContract extends DelphinusContract {
   constructor(web3: DelphinusWeb3, address: string, account?: string) {
@@ -11,11 +9,11 @@ export class TokenContract extends DelphinusContract {
   }
 
   static getJsonInterface(): any {
-    return TokenContractABI;
+    return contractsInfo.interfaceMap.erc20;
   }
 
   static getContractAddress(chainId: string) {
-    return TokenContractABI.networks[chainId].address;
+    return contractsInfo.addressMap.testToken.networks[chainId].address;
   }
 
   approve(address: string, amount: BN) {
