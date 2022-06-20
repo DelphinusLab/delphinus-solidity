@@ -17,7 +17,7 @@ async function main() {
 
   // We get the contract to deploy
   const TetherToken = await hre.ethers.getContractFactory("TetherToken");
-  const Bridge = await hre.ethers.getContractFactory("FakeBridge");
+  const Bridge = await hre.ethers.getContractFactory("FakeBridgeFailCase");
   const token = await TetherToken.deploy(1000000000, "Tether", "USDT", 6);
   const bridge = await Bridge.deploy();
 
