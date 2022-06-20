@@ -4,6 +4,7 @@ const BridgeInfo = require("../build/contracts/Bridge.json");
 
 const DelphinusBridgeInterface = require("../build/contracts/DelphinusBridge.json");
 const ERC20Interface = require("../build/contracts/ERC20.json");
+const GasInterface = require("../build/contracts/Gas.json");
 
 export const contractsInfo = {
     addressMap: {
@@ -14,6 +15,9 @@ export const contractsInfo = {
     interfaceMap: {
         bridge: {
             abi: DelphinusBridgeInterface.abi,
+        },
+        gas: {
+            abi: GasInterface.abi,
         },
         erc20: {
             abi: ERC20Interface.abi,

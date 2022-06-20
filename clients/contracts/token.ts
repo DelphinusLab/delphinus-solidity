@@ -9,7 +9,7 @@ export class TokenContract extends DelphinusContract {
   }
 
   static getJsonInterface(): any {
-    return contractsInfo.interfaceMap.erc20;
+    return contractsInfo.interfaceMap.gas;
   }
 
   static getContractAddress(chainId: string) {
