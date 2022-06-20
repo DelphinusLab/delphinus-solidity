@@ -1,15 +1,14 @@
 import { getConfigByChainName } from "delphinus-deployment/src/config";
 import { L1Client, withL1Client } from "../../client";
 import { encodeL1address } from "web3subscriber/src/addresses";
-import { Tokens } from "../../contracts/tokenlist";
-import { extraTokens} from "delphinus-deployment/config/extratokens";
+import { extraTokens, contractsInfo} from "delphinus-deployment/config/contractsinfo";
 import { L1ClientRole } from "delphinus-deployment/src/types";
 
 const fs = require("fs");
 const path = require("path");
 
 function crunchTokens() {
-  return Tokens.concat(extraTokens)
+  return contractsInfo.tokens.concat(extraTokens)
     .filter((x: any) => x.address)
     .map((x: any) =>
     encodeL1address(x.address, parseInt(x.chainId).toString(16))
@@ -33,7 +32,7 @@ async function main(config_name: string) {
         if (index < existing_tokens.length) {
             console.log(`Existing token uid: ${existing_tokens[index]}`);
             if (existing_tokens[index].token_uid !== tokenUid.toString()) {
-                console.log("Token does not match");
+                console.log("Token does not match", existing_tokens[index].token_uid, tokenUid.toString());
                 process.exit();
             }
         } else {

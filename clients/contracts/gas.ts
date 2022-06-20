@@ -1,7 +1,5 @@
 import { DelphinusContract, DelphinusWeb3 } from "web3subscriber/src/client";
-
-const GasContractABI = require("../../build/contracts/Gas.json");
-// const TokenABI = require("../../build/contracts/IERC20.json");
+import { contractsInfo } from "delphinus-deployment/config/contractsinfo";
 
 export class GasContract extends DelphinusContract {
   constructor(web3: DelphinusWeb3, address: string, account?: string) {
@@ -9,11 +7,11 @@ export class GasContract extends DelphinusContract {
   }
 
   static getJsonInterface(): any {
-    return GasContractABI;
+    return contractsInfo.interfaceMap.gas;
   }
 
   static getContractAddress(chainId: string) {
-    return GasContractABI.networks[chainId].address;
+    return contractsInfo.addressMap.gasToken.networks[chainId].address;
   }
 
   approve(address: string, amount: number) {

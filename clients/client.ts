@@ -26,11 +26,11 @@ function getDelphinusProviderFromConfig(config: ChainConfig) {
   }
 }
 
+import { contractsInfo } from "delphinus-deployment/config/contractsinfo";
 
-const GasTokenInfo = require("../build/contracts/Gas.json");
 
 export function getChargeAddress(deviceId: string) {
-  let chargeAddress = GasTokenInfo.networks[deviceId].address;
+  let chargeAddress = contractsInfo.addressMap.gasToken[deviceId].address;
   let deviceIdHex = parseInt(deviceId).toString(16);
   let encodedChargeAddress =
     "0x" +

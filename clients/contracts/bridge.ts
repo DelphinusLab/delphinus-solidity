@@ -3,11 +3,9 @@ import { DelphinusContract, DelphinusWeb3 } from "web3subscriber/src/client";
 import { decodeL1address } from "web3subscriber/src/addresses";
 import { PromiseBinder } from "web3subscriber/src/pbinder";
 import { TokenContract } from "./token";
-import { Tokens, Chains } from "./tokenlist";
-import { extraTokens} from "delphinus-deployment/config/extratokens";
-const BridgeContractABI = require("../../build/contracts/Bridge.json");
+import { extraTokens, Chains, contractsInfo } from "delphinus-deployment/config/contractsinfo";
 
-const registeredTokens = Tokens.concat(extraTokens);
+const registeredTokens = contractsInfo.tokens.concat(extraTokens);
 
 /*
  * Types
@@ -59,11 +57,11 @@ export class BridgeContract extends DelphinusContract {
   }
 
   static getJsonInterface(): any {
-    return BridgeContractABI;
+    return contractsInfo.interfaceMap.bridge;
   }
 
   static getContractAddress(chainId: string) {
-    return BridgeContractABI.networks[chainId].address;
+    return contractsInfo.addressMap.bridge[chainId].address;
   }
 
   getBridgeInfo() {
