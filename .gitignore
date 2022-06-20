@@ -3,6 +3,8 @@
 /tools/data
 /tools/testnet1
 /package-lock.json
+clients/tools/**/*.js
+clients/tools/**/*.js.map
 clients/config.js
 clients/config.js.map
 clients/client.js
@@ -18,3 +20,6 @@ clients/token/mint.js.map
 clients/contracts/*.js
 clients/contracts/*.js.map
 
+#Hardhat files
+artifacts/
+cache/
