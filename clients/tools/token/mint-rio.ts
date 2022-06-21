@@ -1,8 +1,8 @@
 import { withL1Client, L1Client } from "../../client";
 import { getConfigByChainName } from "delphinus-deployment/src/config";
-import { PromiseBinder  } from "web3subscriber/src/pbinder";
+import { PromiseBinder } from "web3subscriber/src/pbinder";
 import { L1ClientRole } from "delphinus-deployment/src/types";
-
+import BN from "bn.js";
 async function main(configName: string, targetAccount: string) {
   let config = await getConfigByChainName(L1ClientRole.Monitor, configName);
   let account = config.monitorAccount;
@@ -15,7 +15,7 @@ async function main(configName: string, targetAccount: string) {
         console.log("mint token:", token.address());
         let balance = await token.balanceOf(account);
         console.log("sender: balance before mint:", balance);
-        await pbinder.bind("mint", token.mint(0x100000000000));
+        await pbinder.bind("mint", token.mint(new BN(0x100000000000)));
         balance = await token.balanceOf(account);
         console.log("sender: balance after mint", balance);
         if (targetAccount) {
@@ -31,11 +31,7 @@ async function main(configName: string, targetAccount: string) {
       }
     });
   });
-  await r.when(
-    "mint",
-    "transactionHash",
-    (hash: string) => console.log(hash)
-  );
+  await r.when("mint", "transactionHash", (hash: string) => console.log(hash));
 }
 
 /* .once("transactionHash",hash => console.log(hash) */
