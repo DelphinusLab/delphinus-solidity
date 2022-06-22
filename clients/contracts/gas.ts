@@ -1,5 +1,6 @@
 import { DelphinusContract, DelphinusWeb3 } from "web3subscriber/src/client";
 import { contractsInfo } from "delphinus-deployment/config/contractsinfo";
+import BN from "bn.js";
 
 export class GasContract extends DelphinusContract {
   constructor(web3: DelphinusWeb3, address: string, account?: string) {
@@ -14,7 +15,7 @@ export class GasContract extends DelphinusContract {
     return contractsInfo.addressMap.gasToken.networks[chainId].address;
   }
 
-  approve(address: string, amount: number) {
+  approve(address: string, amount: BN) {
     return this.getWeb3Contract().methods.approve(address, amount).send();
   }
 
@@ -22,13 +23,11 @@ export class GasContract extends DelphinusContract {
     return this.getWeb3Contract().methods.balanceOf(account).call();
   }
 
-  mint(amount: number) {
+  mint(amount: BN) {
     return this.getWeb3Contract().methods.mint(amount).send();
   }
 
   transfer(address: string, amount: number) {
-    return this.getWeb3Contract()
-      .methods.transfer(address, amount)
-      .send();
+    return this.getWeb3Contract().methods.transfer(address, amount).send();
   }
 }
