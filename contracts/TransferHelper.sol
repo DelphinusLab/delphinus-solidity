@@ -3,6 +3,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 library TransferHelper {
 
+    /// @notice Contains helper methods for interacting with ERC20 tokens that do not consistently return true/false
     function safeTransfer(
         address token,
         address to,
