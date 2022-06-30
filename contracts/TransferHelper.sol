@@ -21,7 +21,7 @@ library TransferHelper {
         uint256 amount
     ) internal {
         (bool success, bytes memory data) =
-            token.call(abi.encodeWithSelector(IERC20.transfer.selector, from, to, amount));
+            token.call(abi.encodeWithSelector(IERC20.transferFrom.selector, from, to, amount));
         require(success && (data.length == 0 || abi.decode(data, (bool))), 'TF');
     }
 }
