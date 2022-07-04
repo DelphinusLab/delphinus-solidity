@@ -5,6 +5,7 @@ import "./Verifier.sol";
 import "./Transaction.sol";
 import "./DelphinusBridge.sol";
 import "./MKT.sol";
+import "./TransferHelper.sol";
 
 contract Bridge is DelphinusBridge {
     event Deposit(uint256 l1token, uint256 l2account, uint256 amount);
@@ -83,7 +84,8 @@ contract Bridge is DelphinusBridge {
 
             // transfer amount back to recipent
             IERC20 underlying_token = IERC20(token);
-            underlying_token.transfer(recipent, amount);
+            //underlying_token.transfer(recipent, amount);
+            TransferHelper.safeTransfer(address(underlying_token), recipent, amount);
         }
     }
 
@@ -138,8 +140,7 @@ contract Bridge is DelphinusBridge {
         uint256 balance = underlying_token.balanceOf(msg.sender);
         require(balance >= amount, "Insuffecient Balance");
         //underlying_token.transferFrom(msg.sender, address(this), amount); //USDT does not follow ERC20 interface so have to use other method
-        (bool success, bytes memory data) = address(underlying_token).call(abi.encodeWithSelector(IERC20.transferFrom.selector,msg.sender, address(this), amount));
-        require(success && (data.length == 0 || abi.decode(data, (bool))), 'TF');
+        TransferHelper.safeTransferFrom(address(underlying_token), msg.sender, address(this), amount);
         emit Deposit(_l1_address(token), l2account, amount);
     }
 
