@@ -12,7 +12,7 @@ export class GasContract extends DelphinusContract {
   }
 
   static getContractAddress(chainId: string) {
-    return contractsInfo.addressMap.gasToken.networks[chainId].address;
+    return contractsInfo.addressMap.gasToken[chainId].address;
   }
 
   approve(address: string, amount: BN) {

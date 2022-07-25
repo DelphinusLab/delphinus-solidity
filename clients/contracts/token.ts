@@ -13,7 +13,7 @@ export class TokenContract extends DelphinusContract {
   }
 
   static getContractAddress(chainId: string) {
-    return contractsInfo.addressMap.testToken.networks[chainId].address;
+    return contractsInfo.addressMap.testToken[chainId].address;
   }
 
   approve(address: string, amount: BN) {
