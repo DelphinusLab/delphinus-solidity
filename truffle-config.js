@@ -103,8 +103,8 @@ module.exports = {
       provider: () => new HDWalletProvider(secrets.accounts.deployer.priv,
         "wss://cronos-testnet-3.crypto.org:8546"),
       network_id: 338,
-      confirmations: 2,
-      timeoutBlocks: 2000,
+      confirmations: 10,
+      timeoutBlocks: 200,
       skipDryRun: true
     }
   },
