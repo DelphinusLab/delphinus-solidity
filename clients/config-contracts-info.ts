@@ -51,7 +51,7 @@ export const contractsInfo = {
       {
         chainId: "3",
         address:GasTokenInfo.networks["3"]?.address.replace("0x", ""),
-        wei:12,
+        wei:18,
         name:"rio",
       },
       {
