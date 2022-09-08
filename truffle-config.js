@@ -103,8 +103,14 @@ module.exports = {
       provider: () => new HDWalletProvider(secrets.accounts.deployer.priv,
         "wss://cronos-testnet-3.crypto.org:8546"),
       network_id: 338,
-      confirmations: 10,
+      confirmations: 2,
       timeoutBlocks: 200,
+      skipDryRun: true
+    },
+    rolluxtestnet: {
+      provider: () => new HDWalletProvider(secrets.accounts.deployer.priv,
+        http_provider("https://testnet.rollux.com:2814/")),
+      network_id: 2814,
       skipDryRun: true
     }
   },
