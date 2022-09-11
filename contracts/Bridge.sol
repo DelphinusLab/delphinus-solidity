@@ -73,7 +73,7 @@ contract Bridge is DelphinusBridge {
         uint128 tidx,
         uint128 amount,
         uint256 l1recipent
-    ) public {
+    ) private {
         uint256 tokenid = get_token_uid(tidx);
         if (_is_local(tokenid) && _is_local(l1recipent)) {
             address token = address(uint160(tokenid));
