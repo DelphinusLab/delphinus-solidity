@@ -111,6 +111,8 @@ module.exports = {
       provider: () => new HDWalletProvider(secrets.accounts.deployer.priv,
         http_provider("https://testnet.rollux.com:2814/")),
       network_id: 2814,
+      confirmations: 2,
+      timeoutBlocks: 200,
       skipDryRun: true
     }
   },
