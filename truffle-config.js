@@ -81,7 +81,7 @@ module.exports = {
     },
     ropsten: { //eth testnet
       provider: () => new HDWalletProvider(secrets.accounts.deployer.priv,
-        http_provider("https://ropsten.infura.io/v3/" + secrets.infura_id)
+        http_provider("https://eth.getblock.io/ropsten/?api_key=" + secrets.getblock_key_ropsten)
       ),
       network_id: 3,       // Ropsten's id
       gas: 5500000,        // Ropsten has a lower block limit than mainnet
@@ -111,7 +111,6 @@ module.exports = {
       provider: () => new HDWalletProvider(secrets.accounts.deployer.priv,
         http_provider("https://testnet.rollux.com:2814/")),
       network_id: 2814,
-      confirmations: 2,
       timeoutBlocks: 200,
       skipDryRun: true
     }
