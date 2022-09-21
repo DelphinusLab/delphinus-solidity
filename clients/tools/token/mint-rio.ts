@@ -15,13 +15,13 @@ async function main(configName: string, targetAccount: string) {
         console.log("mint token:", token.address());
         let balance = await token.balanceOf(account);
         console.log("sender: balance before mint:", balance);
-        await pbinder.bind("mint", token.mint(new BN(0x100000000000)));
+        await pbinder.bind("mint", token.mint(new BN("10000000000000000000")));
         balance = await token.balanceOf(account);
         console.log("sender: balance after mint", balance);
         if (targetAccount) {
           await pbinder.bind(
             "transfer",
-            token.transfer(targetAccount, 0x100000000000)
+            token.transfer(targetAccount, new BN("10000000000000000000"))
           );
           balance = await token.balanceOf(targetAccount);
           console.log("balance of recipient after transfer", balance);
