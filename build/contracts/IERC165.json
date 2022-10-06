@@ -176,8 +176,8 @@
     "version": "0.8.15+commit.e14f2714.Linux.g++"
   },
   "networks": {},
-  "schemaVersion": "3.4.9",
-  "updatedAt": "2022-09-13T13:31:41.245Z",
+  "schemaVersion": "3.4.10",
+  "updatedAt": "2022-10-06T11:26:46.439Z",
   "devdoc": {
     "details": "Interface of the ERC165 standard, as defined in the https://eips.ethereum.org/EIPS/eip-165[EIP]. Implementers can declare support of contract interfaces, which can then be queried by others ({ERC165Checker}). For an implementation, see {ERC165}.",
     "kind": "dev",

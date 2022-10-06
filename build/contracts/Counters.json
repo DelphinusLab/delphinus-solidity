@@ -843,8 +843,8 @@
     "version": "0.8.15+commit.e14f2714.Linux.g++"
   },
   "networks": {},
-  "schemaVersion": "3.4.9",
-  "updatedAt": "2022-09-13T13:31:41.244Z",
+  "schemaVersion": "3.4.10",
+  "updatedAt": "2022-10-06T11:26:46.438Z",
   "devdoc": {
     "author": "Matt Condon (@shrugs)",
     "details": "Provides counters that can only be incremented, decremented or reset. This can be used e.g. to track the number of elements in a mapping, issuing ERC721 ids, or counting request ids. Include with `using Counters for Counters.Counter;`",
