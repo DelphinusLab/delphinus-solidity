@@ -79,12 +79,12 @@ module.exports = {
       gas: 3100000,           // Gas sent with each transaction (default: ~6700000)
       websocket: true        // Enable EventEmitter interface for web3 (default: false)
     },
-    ropsten: { //eth testnet
+    goerli: { //eth testnet
       provider: () => new HDWalletProvider(secrets.accounts.deployer.priv,
-        http_provider("https://eth.getblock.io/ropsten/?api_key=" + secrets.getblock_key_ropsten)
+        http_provider("https://eth.getblock.io/goerli/?api_key=" + secrets.getblock_key_goerli)
       ),
-      network_id: 3,       // Ropsten's id
-      gas: 5500000,        // Ropsten has a lower block limit than mainnet
+      network_id: 5,       // goerli's id
+      gas: 5500000,        // goerli has a lower block limit than mainnet
       confirmations: 2,    // # of confs to wait between deployments. (default: 0)
       timeoutBlocks: 400,  // # of blocks before a deployment times out  (minimum/default: 50)
       skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
