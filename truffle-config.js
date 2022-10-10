@@ -59,7 +59,7 @@ module.exports = {
       host: "127.0.0.1",     // Localhost (default: none)
       port: 8545,            // Standard Ethereum port (default: none)
       network_id: "*",       // Any network (default: none)
-      from: "0x6f6eF6Dfe681b6593Ddf27da3BfDe22083AEF88b",
+      from: "0xea9225F0013D64d12e75B89c19da9e3922C86556",
       gas: 3100000,           // Gas sent with each transaction (default: ~6700000)
       websocket: true        // Enable EventEmitter interface for web3 (default: false)
     },
@@ -67,7 +67,7 @@ module.exports = {
       host: "127.0.0.1",     // Localhost (default: none)
       port: 8545,            // Standard Ethereum port (default: none)
       network_id: "*",       // Any network (default: none)
-      from: "0x6f6eF6Dfe681b6593Ddf27da3BfDe22083AEF88b",
+      from: "0xea9225F0013D64d12e75B89c19da9e3922C86556",
       gas: 3100000,           // Gas sent with each transaction (default: ~6700000)
       websocket: true        // Enable EventEmitter interface for web3 (default: false)
     },
@@ -75,7 +75,7 @@ module.exports = {
       host: "127.0.0.1",     // Localhost (default: none)
       port: 8745,            // Standard Ethereum port (default: none)
       network_id: "*",       // Any network (default: none)
-      from: "0x6f6eF6Dfe681b6593Ddf27da3BfDe22083AEF88b",
+      from: "0xea9225F0013D64d12e75B89c19da9e3922C86556",
       gas: 3100000,           // Gas sent with each transaction (default: ~6700000)
       websocket: true        // Enable EventEmitter interface for web3 (default: false)
     },
