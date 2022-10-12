@@ -59,7 +59,7 @@ module.exports = {
       host: "127.0.0.1",     // Localhost (default: none)
       port: 8545,            // Standard Ethereum port (default: none)
       network_id: "*",       // Any network (default: none)
-      from: "0x6f6ef6dfe681b6593ddf27da3bfde22083aef88b",
+      from: "0x4D9A852e6AECD3A6E87FecE2cA109780E45E6F2D",
       gas: 3100000,           // Gas sent with each transaction (default: ~6700000)
       websocket: true        // Enable EventEmitter interface for web3 (default: false)
     },
@@ -67,7 +67,7 @@ module.exports = {
       host: "127.0.0.1",     // Localhost (default: none)
       port: 8545,            // Standard Ethereum port (default: none)
       network_id: "*",       // Any network (default: none)
-      from: "0x6f6ef6dfe681b6593ddf27da3bfde22083aef88b",
+      from: "0x4D9A852e6AECD3A6E87FecE2cA109780E45E6F2D",
       gas: 3100000,           // Gas sent with each transaction (default: ~6700000)
       websocket: true        // Enable EventEmitter interface for web3 (default: false)
     },
@@ -75,18 +75,18 @@ module.exports = {
       host: "127.0.0.1",     // Localhost (default: none)
       port: 8745,            // Standard Ethereum port (default: none)
       network_id: "*",       // Any network (default: none)
-      from: "0x6f6ef6dfe681b6593ddf27da3bfde22083aef88b",
+      from: "0x4D9A852e6AECD3A6E87FecE2cA109780E45E6F2D",
       gas: 3100000,           // Gas sent with each transaction (default: ~6700000)
       websocket: true        // Enable EventEmitter interface for web3 (default: false)
     },
-    ropsten: { //eth testnet
+    goerli: { //eth testnet
       provider: () => new HDWalletProvider(secrets.accounts.deployer.priv,
-        http_provider("https://ropsten.infura.io/v3/" + secrets.infura_id)
+        http_provider("https://eth.getblock.io/goerli/?api_key=" + secrets.getblock_key_goerli)
       ),
-      network_id: 3,       // Ropsten's id
-      gas: 5500000,        // Ropsten has a lower block limit than mainnet
+      network_id: 5,       // goerli's id
+      gas: 5500000,        // goerli has a lower block limit than mainnet
       confirmations: 2,    // # of confs to wait between deployments. (default: 0)
-      timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
+      timeoutBlocks: 400,  // # of blocks before a deployment times out  (minimum/default: 50)
       skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
     },
     bsctestnet: { //bsc
@@ -96,6 +96,21 @@ module.exports = {
       ),
       network_id: 97,
       confirmations: 10,
+      timeoutBlocks: 200,
+      skipDryRun: true
+    },
+    cronostestnet: {
+      provider: () => new HDWalletProvider(secrets.accounts.deployer.priv,
+        "wss://cronos-testnet-3.crypto.org:8546"),
+      network_id: 338,
+      confirmations: 2,
+      timeoutBlocks: 200,
+      skipDryRun: true
+    },
+    rolluxtestnet: {
+      provider: () => new HDWalletProvider(secrets.accounts.deployer.priv,
+        http_provider("https://testnet.rollux.com:2814/")),
+      network_id: 2814,
       timeoutBlocks: 200,
       skipDryRun: true
     }

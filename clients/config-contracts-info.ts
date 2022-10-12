@@ -43,23 +43,35 @@ export const contractsInfo = {
         name:"sToken",
       },
       {
-        chainId: "3",
-        address:TokenInfo.networks["3"]?.address.replace("0x", ""),
-        wei:12,
+        chainId: "5",
+        address:TokenInfo.networks["5"]?.address.replace("0x", ""),
+        wei:18,
         name:"tToken"
       },
       {
-        chainId: "3",
-        address:GasTokenInfo.networks["3"]?.address.replace("0x", ""),
+        chainId: "5",
+        address:GasTokenInfo.networks["5"]?.address.replace("0x", ""),
         wei:18,
         name:"rio",
       },
       {
         chainId: "97",
         address:TokenInfo.networks["97"]?.address.replace("0x", ""),
-        wei:12,
+        wei:18,
         name:"tToken"
       },
+      {
+        chainId: "338",
+        address:TokenInfo.networks["338"]?.address.replace("0x", ""),
+        wei:18,
+        name:"tToken"
+      },
+      {
+        chainId: "2814",
+        address:TokenInfo.networks["2814"]?.address.replace("0x", ""),
+        wei:18,
+        name:"tToken"
+      }
     ]
 }
 

@@ -27,7 +27,7 @@ export class GasContract extends DelphinusContract {
     return this.getWeb3Contract().methods.mint(amount).send();
   }
 
-  transfer(address: string, amount: number) {
+  transfer(address: string, amount: BN) {
     return this.getWeb3Contract().methods.transfer(address, amount).send();
   }
 }
