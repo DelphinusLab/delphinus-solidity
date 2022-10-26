@@ -138,7 +138,7 @@ contract Bridge is DelphinusBridge {
         uint256 token_uid = _l1_address(token);
         require(_tmap[token_uid] == true, "Deposit: Untracked Token");
         uint256 balance = underlying_token.balanceOf(msg.sender);
-        require(balance >= amount, "Insuffecient Balance");
+        require(balance >= amount, "Insufficient Balance");
         //underlying_token.transferFrom(msg.sender, address(this), amount); //USDT does not follow ERC20 interface so have to use other method
         TransferHelper.safeTransferFrom(address(underlying_token), msg.sender, address(this), amount);
         emit Deposit(_l1_address(token), l2account, amount);
