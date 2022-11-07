@@ -193,36 +193,42 @@ export class BridgeContract extends DelphinusContract {
   }
 
   async getMetaData() {
-    let operation = retry.operation({
-      retries: 10, // 11 attempts in total
-      factor: 1,
-      minTimeout: 1 * 1000, //minimum 1 second between first retry
-      maxTimeout: 3 * 1000, //maximum of 3 seconds delay between retries
-      randomize: true,
-    });
-
-    return new Promise<{
-      bridgeInfo: BridgeInfo;
-      tokens: TokenInfo[];
-      chainInfo: any;
-    }>((resolve, reject) => {
-      operation.attempt(async (currentAttempt) => {
-        console.log("attempt: ", currentAttempt);
-        try {
-          let bridgeInfo = await this.getBridgeInfo();
-          let tokens = await this.allTokens();
-          let chainInfo = await this.extractChainInfo();
-          resolve({ bridgeInfo, tokens, chainInfo });
-        } catch (err) {
-          console.log(err);
-          if (operation.retry(err as Error)) {
-            return;
-          } else {
-            console.log("Failed to get metadata");
-            reject(err);
-          }
-        }
+    //generic retry function that takes a promise and will retry 5 times.
+    let retryGet = <T>(tryFunction: () => Promise<T>) => {
+      let operation = retry.operation({
+        retries: 5, // 11 attempts in total
+        factor: 1,
+        minTimeout: 1 * 1000, //minimum 1 second between first retry
+        maxTimeout: 4 * 1000, //maximum of 3 seconds delay between retries
+        randomize: true,
       });
-    });
+      return new Promise<T>((resolve, reject) => {
+        operation.attempt(async (currentAttempt) => {
+          console.log("Attempt to get Info:", currentAttempt);
+          try {
+            let info = await tryFunction();
+            resolve(info);
+          } catch (err) {
+            if (operation.retry(err as Error)) {
+              return;
+            }
+            reject(operation.mainError());
+          }
+        });
+      });
+    };
+    console.log("getting bridge info");
+    let _bridgeInfo = await retryGet(
+      () => this.getBridgeInfo() as Promise<BridgeInfo>
+    );
+    console.log("getting token info");
+    let _tokens = await retryGet(() => this.allTokens());
+    console.log("getting chain info");
+    let _chainInfo = await retryGet(() => this.extractChainInfo());
+    return {
+      bridgeInfo: _bridgeInfo,
+      tokens: _tokens,
+      chainInfo: _chainInfo,
+    };
   }
 }
