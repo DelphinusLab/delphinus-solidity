@@ -6,13 +6,13 @@
     "@openzeppelin/contracts": "latest",
     "@truffle/hdwallet-provider": "^1.6.0",
     "buffer": "^6.0.3",
+    "delphinus-deployment": "*",
     "mongodb": "^4.1.3",
     "process": "^0.11.10",
     "react": "^17.0.2",
     "truffle": "latest",
     "web3": "^1.5.3",
-    "web3subscriber": "*",
-    "delphinus-deployment": "*"
+    "web3subscriber": "*"
   },
   "scripts": {
     "dev": "npx truffle dev",
@@ -22,6 +22,8 @@
   },
   "devDependencies": {
     "@webpack-cli/serve": "^1.3.1",
+    "retry": "^0.13.1",
+    "@types/retry": "^0.12.2",
     "typescript": "^4.3.4",
     "webpack-cli": "^4.6.0"
   }
