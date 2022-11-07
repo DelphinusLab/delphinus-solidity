@@ -1,9 +1,14 @@
-import BN from 'bn.js';
+import BN from "bn.js";
+import * as retry from "retry";
 import { DelphinusContract, DelphinusWeb3 } from "web3subscriber/src/client";
 import { decodeL1address } from "web3subscriber/src/addresses";
 import { PromiseBinder } from "web3subscriber/src/pbinder";
 import { TokenContract } from "./token";
-import { extraTokens, Chains, contractsInfo } from "delphinus-deployment/config/contractsinfo";
+import {
+  extraTokens,
+  Chains,
+  contractsInfo,
+} from "delphinus-deployment/config/contractsinfo";
 
 const registeredTokens = contractsInfo.tokens.concat(extraTokens);
 
@@ -76,13 +81,13 @@ export class BridgeContract extends DelphinusContract {
     return this.getWeb3Contract().methods.addToken(tokenid).send();
   }
 
-  private _verify(
-    calldata: number[],
-    verifydata: BN[],
-    vid: number,
-    rid: BN
-  ) {
-    const tx = this.getWeb3Contract().methods.verify(calldata, verifydata, vid, rid);
+  private _verify(calldata: number[], verifydata: BN[], vid: number, rid: BN) {
+    const tx = this.getWeb3Contract().methods.verify(
+      calldata,
+      verifydata,
+      vid,
+      rid
+    );
     return tx.send();
   }
 
@@ -92,12 +97,7 @@ export class BridgeContract extends DelphinusContract {
       .send();
   }
 
-  verify(
-    calldata: number[],
-    verifydata: BN[],
-    vid: number,
-    rid: BN
-  ) {
+  verify(calldata: number[], verifydata: BN[], vid: number, rid: BN) {
     const pbinder = new PromiseBinder();
 
     return pbinder.return(async () => {
@@ -117,7 +117,10 @@ export class BridgeContract extends DelphinusContract {
     const pbinder = new PromiseBinder();
 
     return pbinder.return(async () => {
-      let allowance = await tokenContract.allowanceOf(l1account, this.address());
+      let allowance = await tokenContract.allowanceOf(
+        l1account,
+        this.address()
+      );
       console.log("Allowance is :", allowance.toString());
       pbinder.snapshot("Approve");
       if (allowance.lt(amount)) {
@@ -126,10 +129,13 @@ export class BridgeContract extends DelphinusContract {
             "Approve",
             tokenContract.approve(this.address(), new BN(0))
           );
-        };
+        }
         await pbinder.bind(
           "Approve",
-          tokenContract.approve(this.address(), new BN(2).pow(new BN(256)).sub(new BN(1)))
+          tokenContract.approve(
+            this.address(),
+            new BN(2).pow(new BN(256)).sub(new BN(1))
+          )
         );
       }
       console.log("Deposit amount:", amount.toString());
@@ -148,8 +154,8 @@ export class BridgeContract extends DelphinusContract {
       .map((token) => {
         let [cid, address] = decodeL1address(token.token_uid);
         let registeredToken = registeredTokens.find(
-              (x: any) => hexcmp(x.address, address) && x.chainId == cid
-            )!;
+          (x: any) => hexcmp(x.address, address) && x.chainId == cid
+        )!;
         return {
           address: address,
           name: registeredToken.name,
@@ -174,8 +180,8 @@ export class BridgeContract extends DelphinusContract {
     const token = (await this.allTokens())[idx];
     let [cid, addr] = decodeL1address(token.token_uid);
     let registeredToken = registeredTokens.find(
-          (x: any) => hexcmp(x.address, addr) && x.chainId == cid
-        )!;
+      (x: any) => hexcmp(x.address, addr) && x.chainId == cid
+    )!;
     return {
       chainId: cid,
       chainName: Chains[cid],
@@ -187,10 +193,36 @@ export class BridgeContract extends DelphinusContract {
   }
 
   async getMetaData() {
-    return {
-      bridgeInfo: await this.getBridgeInfo(),
-      tokens: await this.allTokens(),
-      chainInfo: await this.extractChainInfo(),
-    };
+    let operation = retry.operation({
+      retries: 10, // 11 attempts in total
+      factor: 1,
+      minTimeout: 1 * 1000, //minimum 1 second between first retry
+      maxTimeout: 3 * 1000, //maximum of 3 seconds delay between retries
+      randomize: true,
+    });
+
+    return new Promise<{
+      bridgeInfo: BridgeInfo;
+      tokens: TokenInfo[];
+      chainInfo: any;
+    }>((resolve, reject) => {
+      operation.attempt(async (currentAttempt) => {
+        console.log("attempt: ", currentAttempt);
+        try {
+          let bridgeInfo = await this.getBridgeInfo();
+          let tokens = await this.allTokens();
+          let chainInfo = await this.extractChainInfo();
+          resolve({ bridgeInfo, tokens, chainInfo });
+        } catch (err) {
+          console.log(err);
+          if (operation.retry(err as Error)) {
+            return;
+          } else {
+            console.log("Failed to get metadata");
+            reject(err);
+          }
+        }
+      });
+    });
   }
 }
