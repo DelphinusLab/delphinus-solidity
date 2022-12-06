@@ -81,7 +81,8 @@ module.exports = {
     },
     goerli: { //eth testnet
       provider: () => new HDWalletProvider(secrets.accounts.deployer.priv,
-        http_provider("https://eth.getblock.io/goerli/?api_key=" + secrets.getblock_key_goerli)
+        http_provider("https://goerli.infura.io/v3/" + secrets.infura_id_goerli) //we find ankr does not stable for deployment so have to use infura
+        //http_provider("https://eth.getblock.io/goerli/?api_key=" + secrets.getblock_key_goerli)
       ),
       network_id: 5,       // goerli's id
       gas: 5500000,        // goerli has a lower block limit than mainnet
