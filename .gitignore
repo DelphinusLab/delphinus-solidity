@@ -17,4 +17,5 @@ clients/token/mint.js
 clients/token/mint.js.map
 clients/contracts/*.js
 clients/contracts/*.js.map
-
+*js.map
+*js
