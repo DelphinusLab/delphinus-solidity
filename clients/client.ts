@@ -20,26 +20,22 @@ const L1ADDR_BITS = 160;
 function getDelphinusProviderFromConfig(config: ChainConfig) {
   // FIXME: use ethers
   if (config.privateKey === "") {
-      return new DelphinusWsProvider(config.wsSource);
+    return new DelphinusWsProvider(config.wsSource);
   } else {
-      return new DelphinusHDWalletProvider(config.privateKey, config.rpcSource);
+    return new DelphinusHDWalletProvider(config.privateKey, config.rpcSource);
   }
 }
 
 import { contractsInfo } from "delphinus-deployment/config/contractsinfo";
-
 
 export function getChargeAddress(deviceId: string) {
   let chargeAddress = contractsInfo.addressMap.gasToken[deviceId].address;
   let deviceIdHex = parseInt(deviceId).toString(16);
   let encodedChargeAddress =
     "0x" +
-    encodeL1address(chargeAddress.substring(2), deviceIdHex).toString(
-      16
-    );
+    encodeL1address(chargeAddress.substring(2), deviceIdHex).toString(16);
   return encodedChargeAddress;
 }
-
 
 export class L1Client {
   readonly web3: DelphinusWeb3;
@@ -105,7 +101,9 @@ export class L1Client {
     await this.web3.switchNet(
       this.getChainIdHex(),
       this.config.chainName,
-      this.config.rpcSource
+      this.config.rpcSource,
+      this.config.nativeCurrency,
+      this.config.blockExplorer
     );
   }
 
