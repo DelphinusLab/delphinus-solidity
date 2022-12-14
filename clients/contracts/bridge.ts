@@ -22,6 +22,7 @@ export interface BridgeInfo {
   owner: string;
   merkle_root: string;
   rid: string;
+  verifierID: string;
 }
 
 export interface TokenInfo {

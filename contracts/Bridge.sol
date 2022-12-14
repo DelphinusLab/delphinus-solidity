@@ -23,6 +23,7 @@ contract Bridge is DelphinusBridge {
     mapping(uint256 => bool) private hasSideEffiect;
     uint256 merkle_root;
     uint256 rid;
+    uint256 verifierID;
 
     constructor(uint32 chain_id) {
         _bridge_info.chain_id = chain_id;
@@ -49,7 +50,8 @@ contract Bridge is DelphinusBridge {
                 _bridge_info.amount_pool,
                 _bridge_info.owner,
                 merkle_root,
-                rid
+                rid,
+                verifierID
             );
     }
 
@@ -103,6 +105,7 @@ contract Bridge is DelphinusBridge {
     function addVerifier(address vaddr) public returns (uint256) {
         ensure_admin();
         uint256 cursor = verifiers.length;
+        verifierID = verifiers.length;
         require(verifiers.length < 255, "Verifier index out of bound");
         verifiers.push(DelphinusVerifier(vaddr));
         return cursor;
