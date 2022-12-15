@@ -82,11 +82,10 @@ export class BridgeContract extends DelphinusContract {
     return this.getWeb3Contract().methods.addToken(tokenid).send();
   }
 
-  private _verify(calldata: number[], verifydata: BN[], vid: number, rid: BN) {
+  private _verify(calldata: number[], verifydata: BN[], rid: BN) {
     const tx = this.getWeb3Contract().methods.verify(
       calldata,
       verifydata,
-      vid,
       rid
     );
     return tx.send();
@@ -98,13 +97,13 @@ export class BridgeContract extends DelphinusContract {
       .send();
   }
 
-  verify(calldata: number[], verifydata: BN[], vid: number, rid: BN) {
+  verify(calldata: number[], verifydata: BN[], rid: BN) {
     const pbinder = new PromiseBinder();
 
     return pbinder.return(async () => {
       return await pbinder.bind(
         "Verify",
-        this._verify(calldata, verifydata, vid, rid)
+        this._verify(calldata, verifydata, rid)
       );
     });
   }
