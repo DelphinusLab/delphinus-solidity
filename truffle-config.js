@@ -92,7 +92,7 @@ module.exports = {
     },
     bsctestnet: { //bsc
       provider: () => new HDWalletProvider(secrets.accounts.deployer.priv,
-        http_provider(`https://data-seed-prebsc-1-s1.binance.org:8545`)
+        http_provider(`https://data-seed-prebsc-1-s3.binance.org:8545`)
         //http_provider("https://bsc.getblock.io/testnet/?api_key="+secrets.getblock_key)
       ),
       network_id: 97,
