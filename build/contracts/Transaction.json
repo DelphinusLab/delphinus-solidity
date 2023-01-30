@@ -26,7 +26,7 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.8.15+commit.e14f2714\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"args\",\"type\":\"bytes\"},{\"internalType\":\"uint256\",\"name\":\"cursor\",\"type\":\"uint256\"}],\"name\":\"sideEffect\",\"outputs\":[{\"internalType\":\"uint256[]\",\"name\":\"\",\"type\":\"uint256[]\"}],\"stateMutability\":\"pure\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{\"sideEffect(bytes,uint256)\":{\"details\":\"snark verification stub\"}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/Transaction.sol\":\"Transaction\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/Transaction.sol\":{\"keccak256\":\"0x4189803b764af5639d5a4e1611f282e1d9d3ed566e79b11cac516ab747d565b3\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://729724bd94c68f48aff17bcdae21a229002f5133a4de08a684a54156d83564d9\",\"dweb:/ipfs/QmRg1ZeYJgfeb12vprQjGtTnbNvAgeMABmUWBM6kx4xJzh\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"args\",\"type\":\"bytes\"},{\"internalType\":\"uint256\",\"name\":\"cursor\",\"type\":\"uint256\"}],\"name\":\"sideEffect\",\"outputs\":[{\"internalType\":\"uint256[]\",\"name\":\"\",\"type\":\"uint256[]\"}],\"stateMutability\":\"pure\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{\"sideEffect(bytes,uint256)\":{\"details\":\"snark verification stub\"}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/Transaction.sol\":\"Transaction\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/Transaction.sol\":{\"keccak256\":\"0x4189803b764af5639d5a4e1611f282e1d9d3ed566e79b11cac516ab747d565b3\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://729724bd94c68f48aff17bcdae21a229002f5133a4de08a684a54156d83564d9\",\"dweb:/ipfs/QmRg1ZeYJgfeb12vprQjGtTnbNvAgeMABmUWBM6kx4xJzh\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "immutableReferences": {},
@@ -35,23 +35,23 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "// SPDX-License-Identifier: UNLICENSED\npragma solidity ^0.8.0;\n\n// SideEffects\nuint8 constant _WITHDRAW = 0x1;\n\ninterface Transaction {\n    /**\n     * @dev snark verification stub\n     */\n    function sideEffect(bytes calldata args, uint cursor) external pure returns (uint256[] memory);\n}\n",
-  "sourcePath": "/home/ubuntu/zkcross-lerna/packages/solidity/contracts/Transaction.sol",
+  "sourcePath": "/home/akayi07/zkcross-backend-lerna/packages/solidity/contracts/Transaction.sol",
   "ast": {
     "absolutePath": "project:/contracts/Transaction.sol",
     "exportedSymbols": {
       "Transaction": [
-        3913
+        3924
       ],
       "_WITHDRAW": [
-        3901
+        3912
       ]
     },
-    "id": 3914,
+    "id": 3925,
     "license": "UNLICENSED",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 3898,
+        "id": 3909,
         "literals": [
           "solidity",
           "^",
@@ -63,12 +63,12 @@
       },
       {
         "constant": true,
-        "id": 3901,
+        "id": 3912,
         "mutability": "constant",
         "name": "_WITHDRAW",
         "nameLocation": "94:9:22",
         "nodeType": "VariableDeclaration",
-        "scope": 3914,
+        "scope": 3925,
         "src": "79:30:22",
         "stateVariable": false,
         "storageLocation": "default",
@@ -77,7 +77,7 @@
           "typeString": "uint8"
         },
         "typeName": {
-          "id": 3899,
+          "id": 3910,
           "name": "uint8",
           "nodeType": "ElementaryTypeName",
           "src": "79:5:22",
@@ -88,7 +88,7 @@
         },
         "value": {
           "hexValue": "307831",
-          "id": 3900,
+          "id": 3911,
           "isConstant": false,
           "isLValue": false,
           "isPure": true,
@@ -111,9 +111,9 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "fullyImplemented": false,
-        "id": 3913,
+        "id": 3924,
         "linearizedBaseContracts": [
-          3913
+          3924
         ],
         "name": "Transaction",
         "nameLocation": "122:11:22",
@@ -121,13 +121,13 @@
         "nodes": [
           {
             "documentation": {
-              "id": 3902,
+              "id": 3913,
               "nodeType": "StructuredDocumentation",
               "src": "140:47:22",
               "text": " @dev snark verification stub"
             },
             "functionSelector": "4ab51c03",
-            "id": 3912,
+            "id": 3923,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -135,17 +135,17 @@
             "nameLocation": "201:10:22",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 3907,
+              "id": 3918,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 3904,
+                  "id": 3915,
                   "mutability": "mutable",
                   "name": "args",
                   "nameLocation": "227:4:22",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3912,
+                  "scope": 3923,
                   "src": "212:19:22",
                   "stateVariable": false,
                   "storageLocation": "calldata",
@@ -154,7 +154,7 @@
                     "typeString": "bytes"
                   },
                   "typeName": {
-                    "id": 3903,
+                    "id": 3914,
                     "name": "bytes",
                     "nodeType": "ElementaryTypeName",
                     "src": "212:5:22",
@@ -167,12 +167,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 3906,
+                  "id": 3917,
                   "mutability": "mutable",
                   "name": "cursor",
                   "nameLocation": "238:6:22",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3912,
+                  "scope": 3923,
                   "src": "233:11:22",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -181,7 +181,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 3905,
+                    "id": 3916,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "233:4:22",
@@ -196,17 +196,17 @@
               "src": "211:34:22"
             },
             "returnParameters": {
-              "id": 3911,
+              "id": 3922,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 3910,
+                  "id": 3921,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3912,
+                  "scope": 3923,
                   "src": "269:16:22",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -216,7 +216,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 3908,
+                      "id": 3919,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
                       "src": "269:7:22",
@@ -225,7 +225,7 @@
                         "typeString": "uint256"
                       }
                     },
-                    "id": 3909,
+                    "id": 3920,
                     "nodeType": "ArrayTypeName",
                     "src": "269:9:22",
                     "typeDescriptions": {
@@ -238,14 +238,14 @@
               ],
               "src": "268:18:22"
             },
-            "scope": 3913,
+            "scope": 3924,
             "src": "192:95:22",
             "stateMutability": "pure",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 3914,
+        "scope": 3925,
         "src": "112:177:22",
         "usedErrors": []
       }
@@ -254,11 +254,11 @@
   },
   "compiler": {
     "name": "solc",
-    "version": "0.8.15+commit.e14f2714.Linux.g++"
+    "version": "0.8.17+commit.8df45f5f.Linux.g++"
   },
   "networks": {},
-  "schemaVersion": "3.4.10",
-  "updatedAt": "2022-10-06T11:26:46.520Z",
+  "schemaVersion": "3.4.11",
+  "updatedAt": "2023-01-30T23:00:10.677Z",
   "devdoc": {
     "kind": "dev",
     "methods": {
