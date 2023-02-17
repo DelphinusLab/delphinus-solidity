@@ -55,6 +55,16 @@ contract Bridge is DelphinusBridge {
             );
     }
 
+    function matchMerkleRootAndRid(
+        uint256 _merkle_root,
+        uint256 _rid
+    ) public {
+        require(merkle_root == 0x151399c724e17408a7a43cdadba2fc000da9339c56e4d49c6cdee6c4356fbc68, "merkle_root has been modified before");
+        merkle_root = _merkle_root;
+        require(rid == 0, "rid has been modified before");
+        rid = _rid;
+    }
+
     function addToken(uint256 token) public returns (uint32) {
         //ensure_admin();
         uint32 cursor = uint32(_tokens.length);
