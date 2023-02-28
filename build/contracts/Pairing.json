@@ -1,16 +1,16 @@
 {
   "contractName": "Pairing",
   "abi": [],
-  "metadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/ZKPVerifier.sol\":\"Pairing\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/ZKPVerifier.sol\":{\"keccak256\":\"0x585ebb156361f99f8e4537313ce72ddb5d630e264b85d3f8831bcce935c329fb\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://e285228d8fc46a498665565b3f05861602f02ff1cb842e94df6271bd8421a89d\",\"dweb:/ipfs/QmNuveDBV6PLeBRCHLYSPvN9kD18Hv7Zfd6UofPboY2wBy\"]}},\"version\":1}",
-  "bytecode": "0x60566050600b82828239805160001a6073146043577f4e487b7100000000000000000000000000000000000000000000000000000000600052600060045260246000fd5b30600052607381538281f3fe73000000000000000000000000000000000000000030146080604052600080fdfea2646970667358221220a068c13abc0c0e4e58732cba1791911894f1a0df364b41e66c94113847c1528864736f6c63430008110033",
-  "deployedBytecode": "0x73000000000000000000000000000000000000000030146080604052600080fdfea2646970667358221220a068c13abc0c0e4e58732cba1791911894f1a0df364b41e66c94113847c1528864736f6c63430008110033",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.15+commit.e14f2714\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/ZKPVerifier.sol\":\"Pairing\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/ZKPVerifier.sol\":{\"keccak256\":\"0xd1e66e62883c7861bbdc649dcdb9f3a66848e2d27e146ea804708c28fac8bbcf\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://f4e61757685e15aab90ee037b01b56e1de1ade3c41e6a180b3dfabbc0810d677\",\"dweb:/ipfs/QmX4TiJJieVaMAi5KwE2A7N11xJLYBXbCSbHq1Twt5Npzy\"]}},\"version\":1}",
+  "bytecode": "0x60566050600b82828239805160001a6073146043577f4e487b7100000000000000000000000000000000000000000000000000000000600052600060045260246000fd5b30600052607381538281f3fe73000000000000000000000000000000000000000030146080604052600080fdfea2646970667358221220d67401a563851d1cd556e0b8ccea30463813a6e8933e137324de70ccef68506564736f6c634300080f0033",
+  "deployedBytecode": "0x73000000000000000000000000000000000000000030146080604052600080fdfea2646970667358221220d67401a563851d1cd556e0b8ccea30463813a6e8933e137324de70ccef68506564736f6c634300080f0033",
   "immutableReferences": {},
   "generatedSources": [],
   "deployedGeneratedSources": [],
   "sourceMap": "1256:5863:26:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;",
   "deployedSourceMap": "1256:5863:26:-:0;;;;;;;;",
-  "source": "//\n// Copyright 2017 Christian Reitwiessner\n// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n// THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n//\n// 2019 OKIMS\n//      ported to solidity 0.6\n//      fixed linter warnings\n//      added requiere error messages\n//\n//\n// SPDX-License-Identifier: GPL-3.0\npragma solidity ^0.8.0;\nlibrary Pairing {\n    struct G1Point {\n        uint X;\n        uint Y;\n    }\n    // Encoding of field elements is: X[0] * z + X[1]\n    struct G2Point {\n        uint[2] X;\n        uint[2] Y;\n    }\n    /// @return the generator of G1\n    function P1() internal pure returns (G1Point memory) {\n        return G1Point(1, 2);\n    }\n    /// @return the generator of G2\n    function P2() internal pure returns (G2Point memory) {\n        // Original code point\n        return G2Point(\n            [11559732032986387107991004021392285783925812861821192530917403151452391805634,\n             10857046999023057135944570762232829481370756359578518086990519993285655852781],\n            [4082367875863433681332203403145435568316851327593401208105741076214120093531,\n             8495653923123431417604973247489272438418190587263600148770280649306958101930]\n        );\n\n/*\n        // Changed by Jordi point\n        return G2Point(\n            [10857046999023057135944570762232829481370756359578518086990519993285655852781,\n             11559732032986387107991004021392285783925812861821192530917403151452391805634],\n            [8495653923123431417604973247489272438418190587263600148770280649306958101930,\n             4082367875863433681332203403145435568316851327593401208105741076214120093531]\n        );\n*/\n    }\n    /// @return r the negation of p, i.e. p.addition(p.negate()) should be zero.\n    function negate(G1Point memory p) internal pure returns (G1Point memory r) {\n        // The prime q in the base field F_q for G1\n        uint q = 21888242871839275222246405745257275088696311157297823662689037894645226208583;\n        if (p.X == 0 && p.Y == 0)\n            return G1Point(0, 0);\n        return G1Point(p.X, q - (p.Y % q));\n    }\n    /// @return r the sum of two points of G1\n    function addition(G1Point memory p1, G1Point memory p2) internal view returns (G1Point memory r) {\n        uint[4] memory input;\n        input[0] = p1.X;\n        input[1] = p1.Y;\n        input[2] = p2.X;\n        input[3] = p2.Y;\n        bool success;\n        // solium-disable-next-line security/no-inline-assembly\n        assembly {\n            success := staticcall(sub(gas(), 2000), 6, input, 0xc0, r, 0x60)\n            // Use \"invalid\" to make gas estimation work\n            switch success case 0 { invalid() }\n        }\n        require(success,\"pairing-add-failed\");\n    }\n    /// @return r the product of a point on G1 and a scalar, i.e.\n    /// p == p.scalar_mul(1) and p.addition(p) == p.scalar_mul(2) for all points p.\n    function scalar_mul(G1Point memory p, uint s) internal view returns (G1Point memory r) {\n        uint[3] memory input;\n        input[0] = p.X;\n        input[1] = p.Y;\n        input[2] = s;\n        bool success;\n        // solium-disable-next-line security/no-inline-assembly\n        assembly {\n            success := staticcall(sub(gas(), 2000), 7, input, 0x80, r, 0x60)\n            // Use \"invalid\" to make gas estimation work\n            switch success case 0 { invalid() }\n        }\n        require (success,\"pairing-mul-failed\");\n    }\n    /// @return the result of computing the pairing check\n    /// e(p1[0], p2[0]) *  .... * e(p1[n], p2[n]) == 1\n    /// For example pairing([P1(), P1().negate()], [P2(), P2()]) should\n    /// return true.\n    function pairing(G1Point[] memory p1, G2Point[] memory p2) internal view returns (bool) {\n        require(p1.length == p2.length,\"pairing-lengths-failed\");\n        uint elements = p1.length;\n        uint inputSize = elements * 6;\n        uint[] memory input = new uint[](inputSize);\n        for (uint i = 0; i < elements; i++)\n        {\n            input[i * 6 + 0] = p1[i].X;\n            input[i * 6 + 1] = p1[i].Y;\n            input[i * 6 + 2] = p2[i].X[0];\n            input[i * 6 + 3] = p2[i].X[1];\n            input[i * 6 + 4] = p2[i].Y[0];\n            input[i * 6 + 5] = p2[i].Y[1];\n        }\n        uint[1] memory out;\n        bool success;\n        // solium-disable-next-line security/no-inline-assembly\n        assembly {\n            success := staticcall(sub(gas(), 2000), 8, add(input, 0x20), mul(inputSize, 0x20), out, 0x20)\n            // Use \"invalid\" to make gas estimation work\n            switch success case 0 { invalid() }\n        }\n        require(success,\"pairing-opcode-failed\");\n        return out[0] != 0;\n    }\n    /// Convenience method for a pairing check for two pairs.\n    function pairingProd2(G1Point memory a1, G2Point memory a2, G1Point memory b1, G2Point memory b2) internal view returns (bool) {\n        G1Point[] memory p1 = new G1Point[](2);\n        G2Point[] memory p2 = new G2Point[](2);\n        p1[0] = a1;\n        p1[1] = b1;\n        p2[0] = a2;\n        p2[1] = b2;\n        return pairing(p1, p2);\n    }\n    /// Convenience method for a pairing check for three pairs.\n    function pairingProd3(\n            G1Point memory a1, G2Point memory a2,\n            G1Point memory b1, G2Point memory b2,\n            G1Point memory c1, G2Point memory c2\n    ) internal view returns (bool) {\n        G1Point[] memory p1 = new G1Point[](3);\n        G2Point[] memory p2 = new G2Point[](3);\n        p1[0] = a1;\n        p1[1] = b1;\n        p1[2] = c1;\n        p2[0] = a2;\n        p2[1] = b2;\n        p2[2] = c2;\n        return pairing(p1, p2);\n    }\n    /// Convenience method for a pairing check for four pairs.\n    function pairingProd4(\n            G1Point memory a1, G2Point memory a2,\n            G1Point memory b1, G2Point memory b2,\n            G1Point memory c1, G2Point memory c2,\n            G1Point memory d1, G2Point memory d2\n    ) internal view returns (bool) {\n        G1Point[] memory p1 = new G1Point[](4);\n        G2Point[] memory p2 = new G2Point[](4);\n        p1[0] = a1;\n        p1[1] = b1;\n        p1[2] = c1;\n        p1[3] = d1;\n        p2[0] = a2;\n        p2[1] = b2;\n        p2[2] = c2;\n        p2[3] = d2;\n        return pairing(p1, p2);\n    }\n}\ncontract Verifier {\n    using Pairing for *;\n    struct VerifyingKey {\n        Pairing.G1Point alfa1;\n        Pairing.G2Point beta2;\n        Pairing.G2Point gamma2;\n        Pairing.G2Point delta2;\n        Pairing.G1Point[] IC;\n    }\n    struct Proof {\n        Pairing.G1Point A;\n        Pairing.G2Point B;\n        Pairing.G1Point C;\n    }\n    function verifyingKey() internal pure returns (VerifyingKey memory vk) {\n        vk.alfa1 = Pairing.G1Point(\n            20205959069956954363996367342999149003352232876515641666655565686363923492309,\n            17001233177263691148910795154773891947034547923205472634523033255089783768057\n        );\n\n        vk.beta2 = Pairing.G2Point(\n            [9829564227465565608318258782338096718451334510572676886565325223075679064307,\n             5315696760744315259205349785365780198180473512013801406538210429429777902837],\n            [5556190956265223796441182506160781447228194956095474925792843735276696906101,\n             10960642152148320359248935386867808215208850302517314112769927655442622362979]\n        );\n        vk.gamma2 = Pairing.G2Point(\n            [11559732032986387107991004021392285783925812861821192530917403151452391805634,\n             10857046999023057135944570762232829481370756359578518086990519993285655852781],\n            [4082367875863433681332203403145435568316851327593401208105741076214120093531,\n             8495653923123431417604973247489272438418190587263600148770280649306958101930]\n        );\n        vk.delta2 = Pairing.G2Point(\n            [18607681861311506490040347691906992091747982881226097736351819611253468919307,\n             1848605576454099856894593787601966081276635987164494417359401143961963557785],\n            [19525737029409160319857441934277762389761640923960826164007240580988479558169,\n             699993811319667213821125830611749940212156336256889183787158608282517163061]\n        );\n        vk.IC = new Pairing.G1Point[](5);\n        \n        vk.IC[0] = Pairing.G1Point( \n            2184446769823872308532767535507166045805813994178279330605458701480331913476,\n            13257737562333900498440483790741804807546577106759103015030256725061715920514\n        );                                      \n        \n        vk.IC[1] = Pairing.G1Point( \n            3046070577942167426052982935931503907926853745707154028198629781332246492420,\n            10104815432649768148044048758395928104455011751205755269902305648668473902548\n        );                                      \n        \n        vk.IC[2] = Pairing.G1Point( \n            19836954295775721243938449770340445288660145679704167472037536758124832660880,\n            16957126665083581553872101121855192131600891619491007236930129555777677087720\n        );                                      \n        \n        vk.IC[3] = Pairing.G1Point( \n            9956573054672779757278967779207271536414446929945237210355997942029502825703,\n            19666793353398258541173174058915917594036706070478445667037867107325441014177\n        );                                      \n        \n        vk.IC[4] = Pairing.G1Point( \n            17294824960097937968631707578603888309779182238633224523414806195103524856019,\n            9003285011573933292609372125044709509764819490977408692613152822520512895378\n        );                                      \n        \n    }\n    function verify(uint[] memory input, Proof memory proof) internal view returns (uint) {\n        uint256 snark_scalar_field = 21888242871839275222246405745257275088548364400416034343698204186575808495617;\n        VerifyingKey memory vk = verifyingKey();\n        require(input.length + 1 == vk.IC.length,\"verifier-bad-input\");\n        // Compute the linear combination vk_x\n        Pairing.G1Point memory vk_x = Pairing.G1Point(0, 0);\n        for (uint i = 0; i < input.length; i++) {\n            require(input[i] < snark_scalar_field,\"verifier-gte-snark-scalar-field\");\n            vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(vk.IC[i + 1], input[i]));\n        }\n        vk_x = Pairing.addition(vk_x, vk.IC[0]);\n        if (!Pairing.pairingProd4(\n            Pairing.negate(proof.A), proof.B,\n            vk.alfa1, vk.beta2,\n            vk_x, vk.gamma2,\n            proof.C, vk.delta2\n        )) return 1;\n        return 0;\n    }\n    /// @return r  bool true if proof is valid\n    function verifyProof(\n            uint[2] memory a,\n            uint[2][2] memory b,\n            uint[2] memory c,\n            uint[4] memory input\n        ) public view returns (bool r) {\n        Proof memory proof;\n        proof.A = Pairing.G1Point(a[0], a[1]);\n        proof.B = Pairing.G2Point([b[0][0], b[0][1]], [b[1][0], b[1][1]]);\n        proof.C = Pairing.G1Point(c[0], c[1]);\n        uint[] memory inputValues = new uint[](input.length);\n        for(uint i = 0; i < input.length; i++){\n            inputValues[i] = input[i];\n        }\n        if (verify(inputValues, proof) == 0) {\n            return true;\n        } else {\n            return false;\n        }\n    }\n}\n",
-  "sourcePath": "/home/akayi07/zkcross-backend-lerna/packages/solidity/contracts/ZKPVerifier.sol",
+  "source": "//\n// Copyright 2017 Christian Reitwiessner\n// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n// THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n//\n// 2019 OKIMS\n//      ported to solidity 0.6\n//      fixed linter warnings\n//      added requiere error messages\n//\n//\n// SPDX-License-Identifier: GPL-3.0\npragma solidity ^0.8.0;\nlibrary Pairing {\n    struct G1Point {\n        uint X;\n        uint Y;\n    }\n    // Encoding of field elements is: X[0] * z + X[1]\n    struct G2Point {\n        uint[2] X;\n        uint[2] Y;\n    }\n    /// @return the generator of G1\n    function P1() internal pure returns (G1Point memory) {\n        return G1Point(1, 2);\n    }\n    /// @return the generator of G2\n    function P2() internal pure returns (G2Point memory) {\n        // Original code point\n        return G2Point(\n            [11559732032986387107991004021392285783925812861821192530917403151452391805634,\n             10857046999023057135944570762232829481370756359578518086990519993285655852781],\n            [4082367875863433681332203403145435568316851327593401208105741076214120093531,\n             8495653923123431417604973247489272438418190587263600148770280649306958101930]\n        );\n\n/*\n        // Changed by Jordi point\n        return G2Point(\n            [10857046999023057135944570762232829481370756359578518086990519993285655852781,\n             11559732032986387107991004021392285783925812861821192530917403151452391805634],\n            [8495653923123431417604973247489272438418190587263600148770280649306958101930,\n             4082367875863433681332203403145435568316851327593401208105741076214120093531]\n        );\n*/\n    }\n    /// @return r the negation of p, i.e. p.addition(p.negate()) should be zero.\n    function negate(G1Point memory p) internal pure returns (G1Point memory r) {\n        // The prime q in the base field F_q for G1\n        uint q = 21888242871839275222246405745257275088696311157297823662689037894645226208583;\n        if (p.X == 0 && p.Y == 0)\n            return G1Point(0, 0);\n        return G1Point(p.X, q - (p.Y % q));\n    }\n    /// @return r the sum of two points of G1\n    function addition(G1Point memory p1, G1Point memory p2) internal view returns (G1Point memory r) {\n        uint[4] memory input;\n        input[0] = p1.X;\n        input[1] = p1.Y;\n        input[2] = p2.X;\n        input[3] = p2.Y;\n        bool success;\n        // solium-disable-next-line security/no-inline-assembly\n        assembly {\n            success := staticcall(sub(gas(), 2000), 6, input, 0xc0, r, 0x60)\n            // Use \"invalid\" to make gas estimation work\n            switch success case 0 { invalid() }\n        }\n        require(success,\"pairing-add-failed\");\n    }\n    /// @return r the product of a point on G1 and a scalar, i.e.\n    /// p == p.scalar_mul(1) and p.addition(p) == p.scalar_mul(2) for all points p.\n    function scalar_mul(G1Point memory p, uint s) internal view returns (G1Point memory r) {\n        uint[3] memory input;\n        input[0] = p.X;\n        input[1] = p.Y;\n        input[2] = s;\n        bool success;\n        // solium-disable-next-line security/no-inline-assembly\n        assembly {\n            success := staticcall(sub(gas(), 2000), 7, input, 0x80, r, 0x60)\n            // Use \"invalid\" to make gas estimation work\n            switch success case 0 { invalid() }\n        }\n        require (success,\"pairing-mul-failed\");\n    }\n    /// @return the result of computing the pairing check\n    /// e(p1[0], p2[0]) *  .... * e(p1[n], p2[n]) == 1\n    /// For example pairing([P1(), P1().negate()], [P2(), P2()]) should\n    /// return true.\n    function pairing(G1Point[] memory p1, G2Point[] memory p2) internal view returns (bool) {\n        require(p1.length == p2.length,\"pairing-lengths-failed\");\n        uint elements = p1.length;\n        uint inputSize = elements * 6;\n        uint[] memory input = new uint[](inputSize);\n        for (uint i = 0; i < elements; i++)\n        {\n            input[i * 6 + 0] = p1[i].X;\n            input[i * 6 + 1] = p1[i].Y;\n            input[i * 6 + 2] = p2[i].X[0];\n            input[i * 6 + 3] = p2[i].X[1];\n            input[i * 6 + 4] = p2[i].Y[0];\n            input[i * 6 + 5] = p2[i].Y[1];\n        }\n        uint[1] memory out;\n        bool success;\n        // solium-disable-next-line security/no-inline-assembly\n        assembly {\n            success := staticcall(sub(gas(), 2000), 8, add(input, 0x20), mul(inputSize, 0x20), out, 0x20)\n            // Use \"invalid\" to make gas estimation work\n            switch success case 0 { invalid() }\n        }\n        require(success,\"pairing-opcode-failed\");\n        return out[0] != 0;\n    }\n    /// Convenience method for a pairing check for two pairs.\n    function pairingProd2(G1Point memory a1, G2Point memory a2, G1Point memory b1, G2Point memory b2) internal view returns (bool) {\n        G1Point[] memory p1 = new G1Point[](2);\n        G2Point[] memory p2 = new G2Point[](2);\n        p1[0] = a1;\n        p1[1] = b1;\n        p2[0] = a2;\n        p2[1] = b2;\n        return pairing(p1, p2);\n    }\n    /// Convenience method for a pairing check for three pairs.\n    function pairingProd3(\n            G1Point memory a1, G2Point memory a2,\n            G1Point memory b1, G2Point memory b2,\n            G1Point memory c1, G2Point memory c2\n    ) internal view returns (bool) {\n        G1Point[] memory p1 = new G1Point[](3);\n        G2Point[] memory p2 = new G2Point[](3);\n        p1[0] = a1;\n        p1[1] = b1;\n        p1[2] = c1;\n        p2[0] = a2;\n        p2[1] = b2;\n        p2[2] = c2;\n        return pairing(p1, p2);\n    }\n    /// Convenience method for a pairing check for four pairs.\n    function pairingProd4(\n            G1Point memory a1, G2Point memory a2,\n            G1Point memory b1, G2Point memory b2,\n            G1Point memory c1, G2Point memory c2,\n            G1Point memory d1, G2Point memory d2\n    ) internal view returns (bool) {\n        G1Point[] memory p1 = new G1Point[](4);\n        G2Point[] memory p2 = new G2Point[](4);\n        p1[0] = a1;\n        p1[1] = b1;\n        p1[2] = c1;\n        p1[3] = d1;\n        p2[0] = a2;\n        p2[1] = b2;\n        p2[2] = c2;\n        p2[3] = d2;\n        return pairing(p1, p2);\n    }\n}\ncontract Verifier {\n    using Pairing for *;\n    struct VerifyingKey {\n        Pairing.G1Point alfa1;\n        Pairing.G2Point beta2;\n        Pairing.G2Point gamma2;\n        Pairing.G2Point delta2;\n        Pairing.G1Point[] IC;\n    }\n    struct Proof {\n        Pairing.G1Point A;\n        Pairing.G2Point B;\n        Pairing.G1Point C;\n    }\n    function verifyingKey() internal pure returns (VerifyingKey memory vk) {\n        vk.alfa1 = Pairing.G1Point(\n            20205959069956954363996367342999149003352232876515641666655565686363923492309,\n            17001233177263691148910795154773891947034547923205472634523033255089783768057\n        );\n\n        vk.beta2 = Pairing.G2Point(\n            [9829564227465565608318258782338096718451334510572676886565325223075679064307,\n             5315696760744315259205349785365780198180473512013801406538210429429777902837],\n            [5556190956265223796441182506160781447228194956095474925792843735276696906101,\n             10960642152148320359248935386867808215208850302517314112769927655442622362979]\n        );\n        vk.gamma2 = Pairing.G2Point(\n            [11559732032986387107991004021392285783925812861821192530917403151452391805634,\n             10857046999023057135944570762232829481370756359578518086990519993285655852781],\n            [4082367875863433681332203403145435568316851327593401208105741076214120093531,\n             8495653923123431417604973247489272438418190587263600148770280649306958101930]\n        );\n        vk.delta2 = Pairing.G2Point(\n            [14243776550184667600274033264733720969850022687550063080659154479845595592074,\n             17893482431866499582724261115301731000421859385426488508465993479454589896859],\n            [3126935324927115009233969665295110647441127549094095396750407218975051809106,\n             4893663992771902357407353083147056369872193231159024674078581154012357701082]\n        );\n        vk.IC = new Pairing.G1Point[](5);\n        \n        vk.IC[0] = Pairing.G1Point( \n            660188830954878187081641182905363654074031126592809634205854745773506061166,\n            5977098503418633404869176109123686578642314826983036538113532244234156543831\n        );                                      \n        \n        vk.IC[1] = Pairing.G1Point( \n            3046070577942167426052982935931503907926853745707154028198629781332246492420,\n            10104815432649768148044048758395928104455011751205755269902305648668473902548\n        );                                      \n        \n        vk.IC[2] = Pairing.G1Point( \n            19836954295775721243938449770340445288660145679704167472037536758124832660880,\n            16957126665083581553872101121855192131600891619491007236930129555777677087720\n        );                                      \n        \n        vk.IC[3] = Pairing.G1Point( \n            10166302704000133065873036689399876433025656349608860291483171761845744200105,\n            15272808361953966877555733971660193851292572344643707727953611514987177771496\n        );                                      \n        \n        vk.IC[4] = Pairing.G1Point( \n            18376112968655406533798717292169395585541076333039348006689156443104660372669,\n            2416924206061682883596680856392073750889100586293962004828552504418007972479\n        );                                      \n        \n    }\n    function verify(uint[] memory input, Proof memory proof) internal view returns (uint) {\n        uint256 snark_scalar_field = 21888242871839275222246405745257275088548364400416034343698204186575808495617;\n        VerifyingKey memory vk = verifyingKey();\n        require(input.length + 1 == vk.IC.length,\"verifier-bad-input\");\n        // Compute the linear combination vk_x\n        Pairing.G1Point memory vk_x = Pairing.G1Point(0, 0);\n        for (uint i = 0; i < input.length; i++) {\n            require(input[i] < snark_scalar_field,\"verifier-gte-snark-scalar-field\");\n            vk_x = Pairing.addition(vk_x, Pairing.scalar_mul(vk.IC[i + 1], input[i]));\n        }\n        vk_x = Pairing.addition(vk_x, vk.IC[0]);\n        if (!Pairing.pairingProd4(\n            Pairing.negate(proof.A), proof.B,\n            vk.alfa1, vk.beta2,\n            vk_x, vk.gamma2,\n            proof.C, vk.delta2\n        )) return 1;\n        return 0;\n    }\n    /// @return r  bool true if proof is valid\n    function verifyProof(\n            uint[2] memory a,\n            uint[2][2] memory b,\n            uint[2] memory c,\n            uint[4] memory input\n        ) public view returns (bool r) {\n        Proof memory proof;\n        proof.A = Pairing.G1Point(a[0], a[1]);\n        proof.B = Pairing.G2Point([b[0][0], b[0][1]], [b[1][0], b[1][1]]);\n        proof.C = Pairing.G1Point(c[0], c[1]);\n        uint[] memory inputValues = new uint[](input.length);\n        for(uint i = 0; i < input.length; i++){\n            inputValues[i] = input[i];\n        }\n        if (verify(inputValues, proof) == 0) {\n            return true;\n        } else {\n            return false;\n        }\n    }\n}\n",
+  "sourcePath": "/home/yymone/zkcross-backend-lerna/packages/solidity/contracts/ZKPVerifier.sol",
   "ast": {
     "absolutePath": "project:/contracts/ZKPVerifier.sol",
     "exportedSymbols": {
@@ -303,7 +303,6 @@
                     "isPure": true,
                     "kind": "structConstructorCall",
                     "lValueRequested": false,
-                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "1562:13:26",
@@ -364,9 +363,6 @@
                     "pathNode": {
                       "id": 4173,
                       "name": "G1Point",
-                      "nameLocations": [
-                        "1529:7:26"
-                      ],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 4161,
                       "src": "1529:7:26"
@@ -523,7 +519,6 @@
                     "isPure": true,
                     "kind": "structConstructorCall",
                     "lValueRequested": false,
-                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "1724:385:26",
@@ -584,9 +579,6 @@
                     "pathNode": {
                       "id": 4186,
                       "name": "G2Point",
-                      "nameLocations": [
-                        "1660:7:26"
-                      ],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 4170,
                       "src": "1660:7:26"
@@ -707,7 +699,6 @@
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
-                        "memberLocation": "2884:1:26",
                         "memberName": "X",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": 4158,
@@ -771,7 +762,6 @@
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
-                        "memberLocation": "2896:1:26",
                         "memberName": "Y",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": 4160,
@@ -878,7 +868,6 @@
                       "isPure": true,
                       "kind": "structConstructorCall",
                       "lValueRequested": false,
-                      "nameLocations": [],
                       "names": [],
                       "nodeType": "FunctionCall",
                       "src": "2923:13:26",
@@ -915,7 +904,6 @@
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
-                        "memberLocation": "2963:1:26",
                         "memberName": "X",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": 4158,
@@ -979,7 +967,6 @@
                                 "isLValue": true,
                                 "isPure": false,
                                 "lValueRequested": false,
-                                "memberLocation": "2973:1:26",
                                 "memberName": "Y",
                                 "nodeType": "MemberAccess",
                                 "referencedDeclaration": 4160,
@@ -1058,7 +1045,6 @@
                     "isPure": false,
                     "kind": "structConstructorCall",
                     "lValueRequested": false,
-                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "2953:27:26",
@@ -1113,9 +1099,6 @@
                     "pathNode": {
                       "id": 4202,
                       "name": "G1Point",
-                      "nameLocations": [
-                        "2661:7:26"
-                      ],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 4161,
                       "src": "2661:7:26"
@@ -1157,9 +1140,6 @@
                     "pathNode": {
                       "id": 4206,
                       "name": "G1Point",
-                      "nameLocations": [
-                        "2702:7:26"
-                      ],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 4161,
                       "src": "2702:7:26"
@@ -1318,7 +1298,6 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
-                      "memberLocation": "3189:1:26",
                       "memberName": "X",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 4158,
@@ -1406,7 +1385,6 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
-                      "memberLocation": "3214:1:26",
                       "memberName": "Y",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 4160,
@@ -1494,7 +1472,6 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
-                      "memberLocation": "3239:1:26",
                       "memberName": "X",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 4158,
@@ -1582,7 +1559,6 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
-                      "memberLocation": "3264:1:26",
                       "memberName": "Y",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 4160,
@@ -1867,7 +1843,6 @@
                     "isPure": false,
                     "kind": "functionCall",
                     "lValueRequested": false,
-                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "3572:37:26",
@@ -1921,9 +1896,6 @@
                     "pathNode": {
                       "id": 4244,
                       "name": "G1Point",
-                      "nameLocations": [
-                        "3056:7:26"
-                      ],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 4161,
                       "src": "3056:7:26"
@@ -1958,9 +1930,6 @@
                     "pathNode": {
                       "id": 4247,
                       "name": "G1Point",
-                      "nameLocations": [
-                        "3075:7:26"
-                      ],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 4161,
                       "src": "3075:7:26"
@@ -2002,9 +1971,6 @@
                     "pathNode": {
                       "id": 4251,
                       "name": "G1Point",
-                      "nameLocations": [
-                        "3117:7:26"
-                      ],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 4161,
                       "src": "3117:7:26"
@@ -2163,7 +2129,6 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
-                      "memberLocation": "3911:1:26",
                       "memberName": "X",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 4158,
@@ -2251,7 +2216,6 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
-                      "memberLocation": "3935:1:26",
                       "memberName": "Y",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 4160,
@@ -2608,7 +2572,6 @@
                     "isPure": false,
                     "kind": "functionCall",
                     "lValueRequested": false,
-                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "4265:38:26",
@@ -2662,9 +2625,6 @@
                     "pathNode": {
                       "id": 4302,
                       "name": "G1Point",
-                      "nameLocations": [
-                        "3791:7:26"
-                      ],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 4161,
                       "src": "3791:7:26"
@@ -2733,9 +2693,6 @@
                     "pathNode": {
                       "id": 4308,
                       "name": "G1Point",
-                      "nameLocations": [
-                        "3840:7:26"
-                      ],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 4161,
                       "src": "3840:7:26"
@@ -2795,7 +2752,6 @@
                           "isLValue": false,
                           "isPure": false,
                           "lValueRequested": false,
-                          "memberLocation": "4630:6:26",
                           "memberName": "length",
                           "nodeType": "MemberAccess",
                           "src": "4627:9:26",
@@ -2824,7 +2780,6 @@
                           "isLValue": false,
                           "isPure": false,
                           "lValueRequested": false,
-                          "memberLocation": "4643:6:26",
                           "memberName": "length",
                           "nodeType": "MemberAccess",
                           "src": "4640:9:26",
@@ -2887,7 +2842,6 @@
                     "isPure": false,
                     "kind": "functionCall",
                     "lValueRequested": false,
-                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "4619:56:26",
@@ -2953,7 +2907,6 @@
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
-                    "memberLocation": "4704:6:26",
                     "memberName": "length",
                     "nodeType": "MemberAccess",
                     "src": "4701:9:26",
@@ -3150,7 +3103,6 @@
                     "isPure": false,
                     "kind": "functionCall",
                     "lValueRequested": false,
-                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "4781:21:26",
@@ -3326,7 +3278,6 @@
                             "isLValue": true,
                             "isPure": false,
                             "lValueRequested": false,
-                            "memberLocation": "4895:1:26",
                             "memberName": "X",
                             "nodeType": "MemberAccess",
                             "referencedDeclaration": 4158,
@@ -3503,7 +3454,6 @@
                             "isLValue": true,
                             "isPure": false,
                             "lValueRequested": false,
-                            "memberLocation": "4935:1:26",
                             "memberName": "Y",
                             "nodeType": "MemberAccess",
                             "referencedDeclaration": 4160,
@@ -3681,7 +3631,6 @@
                               "isLValue": true,
                               "isPure": false,
                               "lValueRequested": false,
-                              "memberLocation": "4975:1:26",
                               "memberName": "X",
                               "nodeType": "MemberAccess",
                               "referencedDeclaration": 4165,
@@ -3887,7 +3836,6 @@
                               "isLValue": true,
                               "isPure": false,
                               "lValueRequested": false,
-                              "memberLocation": "5018:1:26",
                               "memberName": "X",
                               "nodeType": "MemberAccess",
                               "referencedDeclaration": 4165,
@@ -4093,7 +4041,6 @@
                               "isLValue": true,
                               "isPure": false,
                               "lValueRequested": false,
-                              "memberLocation": "5061:1:26",
                               "memberName": "Y",
                               "nodeType": "MemberAccess",
                               "referencedDeclaration": 4169,
@@ -4299,7 +4246,6 @@
                               "isLValue": true,
                               "isPure": false,
                               "lValueRequested": false,
-                              "memberLocation": "5104:1:26",
                               "memberName": "Y",
                               "nodeType": "MemberAccess",
                               "referencedDeclaration": 4169,
@@ -4848,7 +4794,6 @@
                     "isPure": false,
                     "kind": "functionCall",
                     "lValueRequested": false,
-                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "5482:40:26",
@@ -4984,9 +4929,6 @@
                       "pathNode": {
                         "id": 4351,
                         "name": "G1Point",
-                        "nameLocations": [
-                          "4538:7:26"
-                        ],
                         "nodeType": "IdentifierPath",
                         "referencedDeclaration": 4161,
                         "src": "4538:7:26"
@@ -5030,9 +4972,6 @@
                       "pathNode": {
                         "id": 4355,
                         "name": "G2Point",
-                        "nameLocations": [
-                          "4559:7:26"
-                        ],
                         "nodeType": "IdentifierPath",
                         "referencedDeclaration": 4170,
                         "src": "4559:7:26"
@@ -5130,9 +5069,6 @@
                           "pathNode": {
                             "id": 4534,
                             "name": "G1Point",
-                            "nameLocations": [
-                              "5761:7:26"
-                            ],
                             "nodeType": "IdentifierPath",
                             "referencedDeclaration": 4161,
                             "src": "5761:7:26"
@@ -5200,9 +5136,6 @@
                           "pathNode": {
                             "id": 4538,
                             "name": "G1Point",
-                            "nameLocations": [
-                              "5787:7:26"
-                            ],
                             "nodeType": "IdentifierPath",
                             "referencedDeclaration": 4161,
                             "src": "5787:7:26"
@@ -5229,7 +5162,6 @@
                     "isPure": true,
                     "kind": "functionCall",
                     "lValueRequested": false,
-                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "5783:16:26",
@@ -5269,9 +5201,6 @@
                           "pathNode": {
                             "id": 4546,
                             "name": "G2Point",
-                            "nameLocations": [
-                              "5809:7:26"
-                            ],
                             "nodeType": "IdentifierPath",
                             "referencedDeclaration": 4170,
                             "src": "5809:7:26"
@@ -5339,9 +5268,6 @@
                           "pathNode": {
                             "id": 4550,
                             "name": "G2Point",
-                            "nameLocations": [
-                              "5835:7:26"
-                            ],
                             "nodeType": "IdentifierPath",
                             "referencedDeclaration": 4170,
                             "src": "5835:7:26"
@@ -5368,7 +5294,6 @@
                     "isPure": true,
                     "kind": "functionCall",
                     "lValueRequested": false,
-                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "5831:16:26",
@@ -5725,7 +5650,6 @@
                     "isPure": false,
                     "kind": "functionCall",
                     "lValueRequested": false,
-                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "5944:15:26",
@@ -5780,9 +5704,6 @@
                     "pathNode": {
                       "id": 4517,
                       "name": "G1Point",
-                      "nameLocations": [
-                        "5646:7:26"
-                      ],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 4161,
                       "src": "5646:7:26"
@@ -5817,9 +5738,6 @@
                     "pathNode": {
                       "id": 4520,
                       "name": "G2Point",
-                      "nameLocations": [
-                        "5665:7:26"
-                      ],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 4170,
                       "src": "5665:7:26"
@@ -5854,9 +5772,6 @@
                     "pathNode": {
                       "id": 4523,
                       "name": "G1Point",
-                      "nameLocations": [
-                        "5684:7:26"
-                      ],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 4161,
                       "src": "5684:7:26"
@@ -5891,9 +5806,6 @@
                     "pathNode": {
                       "id": 4526,
                       "name": "G2Point",
-                      "nameLocations": [
-                        "5703:7:26"
-                      ],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 4170,
                       "src": "5703:7:26"
@@ -5983,9 +5895,6 @@
                           "pathNode": {
                             "id": 4612,
                             "name": "G1Point",
-                            "nameLocations": [
-                              "6252:7:26"
-                            ],
                             "nodeType": "IdentifierPath",
                             "referencedDeclaration": 4161,
                             "src": "6252:7:26"
@@ -6053,9 +5962,6 @@
                           "pathNode": {
                             "id": 4616,
                             "name": "G1Point",
-                            "nameLocations": [
-                              "6278:7:26"
-                            ],
                             "nodeType": "IdentifierPath",
                             "referencedDeclaration": 4161,
                             "src": "6278:7:26"
@@ -6082,7 +5988,6 @@
                     "isPure": true,
                     "kind": "functionCall",
                     "lValueRequested": false,
-                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "6274:16:26",
@@ -6122,9 +6027,6 @@
                           "pathNode": {
                             "id": 4624,
                             "name": "G2Point",
-                            "nameLocations": [
-                              "6300:7:26"
-                            ],
                             "nodeType": "IdentifierPath",
                             "referencedDeclaration": 4170,
                             "src": "6300:7:26"
@@ -6192,9 +6094,6 @@
                           "pathNode": {
                             "id": 4628,
                             "name": "G2Point",
-                            "nameLocations": [
-                              "6326:7:26"
-                            ],
                             "nodeType": "IdentifierPath",
                             "referencedDeclaration": 4170,
                             "src": "6326:7:26"
@@ -6221,7 +6120,6 @@
                     "isPure": true,
                     "kind": "functionCall",
                     "lValueRequested": false,
-                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "6322:16:26",
@@ -6722,7 +6620,6 @@
                     "isPure": false,
                     "kind": "functionCall",
                     "lValueRequested": false,
-                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "6475:15:26",
@@ -6777,9 +6674,6 @@
                     "pathNode": {
                       "id": 4589,
                       "name": "G1Point",
-                      "nameLocations": [
-                        "6070:7:26"
-                      ],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 4161,
                       "src": "6070:7:26"
@@ -6814,9 +6708,6 @@
                     "pathNode": {
                       "id": 4592,
                       "name": "G2Point",
-                      "nameLocations": [
-                        "6089:7:26"
-                      ],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 4170,
                       "src": "6089:7:26"
@@ -6851,9 +6742,6 @@
                     "pathNode": {
                       "id": 4595,
                       "name": "G1Point",
-                      "nameLocations": [
-                        "6120:7:26"
-                      ],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 4161,
                       "src": "6120:7:26"
@@ -6888,9 +6776,6 @@
                     "pathNode": {
                       "id": 4598,
                       "name": "G2Point",
-                      "nameLocations": [
-                        "6139:7:26"
-                      ],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 4170,
                       "src": "6139:7:26"
@@ -6925,9 +6810,6 @@
                     "pathNode": {
                       "id": 4601,
                       "name": "G1Point",
-                      "nameLocations": [
-                        "6170:7:26"
-                      ],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 4161,
                       "src": "6170:7:26"
@@ -6962,9 +6844,6 @@
                     "pathNode": {
                       "id": 4604,
                       "name": "G2Point",
-                      "nameLocations": [
-                        "6189:7:26"
-                      ],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 4170,
                       "src": "6189:7:26"
@@ -7054,9 +6933,6 @@
                           "pathNode": {
                             "id": 4708,
                             "name": "G1Point",
-                            "nameLocations": [
-                              "6832:7:26"
-                            ],
                             "nodeType": "IdentifierPath",
                             "referencedDeclaration": 4161,
                             "src": "6832:7:26"
@@ -7124,9 +7000,6 @@
                           "pathNode": {
                             "id": 4712,
                             "name": "G1Point",
-                            "nameLocations": [
-                              "6858:7:26"
-                            ],
                             "nodeType": "IdentifierPath",
                             "referencedDeclaration": 4161,
                             "src": "6858:7:26"
@@ -7153,7 +7026,6 @@
                     "isPure": true,
                     "kind": "functionCall",
                     "lValueRequested": false,
-                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "6854:16:26",
@@ -7193,9 +7065,6 @@
                           "pathNode": {
                             "id": 4720,
                             "name": "G2Point",
-                            "nameLocations": [
-                              "6880:7:26"
-                            ],
                             "nodeType": "IdentifierPath",
                             "referencedDeclaration": 4170,
                             "src": "6880:7:26"
@@ -7263,9 +7132,6 @@
                           "pathNode": {
                             "id": 4724,
                             "name": "G2Point",
-                            "nameLocations": [
-                              "6906:7:26"
-                            ],
                             "nodeType": "IdentifierPath",
                             "referencedDeclaration": 4170,
                             "src": "6906:7:26"
@@ -7292,7 +7158,6 @@
                     "isPure": true,
                     "kind": "functionCall",
                     "lValueRequested": false,
-                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "6902:16:26",
@@ -7937,7 +7802,6 @@
                     "isPure": false,
                     "kind": "functionCall",
                     "lValueRequested": false,
-                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "7095:15:26",
@@ -7992,9 +7856,6 @@
                     "pathNode": {
                       "id": 4679,
                       "name": "G1Point",
-                      "nameLocations": [
-                        "6600:7:26"
-                      ],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 4161,
                       "src": "6600:7:26"
@@ -8029,9 +7890,6 @@
                     "pathNode": {
                       "id": 4682,
                       "name": "G2Point",
-                      "nameLocations": [
-                        "6619:7:26"
-                      ],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 4170,
                       "src": "6619:7:26"
@@ -8066,9 +7924,6 @@
                     "pathNode": {
                       "id": 4685,
                       "name": "G1Point",
-                      "nameLocations": [
-                        "6650:7:26"
-                      ],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 4161,
                       "src": "6650:7:26"
@@ -8103,9 +7958,6 @@
                     "pathNode": {
                       "id": 4688,
                       "name": "G2Point",
-                      "nameLocations": [
-                        "6669:7:26"
-                      ],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 4170,
                       "src": "6669:7:26"
@@ -8140,9 +7992,6 @@
                     "pathNode": {
                       "id": 4691,
                       "name": "G1Point",
-                      "nameLocations": [
-                        "6700:7:26"
-                      ],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 4161,
                       "src": "6700:7:26"
@@ -8177,9 +8026,6 @@
                     "pathNode": {
                       "id": 4694,
                       "name": "G2Point",
-                      "nameLocations": [
-                        "6719:7:26"
-                      ],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 4170,
                       "src": "6719:7:26"
@@ -8214,9 +8060,6 @@
                     "pathNode": {
                       "id": 4697,
                       "name": "G1Point",
-                      "nameLocations": [
-                        "6750:7:26"
-                      ],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 4161,
                       "src": "6750:7:26"
@@ -8251,9 +8094,6 @@
                     "pathNode": {
                       "id": 4700,
                       "name": "G2Point",
-                      "nameLocations": [
-                        "6769:7:26"
-                      ],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 4170,
                       "src": "6769:7:26"
@@ -8336,9 +8176,6 @@
             "libraryName": {
               "id": 4787,
               "name": "Pairing",
-              "nameLocations": [
-                "7150:7:26"
-              ],
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 4786,
               "src": "7150:7:26"
@@ -8371,10 +8208,6 @@
                   "pathNode": {
                     "id": 4789,
                     "name": "Pairing.G1Point",
-                    "nameLocations": [
-                      "7199:7:26",
-                      "7207:7:26"
-                    ],
                     "nodeType": "IdentifierPath",
                     "referencedDeclaration": 4161,
                     "src": "7199:15:26"
@@ -8409,10 +8242,6 @@
                   "pathNode": {
                     "id": 4792,
                     "name": "Pairing.G2Point",
-                    "nameLocations": [
-                      "7230:7:26",
-                      "7238:7:26"
-                    ],
                     "nodeType": "IdentifierPath",
                     "referencedDeclaration": 4170,
                     "src": "7230:15:26"
@@ -8447,10 +8276,6 @@
                   "pathNode": {
                     "id": 4795,
                     "name": "Pairing.G2Point",
-                    "nameLocations": [
-                      "7261:7:26",
-                      "7269:7:26"
-                    ],
                     "nodeType": "IdentifierPath",
                     "referencedDeclaration": 4170,
                     "src": "7261:15:26"
@@ -8485,10 +8310,6 @@
                   "pathNode": {
                     "id": 4798,
                     "name": "Pairing.G2Point",
-                    "nameLocations": [
-                      "7293:7:26",
-                      "7301:7:26"
-                    ],
                     "nodeType": "IdentifierPath",
                     "referencedDeclaration": 4170,
                     "src": "7293:15:26"
@@ -8524,10 +8345,6 @@
                     "pathNode": {
                       "id": 4801,
                       "name": "Pairing.G1Point",
-                      "nameLocations": [
-                        "7325:7:26",
-                        "7333:7:26"
-                      ],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 4161,
                       "src": "7325:15:26"
@@ -8582,10 +8399,6 @@
                   "pathNode": {
                     "id": 4806,
                     "name": "Pairing.G1Point",
-                    "nameLocations": [
-                      "7380:7:26",
-                      "7388:7:26"
-                    ],
                     "nodeType": "IdentifierPath",
                     "referencedDeclaration": 4161,
                     "src": "7380:15:26"
@@ -8620,10 +8433,6 @@
                   "pathNode": {
                     "id": 4809,
                     "name": "Pairing.G2Point",
-                    "nameLocations": [
-                      "7407:7:26",
-                      "7415:7:26"
-                    ],
                     "nodeType": "IdentifierPath",
                     "referencedDeclaration": 4170,
                     "src": "7407:15:26"
@@ -8658,10 +8467,6 @@
                   "pathNode": {
                     "id": 4812,
                     "name": "Pairing.G1Point",
-                    "nameLocations": [
-                      "7434:7:26",
-                      "7442:7:26"
-                    ],
                     "nodeType": "IdentifierPath",
                     "referencedDeclaration": 4161,
                     "src": "7434:15:26"
@@ -8714,7 +8519,6 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
-                      "memberLocation": "7547:5:26",
                       "memberName": "alfa1",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 4791,
@@ -8789,7 +8593,6 @@
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
-                        "memberLocation": "7563:7:26",
                         "memberName": "G1Point",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": 4161,
@@ -8805,7 +8608,6 @@
                       "isPure": true,
                       "kind": "structConstructorCall",
                       "lValueRequested": false,
-                      "nameLocations": [],
                       "names": [],
                       "nodeType": "FunctionCall",
                       "src": "7555:207:26",
@@ -8850,7 +8652,6 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
-                      "memberLocation": "7776:5:26",
                       "memberName": "beta2",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 4794,
@@ -8989,7 +8790,6 @@
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
-                        "memberLocation": "7792:7:26",
                         "memberName": "G2Point",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": 4170,
@@ -9005,7 +8805,6 @@
                       "isPure": true,
                       "kind": "structConstructorCall",
                       "lValueRequested": false,
-                      "nameLocations": [],
                       "names": [],
                       "nodeType": "FunctionCall",
                       "src": "7784:392:26",
@@ -9050,7 +8849,6 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
-                      "memberLocation": "8189:6:26",
                       "memberName": "gamma2",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 4797,
@@ -9189,7 +8987,6 @@
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
-                        "memberLocation": "8206:7:26",
                         "memberName": "G2Point",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": 4170,
@@ -9205,7 +9002,6 @@
                       "isPure": true,
                       "kind": "structConstructorCall",
                       "lValueRequested": false,
-                      "nameLocations": [],
                       "names": [],
                       "nodeType": "FunctionCall",
                       "src": "8198:393:26",
@@ -9250,7 +9046,6 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
-                      "memberLocation": "8604:6:26",
                       "memberName": "delta2",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 4800,
@@ -9267,7 +9062,7 @@
                         {
                           "components": [
                             {
-                              "hexValue": "3138363037363831383631333131353036343930303430333437363931393036393932303931373437393832383831323236303937373336333531383139363131323533343638393139333037",
+                              "hexValue": "3134323433373736353530313834363637363030323734303333323634373333373230393639383530303232363837353530303633303830363539313534343739383435353935353932303734",
                               "id": 4864,
                               "isConstant": false,
                               "isLValue": false,
@@ -9277,13 +9072,13 @@
                               "nodeType": "Literal",
                               "src": "8643:77:26",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_rational_18607681861311506490040347691906992091747982881226097736351819611253468919307_by_1",
-                                "typeString": "int_const 1860...(69 digits omitted)...9307"
+                                "typeIdentifier": "t_rational_14243776550184667600274033264733720969850022687550063080659154479845595592074_by_1",
+                                "typeString": "int_const 1424...(69 digits omitted)...2074"
                               },
-                              "value": "18607681861311506490040347691906992091747982881226097736351819611253468919307"
+                              "value": "14243776550184667600274033264733720969850022687550063080659154479845595592074"
                             },
                             {
-                              "hexValue": "31383438363035353736343534303939383536383934353933373837363031393636303831323736363335393837313634343934343137333539343031313433393631393633353537373835",
+                              "hexValue": "3137383933343832343331383636343939353832373234323631313135333031373331303030343231383539333835343236343838353038343635393933343739343534353839383936383539",
                               "id": 4865,
                               "isConstant": false,
                               "isLValue": false,
@@ -9291,12 +9086,12 @@
                               "kind": "number",
                               "lValueRequested": false,
                               "nodeType": "Literal",
-                              "src": "8735:76:26",
+                              "src": "8735:77:26",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_rational_1848605576454099856894593787601966081276635987164494417359401143961963557785_by_1",
-                                "typeString": "int_const 1848...(68 digits omitted)...7785"
+                                "typeIdentifier": "t_rational_17893482431866499582724261115301731000421859385426488508465993479454589896859_by_1",
+                                "typeString": "int_const 1789...(69 digits omitted)...6859"
                               },
-                              "value": "1848605576454099856894593787601966081276635987164494417359401143961963557785"
+                              "value": "17893482431866499582724261115301731000421859385426488508465993479454589896859"
                             }
                           ],
                           "id": 4866,
@@ -9306,7 +9101,7 @@
                           "isPure": true,
                           "lValueRequested": false,
                           "nodeType": "TupleExpression",
-                          "src": "8642:170:26",
+                          "src": "8642:171:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_array$_t_uint256_$2_memory_ptr",
                             "typeString": "uint256[2] memory"
@@ -9315,7 +9110,7 @@
                         {
                           "components": [
                             {
-                              "hexValue": "3139353235373337303239343039313630333139383537343431393334323737373632333839373631363430393233393630383236313634303037323430353830393838343739353538313639",
+                              "hexValue": "33313236393335333234393237313135303039323333393639363635323935313130363437343431313237353439303934303935333936373530343037323138393735303531383039313036",
                               "id": 4867,
                               "isConstant": false,
                               "isLValue": false,
@@ -9323,15 +9118,15 @@
                               "kind": "number",
                               "lValueRequested": false,
                               "nodeType": "Literal",
-                              "src": "8827:77:26",
+                              "src": "8828:76:26",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_rational_19525737029409160319857441934277762389761640923960826164007240580988479558169_by_1",
-                                "typeString": "int_const 1952...(69 digits omitted)...8169"
+                                "typeIdentifier": "t_rational_3126935324927115009233969665295110647441127549094095396750407218975051809106_by_1",
+                                "typeString": "int_const 3126...(68 digits omitted)...9106"
                               },
-                              "value": "19525737029409160319857441934277762389761640923960826164007240580988479558169"
+                              "value": "3126935324927115009233969665295110647441127549094095396750407218975051809106"
                             },
                             {
-                              "hexValue": "363939393933383131333139363637323133383231313235383330363131373439393430323132313536333336323536383839313833373837313538363038323832353137313633303631",
+                              "hexValue": "34383933363633393932373731393032333537343037333533303833313437303536333639383732313933323331313539303234363734303738353831313534303132333537373031303832",
                               "id": 4868,
                               "isConstant": false,
                               "isLValue": false,
@@ -9339,12 +9134,12 @@
                               "kind": "number",
                               "lValueRequested": false,
                               "nodeType": "Literal",
-                              "src": "8919:75:26",
+                              "src": "8919:76:26",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_rational_699993811319667213821125830611749940212156336256889183787158608282517163061_by_1",
-                                "typeString": "int_const 6999...(67 digits omitted)...3061"
+                                "typeIdentifier": "t_rational_4893663992771902357407353083147056369872193231159024674078581154012357701082_by_1",
+                                "typeString": "int_const 4893...(68 digits omitted)...1082"
                               },
-                              "value": "699993811319667213821125830611749940212156336256889183787158608282517163061"
+                              "value": "4893663992771902357407353083147056369872193231159024674078581154012357701082"
                             }
                           ],
                           "id": 4869,
@@ -9354,7 +9149,7 @@
                           "isPure": true,
                           "lValueRequested": false,
                           "nodeType": "TupleExpression",
-                          "src": "8826:169:26",
+                          "src": "8827:169:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_array$_t_uint256_$2_memory_ptr",
                             "typeString": "uint256[2] memory"
@@ -9389,7 +9184,6 @@
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
-                        "memberLocation": "8621:7:26",
                         "memberName": "G2Point",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": 4170,
@@ -9405,17 +9199,16 @@
                       "isPure": true,
                       "kind": "structConstructorCall",
                       "lValueRequested": false,
-                      "nameLocations": [],
                       "names": [],
                       "nodeType": "FunctionCall",
-                      "src": "8613:392:26",
+                      "src": "8613:393:26",
                       "tryCall": false,
                       "typeDescriptions": {
                         "typeIdentifier": "t_struct$_G2Point_$4170_memory_ptr",
                         "typeString": "struct Pairing.G2Point memory"
                       }
                     },
-                    "src": "8601:404:26",
+                    "src": "8601:405:26",
                     "typeDescriptions": {
                       "typeIdentifier": "t_struct$_G2Point_$4170_memory_ptr",
                       "typeString": "struct Pairing.G2Point memory"
@@ -9423,7 +9216,7 @@
                   },
                   "id": 4872,
                   "nodeType": "ExpressionStatement",
-                  "src": "8601:404:26"
+                  "src": "8601:405:26"
                 },
                 {
                   "expression": {
@@ -9439,7 +9232,7 @@
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
                         "referencedDeclaration": 4819,
-                        "src": "9015:2:26",
+                        "src": "9016:2:26",
                         "typeDescriptions": {
                           "typeIdentifier": "t_struct$_VerifyingKey_$4805_memory_ptr",
                           "typeString": "struct Verifier.VerifyingKey memory"
@@ -9450,11 +9243,10 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
-                      "memberLocation": "9018:2:26",
                       "memberName": "IC",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 4804,
-                      "src": "9015:5:26",
+                      "src": "9016:5:26",
                       "typeDescriptions": {
                         "typeIdentifier": "t_array$_t_struct$_G1Point_$4161_memory_ptr_$dyn_memory_ptr",
                         "typeString": "struct Pairing.G1Point memory[] memory"
@@ -9473,7 +9265,7 @@
                           "kind": "number",
                           "lValueRequested": false,
                           "nodeType": "Literal",
-                          "src": "9045:1:26",
+                          "src": "9046:1:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_rational_5_by_1",
                             "typeString": "int_const 5"
@@ -9494,7 +9286,7 @@
                         "isPure": true,
                         "lValueRequested": false,
                         "nodeType": "NewExpression",
-                        "src": "9023:21:26",
+                        "src": "9024:21:26",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_objectcreation_pure$_t_uint256_$returns$_t_array$_t_struct$_G1Point_$4161_memory_ptr_$dyn_memory_ptr_$",
                           "typeString": "function (uint256) pure returns (struct Pairing.G1Point memory[] memory)"
@@ -9506,16 +9298,12 @@
                             "pathNode": {
                               "id": 4876,
                               "name": "Pairing.G1Point",
-                              "nameLocations": [
-                                "9027:7:26",
-                                "9035:7:26"
-                              ],
                               "nodeType": "IdentifierPath",
                               "referencedDeclaration": 4161,
-                              "src": "9027:15:26"
+                              "src": "9028:15:26"
                             },
                             "referencedDeclaration": 4161,
-                            "src": "9027:15:26",
+                            "src": "9028:15:26",
                             "typeDescriptions": {
                               "typeIdentifier": "t_struct$_G1Point_$4161_storage_ptr",
                               "typeString": "struct Pairing.G1Point"
@@ -9523,7 +9311,7 @@
                           },
                           "id": 4878,
                           "nodeType": "ArrayTypeName",
-                          "src": "9027:17:26",
+                          "src": "9028:17:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_array$_t_struct$_G1Point_$4161_storage_$dyn_storage_ptr",
                             "typeString": "struct Pairing.G1Point[]"
@@ -9536,17 +9324,16 @@
                       "isPure": true,
                       "kind": "functionCall",
                       "lValueRequested": false,
-                      "nameLocations": [],
                       "names": [],
                       "nodeType": "FunctionCall",
-                      "src": "9023:24:26",
+                      "src": "9024:24:26",
                       "tryCall": false,
                       "typeDescriptions": {
                         "typeIdentifier": "t_array$_t_struct$_G1Point_$4161_memory_ptr_$dyn_memory_ptr",
                         "typeString": "struct Pairing.G1Point memory[] memory"
                       }
                     },
-                    "src": "9015:32:26",
+                    "src": "9016:32:26",
                     "typeDescriptions": {
                       "typeIdentifier": "t_array$_t_struct$_G1Point_$4161_memory_ptr_$dyn_memory_ptr",
                       "typeString": "struct Pairing.G1Point memory[] memory"
@@ -9554,7 +9341,7 @@
                   },
                   "id": 4883,
                   "nodeType": "ExpressionStatement",
-                  "src": "9015:32:26"
+                  "src": "9016:32:26"
                 },
                 {
                   "expression": {
@@ -9571,7 +9358,7 @@
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 4819,
-                          "src": "9066:2:26",
+                          "src": "9067:2:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_struct$_VerifyingKey_$4805_memory_ptr",
                             "typeString": "struct Verifier.VerifyingKey memory"
@@ -9582,11 +9369,10 @@
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
-                        "memberLocation": "9069:2:26",
                         "memberName": "IC",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": 4804,
-                        "src": "9066:5:26",
+                        "src": "9067:5:26",
                         "typeDescriptions": {
                           "typeIdentifier": "t_array$_t_struct$_G1Point_$4161_memory_ptr_$dyn_memory_ptr",
                           "typeString": "struct Pairing.G1Point memory[] memory"
@@ -9602,7 +9388,7 @@
                         "kind": "number",
                         "lValueRequested": false,
                         "nodeType": "Literal",
-                        "src": "9072:1:26",
+                        "src": "9073:1:26",
                         "typeDescriptions": {
                           "typeIdentifier": "t_rational_0_by_1",
                           "typeString": "int_const 0"
@@ -9614,7 +9400,7 @@
                       "isPure": false,
                       "lValueRequested": true,
                       "nodeType": "IndexAccess",
-                      "src": "9066:8:26",
+                      "src": "9067:8:26",
                       "typeDescriptions": {
                         "typeIdentifier": "t_struct$_G1Point_$4161_memory_ptr",
                         "typeString": "struct Pairing.G1Point memory"
@@ -9625,7 +9411,7 @@
                     "rightHandSide": {
                       "arguments": [
                         {
-                          "hexValue": "32313834343436373639383233383732333038353332373637353335353037313636303435383035383133393934313738323739333330363035343538373031343830333331393133343736",
+                          "hexValue": "363630313838383330393534383738313837303831363431313832393035333633363534303734303331313236353932383039363334323035383534373435373733353036303631313636",
                           "id": 4891,
                           "isConstant": false,
                           "isLValue": false,
@@ -9633,15 +9419,15 @@
                           "kind": "number",
                           "lValueRequested": false,
                           "nodeType": "Literal",
-                          "src": "9107:76:26",
+                          "src": "9108:75:26",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_rational_2184446769823872308532767535507166045805813994178279330605458701480331913476_by_1",
-                            "typeString": "int_const 2184...(68 digits omitted)...3476"
+                            "typeIdentifier": "t_rational_660188830954878187081641182905363654074031126592809634205854745773506061166_by_1",
+                            "typeString": "int_const 6601...(67 digits omitted)...1166"
                           },
-                          "value": "2184446769823872308532767535507166045805813994178279330605458701480331913476"
+                          "value": "660188830954878187081641182905363654074031126592809634205854745773506061166"
                         },
                         {
-                          "hexValue": "3133323537373337353632333333393030343938343430343833373930373431383034383037353436353737313036373539313033303135303330323536373235303631373135393230353134",
+                          "hexValue": "35393737303938353033343138363333343034383639313736313039313233363836353738363432333134383236393833303336353338313133353332323434323334313536353433383331",
                           "id": 4892,
                           "isConstant": false,
                           "isLValue": false,
@@ -9649,23 +9435,23 @@
                           "kind": "number",
                           "lValueRequested": false,
                           "nodeType": "Literal",
-                          "src": "9197:77:26",
+                          "src": "9197:76:26",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_rational_13257737562333900498440483790741804807546577106759103015030256725061715920514_by_1",
-                            "typeString": "int_const 1325...(69 digits omitted)...0514"
+                            "typeIdentifier": "t_rational_5977098503418633404869176109123686578642314826983036538113532244234156543831_by_1",
+                            "typeString": "int_const 5977...(68 digits omitted)...3831"
                           },
-                          "value": "13257737562333900498440483790741804807546577106759103015030256725061715920514"
+                          "value": "5977098503418633404869176109123686578642314826983036538113532244234156543831"
                         }
                       ],
                       "expression": {
                         "argumentTypes": [
                           {
-                            "typeIdentifier": "t_rational_2184446769823872308532767535507166045805813994178279330605458701480331913476_by_1",
-                            "typeString": "int_const 2184...(68 digits omitted)...3476"
+                            "typeIdentifier": "t_rational_660188830954878187081641182905363654074031126592809634205854745773506061166_by_1",
+                            "typeString": "int_const 6601...(67 digits omitted)...1166"
                           },
                           {
-                            "typeIdentifier": "t_rational_13257737562333900498440483790741804807546577106759103015030256725061715920514_by_1",
-                            "typeString": "int_const 1325...(69 digits omitted)...0514"
+                            "typeIdentifier": "t_rational_5977098503418633404869176109123686578642314826983036538113532244234156543831_by_1",
+                            "typeString": "int_const 5977...(68 digits omitted)...3831"
                           }
                         ],
                         "expression": {
@@ -9674,7 +9460,7 @@
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 4786,
-                          "src": "9077:7:26",
+                          "src": "9078:7:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_type$_t_contract$_Pairing_$4786_$",
                             "typeString": "type(library Pairing)"
@@ -9685,11 +9471,10 @@
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
-                        "memberLocation": "9085:7:26",
                         "memberName": "G1Point",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": 4161,
-                        "src": "9077:15:26",
+                        "src": "9078:15:26",
                         "typeDescriptions": {
                           "typeIdentifier": "t_type$_t_struct$_G1Point_$4161_storage_ptr_$",
                           "typeString": "type(struct Pairing.G1Point storage pointer)"
@@ -9701,17 +9486,16 @@
                       "isPure": true,
                       "kind": "structConstructorCall",
                       "lValueRequested": false,
-                      "nameLocations": [],
                       "names": [],
                       "nodeType": "FunctionCall",
-                      "src": "9077:207:26",
+                      "src": "9078:205:26",
                       "tryCall": false,
                       "typeDescriptions": {
                         "typeIdentifier": "t_struct$_G1Point_$4161_memory_ptr",
                         "typeString": "struct Pairing.G1Point memory"
                       }
                     },
-                    "src": "9066:218:26",
+                    "src": "9067:216:26",
                     "typeDescriptions": {
                       "typeIdentifier": "t_struct$_G1Point_$4161_memory_ptr",
                       "typeString": "struct Pairing.G1Point memory"
@@ -9719,7 +9503,7 @@
                   },
                   "id": 4895,
                   "nodeType": "ExpressionStatement",
-                  "src": "9066:218:26"
+                  "src": "9067:216:26"
                 },
                 {
                   "expression": {
@@ -9736,7 +9520,7 @@
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 4819,
-                          "src": "9341:2:26",
+                          "src": "9340:2:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_struct$_VerifyingKey_$4805_memory_ptr",
                             "typeString": "struct Verifier.VerifyingKey memory"
@@ -9747,11 +9531,10 @@
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
-                        "memberLocation": "9344:2:26",
                         "memberName": "IC",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": 4804,
-                        "src": "9341:5:26",
+                        "src": "9340:5:26",
                         "typeDescriptions": {
                           "typeIdentifier": "t_array$_t_struct$_G1Point_$4161_memory_ptr_$dyn_memory_ptr",
                           "typeString": "struct Pairing.G1Point memory[] memory"
@@ -9767,7 +9550,7 @@
                         "kind": "number",
                         "lValueRequested": false,
                         "nodeType": "Literal",
-                        "src": "9347:1:26",
+                        "src": "9346:1:26",
                         "typeDescriptions": {
                           "typeIdentifier": "t_rational_1_by_1",
                           "typeString": "int_const 1"
@@ -9779,7 +9562,7 @@
                       "isPure": false,
                       "lValueRequested": true,
                       "nodeType": "IndexAccess",
-                      "src": "9341:8:26",
+                      "src": "9340:8:26",
                       "typeDescriptions": {
                         "typeIdentifier": "t_struct$_G1Point_$4161_memory_ptr",
                         "typeString": "struct Pairing.G1Point memory"
@@ -9798,7 +9581,7 @@
                           "kind": "number",
                           "lValueRequested": false,
                           "nodeType": "Literal",
-                          "src": "9382:76:26",
+                          "src": "9381:76:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_rational_3046070577942167426052982935931503907926853745707154028198629781332246492420_by_1",
                             "typeString": "int_const 3046...(68 digits omitted)...2420"
@@ -9814,7 +9597,7 @@
                           "kind": "number",
                           "lValueRequested": false,
                           "nodeType": "Literal",
-                          "src": "9472:77:26",
+                          "src": "9471:77:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_rational_10104815432649768148044048758395928104455011751205755269902305648668473902548_by_1",
                             "typeString": "int_const 1010...(69 digits omitted)...2548"
@@ -9839,7 +9622,7 @@
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 4786,
-                          "src": "9352:7:26",
+                          "src": "9351:7:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_type$_t_contract$_Pairing_$4786_$",
                             "typeString": "type(library Pairing)"
@@ -9850,11 +9633,10 @@
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
-                        "memberLocation": "9360:7:26",
                         "memberName": "G1Point",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": 4161,
-                        "src": "9352:15:26",
+                        "src": "9351:15:26",
                         "typeDescriptions": {
                           "typeIdentifier": "t_type$_t_struct$_G1Point_$4161_storage_ptr_$",
                           "typeString": "type(struct Pairing.G1Point storage pointer)"
@@ -9866,17 +9648,16 @@
                       "isPure": true,
                       "kind": "structConstructorCall",
                       "lValueRequested": false,
-                      "nameLocations": [],
                       "names": [],
                       "nodeType": "FunctionCall",
-                      "src": "9352:207:26",
+                      "src": "9351:207:26",
                       "tryCall": false,
                       "typeDescriptions": {
                         "typeIdentifier": "t_struct$_G1Point_$4161_memory_ptr",
                         "typeString": "struct Pairing.G1Point memory"
                       }
                     },
-                    "src": "9341:218:26",
+                    "src": "9340:218:26",
                     "typeDescriptions": {
                       "typeIdentifier": "t_struct$_G1Point_$4161_memory_ptr",
                       "typeString": "struct Pairing.G1Point memory"
@@ -9884,7 +9665,7 @@
                   },
                   "id": 4907,
                   "nodeType": "ExpressionStatement",
-                  "src": "9341:218:26"
+                  "src": "9340:218:26"
                 },
                 {
                   "expression": {
@@ -9901,7 +9682,7 @@
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 4819,
-                          "src": "9616:2:26",
+                          "src": "9615:2:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_struct$_VerifyingKey_$4805_memory_ptr",
                             "typeString": "struct Verifier.VerifyingKey memory"
@@ -9912,11 +9693,10 @@
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
-                        "memberLocation": "9619:2:26",
                         "memberName": "IC",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": 4804,
-                        "src": "9616:5:26",
+                        "src": "9615:5:26",
                         "typeDescriptions": {
                           "typeIdentifier": "t_array$_t_struct$_G1Point_$4161_memory_ptr_$dyn_memory_ptr",
                           "typeString": "struct Pairing.G1Point memory[] memory"
@@ -9932,7 +9712,7 @@
                         "kind": "number",
                         "lValueRequested": false,
                         "nodeType": "Literal",
-                        "src": "9622:1:26",
+                        "src": "9621:1:26",
                         "typeDescriptions": {
                           "typeIdentifier": "t_rational_2_by_1",
                           "typeString": "int_const 2"
@@ -9944,7 +9724,7 @@
                       "isPure": false,
                       "lValueRequested": true,
                       "nodeType": "IndexAccess",
-                      "src": "9616:8:26",
+                      "src": "9615:8:26",
                       "typeDescriptions": {
                         "typeIdentifier": "t_struct$_G1Point_$4161_memory_ptr",
                         "typeString": "struct Pairing.G1Point memory"
@@ -9963,7 +9743,7 @@
                           "kind": "number",
                           "lValueRequested": false,
                           "nodeType": "Literal",
-                          "src": "9657:77:26",
+                          "src": "9656:77:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_rational_19836954295775721243938449770340445288660145679704167472037536758124832660880_by_1",
                             "typeString": "int_const 1983...(69 digits omitted)...0880"
@@ -9979,7 +9759,7 @@
                           "kind": "number",
                           "lValueRequested": false,
                           "nodeType": "Literal",
-                          "src": "9748:77:26",
+                          "src": "9747:77:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_rational_16957126665083581553872101121855192131600891619491007236930129555777677087720_by_1",
                             "typeString": "int_const 1695...(69 digits omitted)...7720"
@@ -10004,7 +9784,7 @@
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 4786,
-                          "src": "9627:7:26",
+                          "src": "9626:7:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_type$_t_contract$_Pairing_$4786_$",
                             "typeString": "type(library Pairing)"
@@ -10015,11 +9795,10 @@
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
-                        "memberLocation": "9635:7:26",
                         "memberName": "G1Point",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": 4161,
-                        "src": "9627:15:26",
+                        "src": "9626:15:26",
                         "typeDescriptions": {
                           "typeIdentifier": "t_type$_t_struct$_G1Point_$4161_storage_ptr_$",
                           "typeString": "type(struct Pairing.G1Point storage pointer)"
@@ -10031,17 +9810,16 @@
                       "isPure": true,
                       "kind": "structConstructorCall",
                       "lValueRequested": false,
-                      "nameLocations": [],
                       "names": [],
                       "nodeType": "FunctionCall",
-                      "src": "9627:208:26",
+                      "src": "9626:208:26",
                       "tryCall": false,
                       "typeDescriptions": {
                         "typeIdentifier": "t_struct$_G1Point_$4161_memory_ptr",
                         "typeString": "struct Pairing.G1Point memory"
                       }
                     },
-                    "src": "9616:219:26",
+                    "src": "9615:219:26",
                     "typeDescriptions": {
                       "typeIdentifier": "t_struct$_G1Point_$4161_memory_ptr",
                       "typeString": "struct Pairing.G1Point memory"
@@ -10049,7 +9827,7 @@
                   },
                   "id": 4919,
                   "nodeType": "ExpressionStatement",
-                  "src": "9616:219:26"
+                  "src": "9615:219:26"
                 },
                 {
                   "expression": {
@@ -10066,7 +9844,7 @@
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 4819,
-                          "src": "9892:2:26",
+                          "src": "9891:2:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_struct$_VerifyingKey_$4805_memory_ptr",
                             "typeString": "struct Verifier.VerifyingKey memory"
@@ -10077,11 +9855,10 @@
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
-                        "memberLocation": "9895:2:26",
                         "memberName": "IC",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": 4804,
-                        "src": "9892:5:26",
+                        "src": "9891:5:26",
                         "typeDescriptions": {
                           "typeIdentifier": "t_array$_t_struct$_G1Point_$4161_memory_ptr_$dyn_memory_ptr",
                           "typeString": "struct Pairing.G1Point memory[] memory"
@@ -10097,7 +9874,7 @@
                         "kind": "number",
                         "lValueRequested": false,
                         "nodeType": "Literal",
-                        "src": "9898:1:26",
+                        "src": "9897:1:26",
                         "typeDescriptions": {
                           "typeIdentifier": "t_rational_3_by_1",
                           "typeString": "int_const 3"
@@ -10109,7 +9886,7 @@
                       "isPure": false,
                       "lValueRequested": true,
                       "nodeType": "IndexAccess",
-                      "src": "9892:8:26",
+                      "src": "9891:8:26",
                       "typeDescriptions": {
                         "typeIdentifier": "t_struct$_G1Point_$4161_memory_ptr",
                         "typeString": "struct Pairing.G1Point memory"
@@ -10120,7 +9897,7 @@
                     "rightHandSide": {
                       "arguments": [
                         {
-                          "hexValue": "39393536353733303534363732373739373537323738393637373739323037323731353336343134343436393239393435323337323130333535393937393432303239353032383235373033",
+                          "hexValue": "3130313636333032373034303030313333303635383733303336363839333939383736343333303235363536333439363038383630323931343833313731373631383435373434323030313035",
                           "id": 4927,
                           "isConstant": false,
                           "isLValue": false,
@@ -10128,15 +9905,15 @@
                           "kind": "number",
                           "lValueRequested": false,
                           "nodeType": "Literal",
-                          "src": "9933:76:26",
+                          "src": "9932:77:26",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_rational_9956573054672779757278967779207271536414446929945237210355997942029502825703_by_1",
-                            "typeString": "int_const 9956...(68 digits omitted)...5703"
+                            "typeIdentifier": "t_rational_10166302704000133065873036689399876433025656349608860291483171761845744200105_by_1",
+                            "typeString": "int_const 1016...(69 digits omitted)...0105"
                           },
-                          "value": "9956573054672779757278967779207271536414446929945237210355997942029502825703"
+                          "value": "10166302704000133065873036689399876433025656349608860291483171761845744200105"
                         },
                         {
-                          "hexValue": "3139363636373933333533333938323538353431313733313734303538393135393137353934303336373036303730343738343435363637303337383637313037333235343431303134313737",
+                          "hexValue": "3135323732383038333631393533393636383737353535373333393731363630313933383531323932353732333434363433373037373237393533363131353134393837313737373731343936",
                           "id": 4928,
                           "isConstant": false,
                           "isLValue": false,
@@ -10146,21 +9923,21 @@
                           "nodeType": "Literal",
                           "src": "10023:77:26",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_rational_19666793353398258541173174058915917594036706070478445667037867107325441014177_by_1",
-                            "typeString": "int_const 1966...(69 digits omitted)...4177"
+                            "typeIdentifier": "t_rational_15272808361953966877555733971660193851292572344643707727953611514987177771496_by_1",
+                            "typeString": "int_const 1527...(69 digits omitted)...1496"
                           },
-                          "value": "19666793353398258541173174058915917594036706070478445667037867107325441014177"
+                          "value": "15272808361953966877555733971660193851292572344643707727953611514987177771496"
                         }
                       ],
                       "expression": {
                         "argumentTypes": [
                           {
-                            "typeIdentifier": "t_rational_9956573054672779757278967779207271536414446929945237210355997942029502825703_by_1",
-                            "typeString": "int_const 9956...(68 digits omitted)...5703"
+                            "typeIdentifier": "t_rational_10166302704000133065873036689399876433025656349608860291483171761845744200105_by_1",
+                            "typeString": "int_const 1016...(69 digits omitted)...0105"
                           },
                           {
-                            "typeIdentifier": "t_rational_19666793353398258541173174058915917594036706070478445667037867107325441014177_by_1",
-                            "typeString": "int_const 1966...(69 digits omitted)...4177"
+                            "typeIdentifier": "t_rational_15272808361953966877555733971660193851292572344643707727953611514987177771496_by_1",
+                            "typeString": "int_const 1527...(69 digits omitted)...1496"
                           }
                         ],
                         "expression": {
@@ -10169,7 +9946,7 @@
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 4786,
-                          "src": "9903:7:26",
+                          "src": "9902:7:26",
                           "typeDescriptions": {
                             "typeIdentifier": "t_type$_t_contract$_Pairing_$4786_$",
                             "typeString": "type(library Pairing)"
@@ -10180,11 +9957,10 @@
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
-                        "memberLocation": "9911:7:26",
                         "memberName": "G1Point",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": 4161,
-                        "src": "9903:15:26",
+                        "src": "9902:15:26",
                         "typeDescriptions": {
                           "typeIdentifier": "t_type$_t_struct$_G1Point_$4161_storage_ptr_$",
                           "typeString": "type(struct Pairing.G1Point storage pointer)"
@@ -10196,17 +9972,16 @@
                       "isPure": true,
                       "kind": "structConstructorCall",
                       "lValueRequested": false,
-                      "nameLocations": [],
                       "names": [],
                       "nodeType": "FunctionCall",
-                      "src": "9903:207:26",
+                      "src": "9902:208:26",
                       "tryCall": false,
                       "typeDescriptions": {
                         "typeIdentifier": "t_struct$_G1Point_$4161_memory_ptr",
                         "typeString": "struct Pairing.G1Point memory"
                       }
                     },
-                    "src": "9892:218:26",
+                    "src": "9891:219:26",
                     "typeDescriptions": {
                       "typeIdentifier": "t_struct$_G1Point_$4161_memory_ptr",
                       "typeString": "struct Pairing.G1Point memory"
@@ -10214,7 +9989,7 @@
                   },
                   "id": 4931,
                   "nodeType": "ExpressionStatement",
-                  "src": "9892:218:26"
+                  "src": "9891:219:26"
                 },
                 {
                   "expression": {
@@ -10242,7 +10017,6 @@
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
-                        "memberLocation": "10170:2:26",
                         "memberName": "IC",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": 4804,
@@ -10285,7 +10059,7 @@
                     "rightHandSide": {
                       "arguments": [
                         {
-                          "hexValue": "3137323934383234393630303937393337393638363331373037353738363033383838333039373739313832323338363333323234353233343134383036313935313033353234383536303139",
+                          "hexValue": "3138333736313132393638363535343036353333373938373137323932313639333935353835353431303736333333303339333438303036363839313536343433313034363630333732363639",
                           "id": 4939,
                           "isConstant": false,
                           "isLValue": false,
@@ -10295,13 +10069,13 @@
                           "nodeType": "Literal",
                           "src": "10208:77:26",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_rational_17294824960097937968631707578603888309779182238633224523414806195103524856019_by_1",
-                            "typeString": "int_const 1729...(69 digits omitted)...6019"
+                            "typeIdentifier": "t_rational_18376112968655406533798717292169395585541076333039348006689156443104660372669_by_1",
+                            "typeString": "int_const 1837...(69 digits omitted)...2669"
                           },
-                          "value": "17294824960097937968631707578603888309779182238633224523414806195103524856019"
+                          "value": "18376112968655406533798717292169395585541076333039348006689156443104660372669"
                         },
                         {
-                          "hexValue": "39303033323835303131353733393333323932363039333732313235303434373039353039373634383139343930393737343038363932363133313532383232353230353132383935333738",
+                          "hexValue": "32343136393234323036303631363832383833353936363830383536333932303733373530383839313030353836323933393632303034383238353532353034343138303037393732343739",
                           "id": 4940,
                           "isConstant": false,
                           "isLValue": false,
@@ -10311,21 +10085,21 @@
                           "nodeType": "Literal",
                           "src": "10299:76:26",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_rational_9003285011573933292609372125044709509764819490977408692613152822520512895378_by_1",
-                            "typeString": "int_const 9003...(68 digits omitted)...5378"
+                            "typeIdentifier": "t_rational_2416924206061682883596680856392073750889100586293962004828552504418007972479_by_1",
+                            "typeString": "int_const 2416...(68 digits omitted)...2479"
                           },
-                          "value": "9003285011573933292609372125044709509764819490977408692613152822520512895378"
+                          "value": "2416924206061682883596680856392073750889100586293962004828552504418007972479"
                         }
                       ],
                       "expression": {
                         "argumentTypes": [
                           {
-                            "typeIdentifier": "t_rational_17294824960097937968631707578603888309779182238633224523414806195103524856019_by_1",
-                            "typeString": "int_const 1729...(69 digits omitted)...6019"
+                            "typeIdentifier": "t_rational_18376112968655406533798717292169395585541076333039348006689156443104660372669_by_1",
+                            "typeString": "int_const 1837...(69 digits omitted)...2669"
                           },
                           {
-                            "typeIdentifier": "t_rational_9003285011573933292609372125044709509764819490977408692613152822520512895378_by_1",
-                            "typeString": "int_const 9003...(68 digits omitted)...5378"
+                            "typeIdentifier": "t_rational_2416924206061682883596680856392073750889100586293962004828552504418007972479_by_1",
+                            "typeString": "int_const 2416...(68 digits omitted)...2479"
                           }
                         ],
                         "expression": {
@@ -10345,7 +10119,6 @@
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
-                        "memberLocation": "10186:7:26",
                         "memberName": "G1Point",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": 4161,
@@ -10361,7 +10134,6 @@
                       "isPure": true,
                       "kind": "structConstructorCall",
                       "lValueRequested": false,
-                      "nameLocations": [],
                       "names": [],
                       "nodeType": "FunctionCall",
                       "src": "10178:207:26",
@@ -10421,9 +10193,6 @@
                     "pathNode": {
                       "id": 4817,
                       "name": "VerifyingKey",
-                      "nameLocations": [
-                        "7510:12:26"
-                      ],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 4805,
                       "src": "7510:12:26"
@@ -10531,9 +10300,6 @@
                         "pathNode": {
                           "id": 4960,
                           "name": "VerifyingKey",
-                          "nameLocations": [
-                            "10656:12:26"
-                          ],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 4805,
                           "src": "10656:12:26"
@@ -10570,7 +10336,6 @@
                     "isPure": false,
                     "kind": "functionCall",
                     "lValueRequested": false,
-                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "10681:14:26",
@@ -10624,7 +10389,6 @@
                             "isLValue": false,
                             "isPure": false,
                             "lValueRequested": false,
-                            "memberLocation": "10719:6:26",
                             "memberName": "length",
                             "nodeType": "MemberAccess",
                             "src": "10713:12:26",
@@ -10678,7 +10442,6 @@
                             "isLValue": true,
                             "isPure": false,
                             "lValueRequested": false,
-                            "memberLocation": "10736:2:26",
                             "memberName": "IC",
                             "nodeType": "MemberAccess",
                             "referencedDeclaration": 4804,
@@ -10693,7 +10456,6 @@
                           "isLValue": false,
                           "isPure": false,
                           "lValueRequested": false,
-                          "memberLocation": "10739:6:26",
                           "memberName": "length",
                           "nodeType": "MemberAccess",
                           "src": "10733:12:26",
@@ -10756,7 +10518,6 @@
                     "isPure": false,
                     "kind": "functionCall",
                     "lValueRequested": false,
-                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "10705:62:26",
@@ -10796,10 +10557,6 @@
                         "pathNode": {
                           "id": 4980,
                           "name": "Pairing.G1Point",
-                          "nameLocations": [
-                            "10824:7:26",
-                            "10832:7:26"
-                          ],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 4161,
                           "src": "10824:15:26"
@@ -10878,7 +10635,6 @@
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
-                      "memberLocation": "10862:7:26",
                       "memberName": "G1Point",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 4161,
@@ -10894,7 +10650,6 @@
                     "isPure": true,
                     "kind": "structConstructorCall",
                     "lValueRequested": false,
-                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "10854:21:26",
@@ -11031,7 +10786,6 @@
                           "isPure": false,
                           "kind": "functionCall",
                           "lValueRequested": false,
-                          "nameLocations": [],
                           "names": [],
                           "nodeType": "FunctionCall",
                           "src": "10939:72:26",
@@ -11101,7 +10855,6 @@
                                       "isLValue": true,
                                       "isPure": false,
                                       "lValueRequested": false,
-                                      "memberLocation": "11077:2:26",
                                       "memberName": "IC",
                                       "nodeType": "MemberAccess",
                                       "referencedDeclaration": 4804,
@@ -11235,7 +10988,6 @@
                                   "isLValue": false,
                                   "isPure": false,
                                   "lValueRequested": false,
-                                  "memberLocation": "11063:10:26",
                                   "memberName": "scalar_mul",
                                   "nodeType": "MemberAccess",
                                   "referencedDeclaration": 4349,
@@ -11251,7 +11003,6 @@
                                 "isPure": false,
                                 "kind": "functionCall",
                                 "lValueRequested": false,
-                                "nameLocations": [],
                                 "names": [],
                                 "nodeType": "FunctionCall",
                                 "src": "11055:42:26",
@@ -11290,7 +11041,6 @@
                               "isLValue": false,
                               "isPure": false,
                               "lValueRequested": false,
-                              "memberLocation": "11040:8:26",
                               "memberName": "addition",
                               "nodeType": "MemberAccess",
                               "referencedDeclaration": 4300,
@@ -11306,7 +11056,6 @@
                             "isPure": false,
                             "kind": "functionCall",
                             "lValueRequested": false,
-                            "nameLocations": [],
                             "names": [],
                             "nodeType": "FunctionCall",
                             "src": "11032:66:26",
@@ -11370,7 +11119,6 @@
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
-                      "memberLocation": "10912:6:26",
                       "memberName": "length",
                       "nodeType": "MemberAccess",
                       "src": "10906:12:26",
@@ -11528,7 +11276,6 @@
                             "isLValue": true,
                             "isPure": false,
                             "lValueRequested": false,
-                            "memberLocation": "11151:2:26",
                             "memberName": "IC",
                             "nodeType": "MemberAccess",
                             "referencedDeclaration": 4804,
@@ -11595,7 +11342,6 @@
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
-                        "memberLocation": "11133:8:26",
                         "memberName": "addition",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": 4300,
@@ -11611,7 +11357,6 @@
                       "isPure": false,
                       "kind": "functionCall",
                       "lValueRequested": false,
-                      "nameLocations": [],
                       "names": [],
                       "nodeType": "FunctionCall",
                       "src": "11125:32:26",
@@ -11664,7 +11409,6 @@
                               "isLValue": true,
                               "isPure": false,
                               "lValueRequested": false,
-                              "memberLocation": "11227:1:26",
                               "memberName": "A",
                               "nodeType": "MemberAccess",
                               "referencedDeclaration": 4808,
@@ -11699,7 +11443,6 @@
                             "isLValue": false,
                             "isPure": false,
                             "lValueRequested": false,
-                            "memberLocation": "11214:6:26",
                             "memberName": "negate",
                             "nodeType": "MemberAccess",
                             "referencedDeclaration": 4242,
@@ -11715,7 +11458,6 @@
                           "isPure": false,
                           "kind": "functionCall",
                           "lValueRequested": false,
-                          "nameLocations": [],
                           "names": [],
                           "nodeType": "FunctionCall",
                           "src": "11206:23:26",
@@ -11743,7 +11485,6 @@
                           "isLValue": true,
                           "isPure": false,
                           "lValueRequested": false,
-                          "memberLocation": "11237:1:26",
                           "memberName": "B",
                           "nodeType": "MemberAccess",
                           "referencedDeclaration": 4811,
@@ -11771,7 +11512,6 @@
                           "isLValue": true,
                           "isPure": false,
                           "lValueRequested": false,
-                          "memberLocation": "11255:5:26",
                           "memberName": "alfa1",
                           "nodeType": "MemberAccess",
                           "referencedDeclaration": 4791,
@@ -11799,7 +11539,6 @@
                           "isLValue": true,
                           "isPure": false,
                           "lValueRequested": false,
-                          "memberLocation": "11265:5:26",
                           "memberName": "beta2",
                           "nodeType": "MemberAccess",
                           "referencedDeclaration": 4794,
@@ -11839,7 +11578,6 @@
                           "isLValue": true,
                           "isPure": false,
                           "lValueRequested": false,
-                          "memberLocation": "11293:6:26",
                           "memberName": "gamma2",
                           "nodeType": "MemberAccess",
                           "referencedDeclaration": 4797,
@@ -11867,7 +11605,6 @@
                           "isLValue": true,
                           "isPure": false,
                           "lValueRequested": false,
-                          "memberLocation": "11319:1:26",
                           "memberName": "C",
                           "nodeType": "MemberAccess",
                           "referencedDeclaration": 4814,
@@ -11895,7 +11632,6 @@
                           "isLValue": true,
                           "isPure": false,
                           "lValueRequested": false,
-                          "memberLocation": "11325:6:26",
                           "memberName": "delta2",
                           "nodeType": "MemberAccess",
                           "referencedDeclaration": 4800,
@@ -11958,7 +11694,6 @@
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
-                        "memberLocation": "11180:12:26",
                         "memberName": "pairingProd4",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": 4785,
@@ -11974,7 +11709,6 @@
                       "isPure": false,
                       "kind": "functionCall",
                       "lValueRequested": false,
-                      "nameLocations": [],
                       "names": [],
                       "nodeType": "FunctionCall",
                       "src": "11172:169:26",
@@ -12107,9 +11841,6 @@
                     "pathNode": {
                       "id": 4949,
                       "name": "Proof",
-                      "nameLocations": [
-                        "10481:5:26"
-                      ],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 4815,
                       "src": "10481:5:26"
@@ -12198,9 +11929,6 @@
                         "pathNode": {
                           "id": 5093,
                           "name": "Proof",
-                          "nameLocations": [
-                            "11625:5:26"
-                          ],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 4815,
                           "src": "11625:5:26"
@@ -12244,7 +11972,6 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
-                      "memberLocation": "11659:1:26",
                       "memberName": "A",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 4808,
@@ -12369,7 +12096,6 @@
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
-                        "memberLocation": "11671:7:26",
                         "memberName": "G1Point",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": 4161,
@@ -12385,7 +12111,6 @@
                       "isPure": false,
                       "kind": "structConstructorCall",
                       "lValueRequested": false,
-                      "nameLocations": [],
                       "names": [],
                       "nodeType": "FunctionCall",
                       "src": "11663:27:26",
@@ -12430,7 +12155,6 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
-                      "memberLocation": "11706:1:26",
                       "memberName": "B",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 4811,
@@ -12785,7 +12509,6 @@
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
-                        "memberLocation": "11718:7:26",
                         "memberName": "G2Point",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": 4170,
@@ -12801,7 +12524,6 @@
                       "isPure": false,
                       "kind": "structConstructorCall",
                       "lValueRequested": false,
-                      "nameLocations": [],
                       "names": [],
                       "nodeType": "FunctionCall",
                       "src": "11710:55:26",
@@ -12846,7 +12568,6 @@
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
-                      "memberLocation": "11781:1:26",
                       "memberName": "C",
                       "nodeType": "MemberAccess",
                       "referencedDeclaration": 4814,
@@ -12971,7 +12692,6 @@
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
-                        "memberLocation": "11793:7:26",
                         "memberName": "G1Point",
                         "nodeType": "MemberAccess",
                         "referencedDeclaration": 4161,
@@ -12987,7 +12707,6 @@
                       "isPure": false,
                       "kind": "structConstructorCall",
                       "lValueRequested": false,
-                      "nameLocations": [],
                       "names": [],
                       "nodeType": "FunctionCall",
                       "src": "11785:27:26",
@@ -13070,7 +12789,6 @@
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
-                        "memberLocation": "11867:6:26",
                         "memberName": "length",
                         "nodeType": "MemberAccess",
                         "src": "11861:12:26",
@@ -13124,7 +12842,6 @@
                     "isPure": false,
                     "kind": "functionCall",
                     "lValueRequested": false,
-                    "nameLocations": [],
                     "names": [],
                     "nodeType": "FunctionCall",
                     "src": "11850:24:26",
@@ -13280,7 +12997,6 @@
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
-                      "memberLocation": "11910:6:26",
                       "memberName": "length",
                       "nodeType": "MemberAccess",
                       "src": "11904:12:26",
@@ -13450,7 +13166,6 @@
                       "isPure": false,
                       "kind": "functionCall",
                       "lValueRequested": false,
-                      "nameLocations": [],
                       "names": [],
                       "nodeType": "FunctionCall",
                       "src": "11985:26:26",
@@ -13852,11 +13567,11 @@
   },
   "compiler": {
     "name": "solc",
-    "version": "0.8.17+commit.8df45f5f.Linux.g++"
+    "version": "0.8.15+commit.e14f2714.Linux.g++"
   },
   "networks": {},
-  "schemaVersion": "3.4.11",
-  "updatedAt": "2023-01-30T23:00:10.682Z",
+  "schemaVersion": "3.4.12",
+  "updatedAt": "2023-02-27T03:23:04.962Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},
