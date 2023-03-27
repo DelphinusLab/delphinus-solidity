@@ -26,7 +26,7 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"args\",\"type\":\"bytes\"},{\"internalType\":\"uint256\",\"name\":\"cursor\",\"type\":\"uint256\"}],\"name\":\"sideEffect\",\"outputs\":[{\"internalType\":\"uint256[]\",\"name\":\"\",\"type\":\"uint256[]\"}],\"stateMutability\":\"pure\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{\"sideEffect(bytes,uint256)\":{\"details\":\"snark verification stub\"}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/Transaction.sol\":\"Transaction\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/Transaction.sol\":{\"keccak256\":\"0x4189803b764af5639d5a4e1611f282e1d9d3ed566e79b11cac516ab747d565b3\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://729724bd94c68f48aff17bcdae21a229002f5133a4de08a684a54156d83564d9\",\"dweb:/ipfs/QmRg1ZeYJgfeb12vprQjGtTnbNvAgeMABmUWBM6kx4xJzh\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.15+commit.e14f2714\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"args\",\"type\":\"bytes\"},{\"internalType\":\"uint256\",\"name\":\"cursor\",\"type\":\"uint256\"}],\"name\":\"sideEffect\",\"outputs\":[{\"internalType\":\"uint256[]\",\"name\":\"\",\"type\":\"uint256[]\"}],\"stateMutability\":\"pure\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{\"sideEffect(bytes,uint256)\":{\"details\":\"snark verification stub\"}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/Transaction.sol\":\"Transaction\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/Transaction.sol\":{\"keccak256\":\"0x4189803b764af5639d5a4e1611f282e1d9d3ed566e79b11cac516ab747d565b3\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://729724bd94c68f48aff17bcdae21a229002f5133a4de08a684a54156d83564d9\",\"dweb:/ipfs/QmRg1ZeYJgfeb12vprQjGtTnbNvAgeMABmUWBM6kx4xJzh\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "immutableReferences": {},
@@ -35,7 +35,7 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "// SPDX-License-Identifier: UNLICENSED\npragma solidity ^0.8.0;\n\n// SideEffects\nuint8 constant _WITHDRAW = 0x1;\n\ninterface Transaction {\n    /**\n     * @dev snark verification stub\n     */\n    function sideEffect(bytes calldata args, uint cursor) external pure returns (uint256[] memory);\n}\n",
-  "sourcePath": "/home/akayi07/zkcross-backend-lerna/packages/solidity/contracts/Transaction.sol",
+  "sourcePath": "/home/yymone/zkcross-backend-lerna/packages/solidity/contracts/Transaction.sol",
   "ast": {
     "absolutePath": "project:/contracts/Transaction.sol",
     "exportedSymbols": {
@@ -254,11 +254,11 @@
   },
   "compiler": {
     "name": "solc",
-    "version": "0.8.17+commit.8df45f5f.Linux.g++"
+    "version": "0.8.15+commit.e14f2714.Linux.g++"
   },
   "networks": {},
-  "schemaVersion": "3.4.11",
-  "updatedAt": "2023-01-30T23:00:10.677Z",
+  "schemaVersion": "3.4.12",
+  "updatedAt": "2023-02-27T03:23:04.946Z",
   "devdoc": {
     "kind": "dev",
     "methods": {
