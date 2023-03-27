@@ -61,14 +61,8 @@ export const contractsInfo = {
         name:"tToken"
       },
       {
-        chainId: "740",
-        address:TokenInfo.networks["740"]?.address.replace("0x", ""),
-        wei:18,
-        name:"tToken"
-      },
-      {
-        chainId: "2814",
-        address:TokenInfo.networks["2814"]?.address.replace("0x", ""),
+        chainId: "7701",
+        address:TokenInfo.networks["7701"]?.address.replace("0x", ""),
         wei:18,
         name:"tToken"
       }

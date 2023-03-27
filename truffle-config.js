@@ -102,8 +102,8 @@ module.exports = {
     },
     cantotestnet: {
       provider: () => new HDWalletProvider(secrets.accounts.deployer.priv,
-        http_provider("https://eth.plexnode.wtf/")),
-      network_id: 740,
+        http_provider("https://canto-testnet.plexnode.wtf")),
+      network_id: 7701,
       confirmations: 2,
       timeoutBlocks: 200,
       skipDryRun: true
