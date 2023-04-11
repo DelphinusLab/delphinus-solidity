@@ -22,7 +22,6 @@ interface DelphinusBridge {
     function verify(
         bytes calldata tx_data,
         uint256[] calldata verify_data, // [8]: old root, [9]: new root, [10]: sha_low, [11]: sha_high
-        uint8 _vid,
         uint256 _rid
     ) external;
 }

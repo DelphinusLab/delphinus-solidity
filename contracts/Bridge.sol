@@ -23,7 +23,7 @@ contract Bridge is DelphinusBridge {
     mapping(uint256 => bool) private hasSideEffiect;
     uint256 merkle_root;
     uint256 rid;
-    uint256 verifierID;
+    uint16 verifierID;
 
     constructor(uint32 chain_id) {
         _bridge_info.chain_id = chain_id;
@@ -105,9 +105,9 @@ contract Bridge is DelphinusBridge {
     function addVerifier(address vaddr) public returns (uint256) {
         ensure_admin();
         uint256 cursor = verifiers.length;
-        verifierID = verifiers.length;
-        require(verifiers.length < 255, "Verifier index out of bound");
+        require(verifiers.length < 65535, "Verifier index out of bound");
         verifiers.push(DelphinusVerifier(vaddr));
+        verifierID = uint16(verifiers.length - 1);
         return cursor;
     }
 
@@ -116,7 +116,7 @@ contract Bridge is DelphinusBridge {
         return transactions[tid];
     }
 
-    function _get_verifier(uint8 vid) private view returns (DelphinusVerifier) {
+    function _get_verifier(uint16 vid) private view returns (DelphinusVerifier) {
         require(verifiers.length > vid, "Verifier index out of bound");
         return verifiers[vid];
     }
@@ -182,7 +182,6 @@ contract Bridge is DelphinusBridge {
     function verify(
         bytes calldata tx_data,
         uint256[] calldata verify_data, // [8]: old root, [9]: new root, [10]: sha_low, [11]: sha_high
-        uint8 _vid,
         uint256 _rid
     ) public {
         require(rid == _rid, "Verify: Unexpected Request Id");
@@ -202,8 +201,7 @@ contract Bridge is DelphinusBridge {
             merkle_root == verify_data[10],
             "Inconstant: Merkle root dismatch"
         );
-
-        DelphinusVerifier verifier = _get_verifier(_vid);
+        DelphinusVerifier verifier = _get_verifier(verifierID);
         bool v = verifier.verifyDelphinusTx(verify_data);
         require(v == true, "ZKVerify: zksnark check failed");
 
