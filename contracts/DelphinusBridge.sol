@@ -13,6 +13,7 @@ interface DelphinusBridge {
 
     function addTransaction(address txaddr, bool sideEffect) external returns (uint256);
     function addVerifier(address vaddr) external returns (uint256);
+    function matchMerkleRootAndRid(uint256 _merkle_root, uint256 _rid) external;
     function deposit(
         address token,
         uint256 amount,

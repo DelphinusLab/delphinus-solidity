@@ -82,6 +82,10 @@ export class BridgeContract extends DelphinusContract {
     return this.getWeb3Contract().methods.addToken(tokenid).send();
   }
 
+  matchMerkleRootAndRid(merkleRoot: BN, rid: BN) {
+    return this.getWeb3Contract().methods.matchMerkleRootAndRid(merkleRoot, rid).send();
+  }
+
   private _verify(calldata: number[], verifydata: BN[], vid: number, rid: BN) {
     const tx = this.getWeb3Contract().methods.verify(
       calldata,
