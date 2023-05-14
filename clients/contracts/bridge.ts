@@ -58,8 +58,11 @@ function hexcmp(x: string, y: string) {
 }
 
 export class BridgeContract extends DelphinusContract {
+  private readonly web3: DelphinusWeb3;
+
   constructor(web3: DelphinusWeb3, address: string, account?: string) {
     super(web3, BridgeContract.getJsonInterface(), address, account);
+    this.web3 = web3;
   }
 
   static getJsonInterface(): any {
@@ -80,6 +83,27 @@ export class BridgeContract extends DelphinusContract {
 
   addToken(tokenid: BN) {
     return this.getWeb3Contract().methods.addToken(tokenid).send();
+  }
+
+  async getEstimatedGasFee(calldata: number[], verifydata: BN[], vid: number, rid: BN) {
+    const gasPrice = await this.web3.web3Instance.eth.getGasPrice();
+    console.log("The gas price is", gasPrice);
+    const tx = this.getWeb3Contract().methods.verify(
+      calldata,
+      verifydata,
+      vid,
+      rid
+    );
+    return tx.estimateGas()
+      .then((estimatedGas: number) => {
+        console.log("The estimated gas is", estimatedGas);
+        const txPriceWei = estimatedGas * Number(gasPrice);
+        const txPriceEth = this.web3.web3Instance.utils.fromWei(txPriceWei.toString(), 'ether');
+        return Number(txPriceEth) * estimatedGas;
+      })
+      .catch((e: any) => {
+        console.log("%s", e);
+      });
   }
 
   private _verify(calldata: number[], verifydata: BN[], vid: number, rid: BN) {
