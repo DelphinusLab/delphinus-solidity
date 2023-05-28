@@ -87,7 +87,7 @@ export class BridgeContract extends DelphinusContract {
 
   async getEstimatedGasFee(calldata: number[], verifydata: BN[], vid: number, rid: BN) {
     const gasPrice = await this.web3.web3Instance.eth.getGasPrice();
-    console.log("The gas price is", gasPrice);
+    console.log("The gas price is", gasPrice, "wei");
     const tx = this.getWeb3Contract().methods.verify(
       calldata,
       verifydata,
@@ -97,9 +97,7 @@ export class BridgeContract extends DelphinusContract {
     return tx.estimateGas()
       .then((estimatedGas: number) => {
         console.log("The estimated gas is", estimatedGas);
-        const txPriceWei = estimatedGas * Number(gasPrice);
-        const txPriceEth = this.web3.web3Instance.utils.fromWei(txPriceWei.toString(), 'ether');
-        return Number(txPriceEth) * estimatedGas;
+        return estimatedGas * Number(gasPrice);
       })
       .catch((e: any) => {
         console.log("%s", e);
